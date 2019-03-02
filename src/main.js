@@ -10,4 +10,7 @@ function initMap() {
 	map.setOptions(mapOptions);
 	// The marker, positioned at Uluru
 	var marker = new google.maps.Marker({position: uluru, map: map});
+
+	indicator = new MarkerIndicator(marker.getPosition());
+	indicator.init(map);
 }
