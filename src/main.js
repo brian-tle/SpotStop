@@ -33,6 +33,7 @@ function CenterControl(controlDiv, map) {
                                map.setOptions({
                                               draggableCursor:'url(res/icons/marker_red.png), auto'});
                                
+                               //document.body.style.cursor = "marker_red.png";
                                
                                console.log("Button works!");
                                });
