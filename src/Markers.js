@@ -1,0 +1,5 @@
+class proposeMarker {
+    function CreateClass() {
+
+    };    
+}
