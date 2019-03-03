@@ -29,7 +29,8 @@ function CenterControl(controlDiv, map) {
   controlUI.addEventListener("click", function() {
     cursorRunning = true;
     map.setOptions({
-      draggableCursor: "url(res/icons/marker_red.png), pointer"
+      //draggableCursor: "url(res/icons/6YToyEF.png), auto"
+                   draggableCursor: "url(red_marker.png), crosshair"
     });
   });
 }
