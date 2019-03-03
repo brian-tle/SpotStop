@@ -28,24 +28,46 @@ function CenterControl(controlDiv, map) {
     controlText.innerHTML = 'Propose Marker';
     controlUI.appendChild(controlText);
     
-    // Setup the click event listeners: simply set the map to Chicago.
+    // Setup the click event listeners: transform cursor to red
+    var cursorRunning = false;
     controlUI.addEventListener('click', function() {
+                               if (cursorRunning = true) {
                                map.setOptions({
-                                              draggableCursor:'url(res/icons/marker_red.png), auto'});
+                                              draggableCursor:'url(res/icons/marker_red.png), auto'
+                                              });
                                
-                               //document.body.style.cursor = "marker_red.png";
-                               
+                               google.maps.event.addListener(map, 'click', function(event) {
+                                                             marker = new google.maps.Marker({
+                                                                                             position: event.latLng,
+                                                                                             map: map
+                                                                                             });
+                                                             
+                                                             
+                                                             /*google.maps.event.addListener(marker, 'click', function() {
+                                                                                           infowindow.open(map, marker);
+                                                                                           });*/
+                                                             
+                                                             }, {once: true});
                                console.log("Button works!");
+                               cursorRunning = false;
+                               }
+                               // } else {
+                               /* map.setOptions({
+                                draggableCursor:'url("https://maps.gstatic.com/mapfiles/openhand_8_8.cur"), default'
+                                });
+                                cursorRunning = false;
+                                }
+                                //document.body.style.cursor = "marker_red.png";*/
                                });
 }
 
 function initMap() {
-	// The location of Uluru
-	var uluru = {lat: 37.7219, lng: -122.4782};
-	// The map, centered at Uluru
-	var map = new google.maps.Map(document.getElementById('map'), {zoom: 12, center: uluru});
-	map.setOptions(mapOptions);
-	// The marker, positioned at Uluru
+    // The location of Uluru
+    var uluru = {lat: 37.7219, lng: -122.4782};
+    // The map, centered at Uluru
+    var map = new google.maps.Map(document.getElementById('map'), {zoom: 12, center: uluru});
+    map.setOptions(mapOptions);
+    // The marker, positioned at Uluru
     
     var centerControlDiv = document.createElement('div');
     var centerControl = new CenterControl(centerControlDiv, map);
@@ -55,6 +77,7 @@ function initMap() {
     
     
     var marker = new google.maps.Marker({position: uluru, map: map});
-	indicator = new MarkerIndicator(marker.getPosition());
-	indicator.init(map);
+    var newMarker = new google.maps.Marker();
+    indicator = new MarkerIndicator(marker.getPosition());
+    indicator.init(map);
 }
