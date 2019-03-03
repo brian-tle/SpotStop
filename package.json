@@ -1,0 +1,14 @@
+{
+  "name": "spot_stop",
+  "version": "1.0.0",
+  "description": "Spot Stop Website App",
+  "main": "index.js",
+  "scripts": {
+    "sass": "node-sass -w scss/ -o dist/css/ --recursive"
+  },
+  "author": "SFHacks2019",
+  "license": "ISC",
+  "dependencies": {
+    "node-sass": "^4.11.0"
+  }
+}
