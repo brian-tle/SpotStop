@@ -9,6 +9,7 @@
   "author": "SFHacks2019",
   "license": "ISC",
   "dependencies": {
+    "mongodb": "^3.1.13",
     "node-sass": "^4.11.0"
   }
 }
