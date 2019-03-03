@@ -1,5 +1,4 @@
 var cursorRunning = false;
-var pasted = false;
 
 function CenterControl(controlDiv, map) {
     // Set CSS for the control border.
