@@ -83,30 +83,6 @@ class MarkerIndicator {
         this.setVisible(false);
       }.bind(this)
     );
-
-    this.upvote.poly.addListener(
-      "click",
-      function(event) {
-        var colorOption = { fillColor: "#46db46" };
-        var colorOption2 = { fillColor: "#474747" };
-        this.upvote.poly.setOptions(colorOption);
-        this.downvote.poly.setOptions(colorOption2);
-        this.status = 2;
-        this.active = true;
-      }.bind(this)
-    );
-
-    this.downvote.poly.addListener(
-      "click",
-      function(event) {
-        var colorOption = { fillColor: "#FF0000" };
-        var colorOption2 = { fillColor: "#474747" };
-        this.downvote.poly.setOptions(colorOption);
-        this.upvote.poly.setOptions(colorOption2);
-        this.status = 0;
-        this.active = true;
-      }.bind(this)
-    );
   }
 
   init(map) {
