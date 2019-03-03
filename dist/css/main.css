@@ -105,7 +105,7 @@ body {
 body#bg-img {
   background: url(../img/travel_map.jpg);
   background-attachment: fixed;
-  background-size: cover;
+  background-size: 100%;
 }
 body#bg-img:after {
   content: "";
@@ -113,9 +113,9 @@ body#bg-img:after {
   top: 0;
   right: 0;
   width: 100%;
-  height: 100%;
+  height: 130%;
   z-index: -1;
-  background: rgba(68, 68, 68, 0.8);
+  background: rgba(68, 68, 68, 0.7);
 }
 
 h1,
@@ -221,4 +221,67 @@ form .submit {
 form .submit:hover {
   background-color: #185553;
   cursor: pointer;
+}
+
+.projects {
+  display: grid;
+  grid-gap: 0.7rem;
+  grid-template-columns: repeat(3, 1fr);
+}
+.projects img {
+  width: 100%;
+  border: 3px #fff solid;
+}
+.projects img:hover {
+  opacity: 0.5;
+  border-color: #0caea8;
+  transition: all 0.5s ease-out;
+}
+
+.boxes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-top: 1rem;
+}
+.boxes div {
+  font-size: 2rem;
+  border: 3px #fff solid;
+  padding: 1.5rem 2.5rem;
+  margin-bottom: 3rem;
+  transition: all 0.5s ease-out;
+}
+.boxes div:hover {
+  padding: 0.5rem 1.5rem;
+  background: #0caea8;
+  color: #fff;
+}
+.boxes div:hover span {
+  color: #fff;
+}
+
+.btn,
+.btn-dark,
+.btn-light {
+  display: block;
+  padding: 0.5rem 1rem;
+  border: 0;
+  margin-bottom: 0.3rem;
+}
+.btn:hover,
+.btn-dark:hover,
+.btn-light:hover {
+  background: #0caea8;
+  color: #fff;
+}
+
+.btn-dark {
+  background: black;
+  color: #fff;
+}
+
+.btn-light {
+  background: #c4c4c4;
+  color: #333;
 }
