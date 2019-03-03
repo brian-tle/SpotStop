@@ -1,20 +1,14 @@
 class MarkerIndicator {
 	constructor(latLng) {
-		this.x = latLng.lat() - (0.001 / 2);
-		this.y = latLng.lng() - (0.001 / 2);
-		this.width = 0.001;
-		this.height = 0.001;
-	}
+		this.latLng = latLng;
 
-	init(map) {
-		this.polyCoords = [
-			{lat: this.x, lng: this.y},
-			{lat: this.x + this.width, lng: this.y},
-			{lat: this.x + this.width, lng: this.y + this.height},
-			{lat: this.x, lng: this.y + this.height}
-		];
+		this.x = this.latLng.lat() - (0.01 / 2);
+		this.y = this.latLng.lng() - (0.01 / 2);
+		this.width = 0.01;
+		this.height = 0.01;
 
-		// Construct the polygon.
+		this.updatePolyCoords();
+
 		this.poly = new google.maps.Polygon({
 			paths: this.polyCoords,
 			strokeColor: '#FF0000',
@@ -23,7 +17,43 @@ class MarkerIndicator {
 			fillColor: '#FF0000',
 			fillOpacity: 0.35
 		});
+	}
 
+	changeZoom(zoomVal) {
+		if (zoomVal > 12) {
+			this.x = this.latLng.lat() - (0.01 / (13 - zoomVal) / 2);
+			this.y = this.latLng.lng() - (0.01 / (13 - zoomVal) / 2);
+			this.width = (0.01 / (13 - zoomVal));
+			this.height = (0.01 / (13 - zoomVal));
+		}
+		else {
+			if (zoomVal < 12) {
+				this.x = this.latLng.lat() - (0.01 * (13 - zoomVal) / 2);
+				this.y = this.latLng.lng() - (0.01 * (13 - zoomVal) / 2);
+				this.width = (0.01 * (13 - zoomVal));
+				this.height = (0.01 * (13 - zoomVal));
+			}
+			else {
+				this.x = this.latLng.lat() - (0.01 / 2);
+				this.y = this.latLng.lng() - (0.01 / 2);
+				this.width = 0.01;
+				this.height = 0.01;
+			}
+		}
+		this.updatePolyCoords();
+		this.poly.setPath(this.polyCoords);
+	}
+
+	updatePolyCoords() {
+		this.polyCoords = [
+			{lat: this.x, lng: this.y},
+			{lat: this.x + this.width, lng: this.y},
+			{lat: this.x + this.width, lng: this.y + this.height},
+			{lat: this.x, lng: this.y + this.height}
+		];
+	}
+
+	init(map) {
 		this.poly.setMap(map);
 	}
 }
