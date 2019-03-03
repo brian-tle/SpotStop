@@ -1,20 +1,26 @@
+markerList = [];
+
 var mapOptions = {
   streetViewControl: false,
   fullscreenControl: false
 };
 
 function initMap() {
-  const m = new Marker(37.7219, -122.4782);
+  markerList.push(new Marker(37.7219, -122.4782));
+  markerList.push(new Marker(37.7319, -122.4882, 12));
+  markerList.push(new Marker(37.8271, -122.4216, 46));
   var map = new google.maps.Map(document.getElementById("map"), {
     zoom: 12,
-    center: m.m
+    center: markerList[0].m
   });
   map.setOptions(mapOptions);
 
   addControls(map);
   addListeners(map);
 
-  m.createMarker(map);
+  markerList[0].createMarker(map);
+  markerList[1].createMarker(map);
+  markerList[2].createMarker(map);
 }
 
 function addListeners(map) {

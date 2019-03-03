@@ -1,5 +1,9 @@
 class MarkerIndicator {
   constructor(marker) {
+    // 0 - Bad
+    // 1 - Neutral
+    // 2 - Good
+    this.status = 1;
     this.active = false;
 
     this.x = marker.positionOffset.lat - 0.0005 / 2;
@@ -87,6 +91,7 @@ class MarkerIndicator {
         var colorOption2 = { fillColor: "#474747" };
         this.upvote.poly.setOptions(colorOption);
         this.downvote.poly.setOptions(colorOption2);
+        this.status = 2;
         this.active = true;
       }.bind(this)
     );
@@ -98,6 +103,7 @@ class MarkerIndicator {
         var colorOption2 = { fillColor: "#474747" };
         this.downvote.poly.setOptions(colorOption);
         this.upvote.poly.setOptions(colorOption2);
+        this.status = 0;
         this.active = true;
       }.bind(this)
     );

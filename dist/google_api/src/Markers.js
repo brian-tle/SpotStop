@@ -3,11 +3,11 @@ const ICON_COLOR_GREEN = '51c944';
 const ICON_COLOR_GRAY =  '808080';
 
 class Marker {
-  constructor(x, y) {
+  constructor(x, y, totalPoints = 30) {
     this.lat = x;
     this.lng = y;
-      this.color;
-    this.totalPoints = 30;
+    this.color;
+    this.totalPoints = totalPoints;
     this.default = { lat: parseFloat(x), lng: parseFloat(y) };
     this.marker;
 
