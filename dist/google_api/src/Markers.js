@@ -4,7 +4,8 @@ class Marker {
     this.lng = y;
     this.default = { lat: parseFloat(x), lng: parseFloat(y) };
     this.marker;
-    window.list = [];
+
+    this.positionOffset = { lat: parseFloat(x + 0.0008), lng: parseFloat(y) };
   }
   //createmarker(x,y) {
 
@@ -24,25 +25,22 @@ class Marker {
   }
 
   createMarker(map) {
+    this.map = map;
     this.marker = new google.maps.Marker({
       position: this.default,
       animation: google.maps.Animation.DROP,
       map: map
     });
+
+    this.marker.addListener('click', function(event) {
+      this.map.setZoom(18);
+      this.map.setCenter(this.positionOffset);
+      this.indicator.setVisible(true);
+    }.bind(this));
+
     this.indicator = new MarkerIndicator(this);
     this.indicator.init(map);
     this.indicator.addListeners();
-  }
-  addMarker(map) {
-    list.forEach(function(list) {
-      var marker = new google.maps.Marker({
-        position: list.position,
-        map: map
-      });
-      this.indicator = new MarkerIndicator(this);
-      this.indicator.init(map);
-      this.indicator.addListeners();
-    });
   }
 
   get GetMarker() {
