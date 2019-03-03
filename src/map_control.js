@@ -28,7 +28,7 @@ function CenterControl(controlDiv, map) {
     // Setup the click event listeners: transform cursor to red
     controlUI.addEventListener('click', function() {
                                cursorRunning = true;
-                               map.setOptions({ draggableCursor:'url(res/icons/redmarker.png), pointer' });
+                               map.setOptions({ draggableCursor:'url(res/icons/marker_red.png), pointer' });
                                });
 }
 

@@ -5,6 +5,7 @@ class Marker{
 		this.lng = y;
 		this.default = {lat: parseFloat(x), lng: parseFloat(y)};
 		this.marker;
+		window.list = [];
 
 	}
 	 //createmarker(x,y) {
@@ -31,6 +32,19 @@ class Marker{
     	this.indicator.init(map);
     	this.indicator.addListeners();
 	}
+	addMarker(map){
+		list.forEach(function(list) {
+			var marker = new google.maps.Marker({
+			  position: list.position,
+			  icon: icons[feature.type].icon,
+			  map: map
+			});
+			this.indicator = new MarkerIndicator(this);
+    	this.indicator.init(map);
+    	this.indicator.addListeners();
+		  });
+		}
+	
 	
 	get GetMarker() {
 		return this.GetM();
