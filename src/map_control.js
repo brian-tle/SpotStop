@@ -34,10 +34,6 @@ function CenterControl(controlDiv, map) {
 }
 
 function addListenerControl(map) {
-    map.addListener('zoom_changed', function(event) {
-        console.log(map.getZoom());
-    });
-
     map.addListener('click', function(event) {
                     if (cursorRunning) {
                     marker = new google.maps.Marker({position: event.latLng, map: map});

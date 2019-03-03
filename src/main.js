@@ -15,10 +15,13 @@ function initMap() {
     m.createMarker(map);
     var marker = m.GetMarker;
     indicator = new MarkerIndicator(marker.getPosition());
-    indicator.init(map);
-    indicator.addListeners();
+
+
 }
 
 function addListeners(map) {
+    map.addListener('zoom_changed', function(event) {
+    });
+
     addListenerControl(map)
 }
