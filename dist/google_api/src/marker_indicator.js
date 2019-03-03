@@ -2,10 +2,10 @@ class MarkerIndicator {
   constructor(marker) {
     this.active = false;
 
-    this.x = marker.positionOffset.lat - 0.001 / 2;
-    this.y = marker.positionOffset.lng - 0.001 / 2;
-    this.width = 0.001;
-    this.height = 0.001;
+    this.x = marker.positionOffset.lat - 0.0005 / 2;
+    this.y = marker.positionOffset.lng - 0.0005 / 2;
+    this.width = 0.0005;
+    this.height = 0.0005;
 
     this.polyCoords = [
       { lat: this.x, lng: this.y },
@@ -118,9 +118,9 @@ class UpvoteTriangle {
     this.votedColor = "#46db46";
 
     this.polyCoords = [
-      { lat: indicator.x + indicator.width * 0.8, lng: indicator.y },
-      { lat: indicator.x + indicator.width,       lng: indicator.y + indicator.height / 8 },
-      { lat: indicator.x + indicator.width * 0.8, lng: indicator.y + indicator.height / 4 }
+      { lat: indicator.x + indicator.width * 0.55, lng: indicator.y + indicator.height * 0.1 },
+      { lat: indicator.x + indicator.width * 0.95, lng: indicator.y + indicator.height * 0.5 },
+      { lat: indicator.x + indicator.width * 0.55, lng: indicator.y + indicator.height * 0.9 }
     ];
 
     this.poly = new google.maps.Polygon({
@@ -144,9 +144,9 @@ class DownvoteTriangle {
     this.votedColor = "#FF0000";
 
     this.polyCoords = [
-      { lat: indicator.x + indicator.width * 0.75, lng: indicator.y },
-      { lat: indicator.x + indicator.width * 0.55, lng: indicator.y + indicator.height / 8 },
-      { lat: indicator.x + indicator.width * 0.75, lng: indicator.y + indicator.height / 4 }
+      { lat: indicator.x + indicator.width * 0.45, lng: indicator.y + indicator.height * 0.1 },
+      { lat: indicator.x + indicator.width * 0.05, lng: indicator.y + indicator.height * 0.5 },
+      { lat: indicator.x + indicator.width * 0.45, lng: indicator.y + indicator.height * 0.9 }
     ];
 
     this.poly = new google.maps.Polygon({

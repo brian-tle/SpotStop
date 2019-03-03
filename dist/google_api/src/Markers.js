@@ -5,7 +5,7 @@ class Marker {
     this.default = { lat: parseFloat(x), lng: parseFloat(y) };
     this.marker;
 
-    this.positionOffset = { lat: parseFloat(x + 0.0008), lng: parseFloat(y) };
+    this.positionOffset = { lat: parseFloat(x + 0.0005), lng: parseFloat(y) };
   }
   //createmarker(x,y) {
 
