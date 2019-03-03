@@ -1,6 +1,6 @@
 var cursorRunning = false;
 var pasted = false;
-
+var m = new Marker(event.latLng);
 function CenterControl(controlDiv, map) {
     // Set CSS for the control border.
     var controlUI = document.createElement('div');
@@ -36,7 +36,9 @@ function CenterControl(controlDiv, map) {
 function addListenerControl(map) {
     map.addListener('click', function(event) {
         if (cursorRunning) {
-            marker = new google.maps.Marker({position: event.latLng, map: map});
+            
+            m.list.push(event.latLng);
+            marker = new google.maps.Marker({position: event.latLng,animation: google.maps.Animation.DROP, map: map});
             map.setOptions({ draggableCursor:'url(https://maps.gstatic.com/mapfiles/openhand_8_8.cur), default' });
             cursorRunning = false;
         }

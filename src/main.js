@@ -4,6 +4,7 @@ var mapOptions = {
  };
  
  function initMap() {
+    
     const m = new Marker(37.7219, -122.4782);
     var map = new google.maps.Map(document.getElementById('map'), {zoom: 12, center: m.m});
     map.setOptions(mapOptions);
