@@ -23,7 +23,7 @@ class MarkerIndicator {
 			strokeOpacity: 1.0,
 			strokeWeight: 2,
 			fillColor: '#b5becc',
-			fillOpacity: 0.75
+			fillOpacity: 0.90
 		});
 
 		this.upvote = new UpvoteTriangle(this);
@@ -36,7 +36,8 @@ class MarkerIndicator {
 	}
 
 	handleZoom(zoomVal) {
-
+		if (zoomVal < 17) { this.inRange = false; }
+		else { this.inRange = true; }
 	}
 
 	init(map) {
@@ -70,11 +71,13 @@ class UpvoteTriangle {
 
 	addListeners() {
 		this.poly.addListener('click', function(event) {
-			var colorOption = { fillColor: '#46db46' };
-			var colorOption2 = { fillColor: '#474747' };
-			indicator.upvote.poly.setOptions(colorOption);
-			indicator.downvote.poly.setOptions(colorOption2);
-			indicator.active = true;
+			if (indicator.inRange) {
+				var colorOption = { fillColor: '#46db46' };
+				var colorOption2 = { fillColor: '#474747' };
+				indicator.upvote.poly.setOptions(colorOption);
+				indicator.downvote.poly.setOptions(colorOption2);
+				indicator.active = true;
+			}
 	    });
 	}
 
@@ -107,11 +110,13 @@ class DownvoteTriangle {
 
 	addListeners() {
 		this.poly.addListener('click', function(event) {
-			var colorOption = { fillColor: '#FF0000' };
-			var colorOption2 = { fillColor: '#474747' };
-			indicator.downvote.poly.setOptions(colorOption);
-			indicator.upvote.poly.setOptions(colorOption2);
-			indicator.active = true;
+			if (indicator.inRange) {
+				var colorOption = { fillColor: '#FF0000' };
+				var colorOption2 = { fillColor: '#474747' };
+				indicator.downvote.poly.setOptions(colorOption);
+				indicator.upvote.poly.setOptions(colorOption2);
+				indicator.active = true;
+			}
 	    });
 	}
 

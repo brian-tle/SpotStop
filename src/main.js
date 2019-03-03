@@ -13,11 +13,15 @@ function initMap() {
     addListeners(map)
 
     var marker = new google.maps.Marker({position: m.m, map: map});
-    indicator = new MarkerIndicator(marker.getPosition());
+    indicator = new MarkerIndicator(marker.getPosition(), map);
     indicator.init(map);
     indicator.addListeners();
 }
 
 function addListeners(map) {
+    map.addListener('zoom_changed', function(event) {
+        indicator.handleZoom(map.getZoom());
+    });
+
     addListenerControl(map)
 }
