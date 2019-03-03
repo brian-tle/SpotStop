@@ -1,13 +1,17 @@
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
 
-MongoClient.connect(url, function(err, db) {
-	if (err) throw err;
-	var dbo = db.db("spot_stop");
-	var myobj = { lat: 0.00, lng: 0.00, desc:" ", upvote: 0, downvote: 0};
-	dbo.collection("markers").insertOne(myobj, function(err, res) {
-	if (err) throw err;
-		console.log("1 document inserted");
-		db.close();
+function addMarker(lat, lng, upvote, downvote, des){ 
+	MongoClient.connect(url, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		var marker = { lat: lat, lng: lng, des: des, upvote: upvote, downvote: downvote};
+		dbo.collection("markers").insertOne(marker, function(err, res) {
+		if (err) throw err;
+			console.log("1 document inserted");
+			db.close();
+		});
 	});
-});
+}
+
+addMarker(0.0, 0.0, 5, 7, "HELLO WORLD");
