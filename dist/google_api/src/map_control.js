@@ -35,6 +35,8 @@ function CenterControl(controlDiv, map) {
   });
 }
 
+markerList = [];
+
 function addListenerControl(map) {
   map.addListener("click", function(event) {
     if (cursorRunning) {

@@ -1,5 +1,3 @@
-markerList = [];
-
 class Marker {
   constructor(x, y) {
     this.lat = x;
