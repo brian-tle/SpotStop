@@ -17,6 +17,7 @@ function initMap() {
     var marker = new google.maps.Marker({position: uluru, map: map});
     indicator = new MarkerIndicator(marker.getPosition());
     indicator.init(map);
+    indicator.addListeners();
 }
 
 function addListeners(map) {
