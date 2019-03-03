@@ -27,6 +27,10 @@ class Marker{
 
 	createMarker(map) {
 		this.marker = new google.maps.Marker({position: this.default,animation: google.maps.Animation.DROP, map:map});
+		this.marker = new google.maps.Marker({position: this.default, map:map});
+		this.indicator = new MarkerIndicator(this);
+    	this.indicator.init(map);
+    	this.indicator.addListeners();
 	}
 	
 	get GetMarker() {
