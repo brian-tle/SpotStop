@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 function createmarker(x,y) {
 	// The location of Uluru
    
@@ -11,15 +10,3 @@ function createmarker(x,y) {
 	
     
 }
-=======
-class Marker {
-    constructor(x, y) {
-        markerList = [
-            {
-            position: new google.maps.LatLng(x, y),
-                type: 'info'
-            },
-        ]
-    }
-}
->>>>>>> c6acd2897767a5df78d2db286ea19f9a9d69b99b
