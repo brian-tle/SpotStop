@@ -12,15 +12,11 @@ class Markers{
 		map.setOptions(mapOptions);
 		// The marker, positioned at Uluru
 		var marker = new google.maps.Marker({position: uluru, map: map,animation:google.maps.Animation.DROP});
-		maerker.addListener('click',this.toggleBounce);
+		
 		
 	}
-	toggleBounce() {
-		if (marker.getAnimation() !== null) {
-		  marker.setAnimation(null);
-		} else {
-		  marker.setAnimation(google.maps.Animation.BOUNCE);
-		}
-	  }
+	
+			
+    
 	
 }
