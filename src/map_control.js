@@ -28,19 +28,19 @@ function CenterControl(controlDiv, map) {
     
     // Setup the click event listeners: transform cursor to red
     controlUI.addEventListener('click', function() {
-                               cursorRunning = true;
-                               map.setOptions({ draggableCursor:'url(res/icons/marker_red.png), auto' });
-                               });
+        cursorRunning = true;
+        map.setOptions({ draggableCursor:'url(res/icons/marker_red.png), auto' });
+    });
 }
 
 function addListenerControl(map) {
     map.addListener('click', function(event) {
-                    if (cursorRunning) {
-                    marker = new google.maps.Marker({position: event.latLng, map: map});
-                    map.setOptions({ draggableCursor:'url(https://maps.gstatic.com/mapfiles/openhand_8_8.cur), default' });
-                    cursorRunning = false;
-                    }
-                    });
+        if (cursorRunning) {
+            marker = new google.maps.Marker({position: event.latLng, map: map});
+            map.setOptions({ draggableCursor:'url(https://maps.gstatic.com/mapfiles/openhand_8_8.cur), default' });
+            cursorRunning = false;
+        }
+    });
 }
 
 function addControls(map) {
