@@ -59,11 +59,6 @@ function initMap() {
 }
 
 function addListeners(map) {
-	map.addListener('zoom_changed', function() {
-		indicator.changeZoom(map.getZoom());
-		console.log(map.getZoom());
-    });
-
     map.addListener('click', function(event) {
         if (cursorRunning) {
             marker = new google.maps.Marker({position: event.latLng, map: map});
