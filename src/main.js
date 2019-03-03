@@ -53,10 +53,19 @@ function initMap() {
     
     centerControlDiv.index = 1;
     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
-    
+
+    addListeners(map);
     
     //var marker = new google.maps.Marker({position: uluru, map: map});
 	indicator = new MarkerIndicator(marker.getPosition());
 	indicator.init(map);
+
+}
+
+function addListeners(map) {
+	map.addListener('zoom_changed', function() {
+		indicator.changeZoom(map.getZoom());
+		console.log(map.getZoom());
+    });
 
 }
