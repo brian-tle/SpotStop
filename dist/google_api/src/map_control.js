@@ -30,7 +30,7 @@ function CenterControl(controlDiv, map) {
     cursorRunning = true;
     map.setOptions({
       //draggableCursor: "url(res/icons/6YToyEF.png), auto"
-                   draggableCursor: "url(red_marker.png), crosshair"
+                   draggableCursor: "crosshair"
     });
   });
 }
