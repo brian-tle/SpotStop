@@ -9,10 +9,10 @@ class Marker {
   //createmarker(x,y) {
 
   // The map, centered at Uluru
-  //	var map = new google.maps.Map(document.getElementById('map'), {zoom: 12, center: this.m});
-  //	map.setOptions(mapOptions);
+  //  var map = new google.maps.Map(document.getElementById('map'), {zoom: 12, center: this.m});
+  //  map.setOptions(mapOptions);
   // The marker, positioned at Uluru
-  //	var marker = new google.maps.Marker({position: this.m, map: map,animation:google.maps.Animation.DROP});
+  //  var marker = new google.maps.Marker({position: this.m, map: map,animation:google.maps.Animation.DROP});
 
   //}
   get m() {
