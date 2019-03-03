@@ -12,7 +12,8 @@ function initMap() {
     addControls(map)
     addListeners(map)
 
-    var marker = new google.maps.Marker({position: m.m, map: map});
+    m.createMarker(map);
+    var marker = m.GetMarker;
     indicator = new MarkerIndicator(marker.getPosition());
     indicator.init(map);
     indicator.addListeners();

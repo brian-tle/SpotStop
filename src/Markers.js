@@ -3,7 +3,8 @@ class Marker{
     constructor(x,y){
 		this.lat = x;
 		this.lng = y;
-		this.dict = {lat: parseFloat(x), lng: parseFloat(y)};
+		this.default = {lat: parseFloat(x), lng: parseFloat(y)};
+		this.marker;
 
 	}
 	 //createmarker(x,y) {
@@ -21,8 +22,19 @@ class Marker{
 	}
 			
 	mm() {
-		return this.dict;
+		return this.default;
 	}
-    
+
+	createMarker(map) {
+		this.marker = new google.maps.Marker({position: this.default, map:map});
+	}
+	
+	get GetMarker() {
+		return this.GetM();
+	}
+
+	GetM() {
+		return this.marker;
+	}
 	
 }
