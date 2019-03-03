@@ -1,11 +1,12 @@
 class Marker{
-
+	
     constructor(x,y){
 		this.lat = x;
 		this.lng = y;
 		this.default = {lat: parseFloat(x), lng: parseFloat(y)};
 		this.marker;
-		this.list=[];	}
+		window.list = [];
+			}
 	 //createmarker(x,y) {
 		
 		// The map, centered at Uluru
@@ -16,11 +17,11 @@ class Marker{
 
 		
 	//}
-	addlsit(marker){
-		this.list = list;
-		list.push(marker);
+	//addlsit(marker){
+	//	this.list = list;
+	//	list.push(marker);
 
-	}
+
 	get m() {
 		return this.mm();
 	}
