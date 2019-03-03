@@ -8,7 +8,7 @@ function CenterControl(controlDiv, map) {
     controlUI.style.borderRadius = '3px';
     controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
     controlUI.style.cursor = 'pointer';
-    controlUI.style.marginBottom = '22px';
+    controlUI.style.marginBottom = '0px';
     controlUI.style.textAlign = 'center';
     controlUI.title = 'Propose Marker?';
     controlDiv.appendChild(controlUI);
@@ -19,9 +19,9 @@ function CenterControl(controlDiv, map) {
     controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
     controlText.style.fontSize = '16px';
     controlText.style.lineHeight = '38px';
-    controlText.style.marginRight = '5px';
-    controlText.style.paddingRight = '5px';
-    controlText.style.MarginTop = '5px';
+    
+    controlText.style.marginLeft = '5px';
+    
     controlText.innerHTML = 'Propose Marker';
     controlUI.appendChild(controlText);
     
