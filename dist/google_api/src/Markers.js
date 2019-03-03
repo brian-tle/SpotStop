@@ -71,6 +71,12 @@ class Marker {
         this.indicator.active = true;
       }.bind(this)
     );
+    this.indicator.exit.addListener('click', function(event) {
+      this.map.setZoom(12);
+      this.map.setCenter(this.positionOffset);
+      this.indicator.setVisible(false);
+    }.bind(this));
+
 
     this.indicator.downvote.poly.addListener(
       "click",
