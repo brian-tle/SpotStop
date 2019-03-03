@@ -36,7 +36,6 @@ class Marker{
 		list.forEach(function(list) {
 			var marker = new google.maps.Marker({
 			  position: list.position,
-			  icon: icons[feature.type].icon,
 			  map: map
 			});
 			this.indicator = new MarkerIndicator(this);
