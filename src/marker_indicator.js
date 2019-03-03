@@ -1,5 +1,8 @@
 class MarkerIndicator {
 	constructor(latLng) {
+		this.inRange = false;
+		this.active = false;
+
 		this.latLng = latLng;
 
 		this.x = this.latLng.lat() - (0.001 / 2);
@@ -16,10 +19,10 @@ class MarkerIndicator {
 
 		this.poly = new google.maps.Polygon({
 			paths: this.polyCoords,
-			strokeColor: '#FF0000',
+			strokeColor: '#000000',
 			strokeOpacity: 1.0,
 			strokeWeight: 2,
-			fillColor: '#FF0000',
+			fillColor: '#b5becc',
 			fillOpacity: 0.75
 		});
 
@@ -32,6 +35,10 @@ class MarkerIndicator {
 		this.downvote.addListeners();
 	}
 
+	handleZoom(zoomVal) {
+
+	}
+
 	init(map) {
 		this.poly.setMap(map);
 		this.upvote.init(map);
@@ -41,7 +48,7 @@ class MarkerIndicator {
 
 class UpvoteTriangle {
 	constructor(indicator) { 
-		this.indicator = indicator;
+		var indicator = indicator;
 		this.notVotedColor = '#474747';
 		this.votedColor = '#46db46';
 
@@ -56,14 +63,18 @@ class UpvoteTriangle {
 			strokeColor: '#000000',
 			strokeOpacity: 1.0,
 			strokeWeight: 2,
-			fillColor: '#46db46',
+			fillColor: this.notVotedColor,
 			fillOpacity: 1.0
 		});
 	}
 
 	addListeners() {
 		this.poly.addListener('click', function(event) {
-
+			var colorOption = { fillColor: '#46db46' };
+			var colorOption2 = { fillColor: '#474747' };
+			indicator.upvote.poly.setOptions(colorOption);
+			indicator.downvote.poly.setOptions(colorOption2);
+			indicator.active = true;
 	    });
 	}
 
@@ -74,13 +85,13 @@ class UpvoteTriangle {
 
 class DownvoteTriangle {
 	constructor(indicator) { 
-		this.indicator = indicator;
+		var indicator = indicator;
 		this.notVotedColor = '#474747';
 		this.votedColor = '#FF0000';
 
 		this.polyCoords = [
 			{lat: indicator.x + (indicator.width * .75), 	lng: indicator.y},
-			{lat: indicator.x + (indicator.width * .55), 		lng: indicator.y + (indicator.height / 8)},
+			{lat: indicator.x + (indicator.width * .55), 	lng: indicator.y + (indicator.height / 8)},
 			{lat: indicator.x + (indicator.width * .75), 	lng: indicator.y + (indicator.height / 4)},
 		];
 
@@ -89,14 +100,18 @@ class DownvoteTriangle {
 			strokeColor: '#000000',
 			strokeOpacity: 1.0,
 			strokeWeight: 2,
-			fillColor: '#FF0000',
+			fillColor: this.notVotedColor,
 			fillOpacity: 1.0
 		});
 	}
 
 	addListeners() {
 		this.poly.addListener('click', function(event) {
-
+			var colorOption = { fillColor: '#FF0000' };
+			var colorOption2 = { fillColor: '#474747' };
+			indicator.downvote.poly.setOptions(colorOption);
+			indicator.upvote.poly.setOptions(colorOption2);
+			indicator.active = true;
 	    });
 	}
 
