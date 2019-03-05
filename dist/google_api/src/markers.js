@@ -112,11 +112,11 @@ class Marker {
       this.marker.setIcon(this.image);
   }
 
-  get GetMarker() {
-    return this.GetM();
+  get getMarker() {
+    return this.getM();
   }
 
-  GetM() {
+  getM() {
     return this.marker;
   }
 }

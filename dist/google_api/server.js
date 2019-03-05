@@ -24,7 +24,7 @@ server.all('/*', function(req, res, next) {
 	next();
 });
 
-server.get('/create_test_marker', function(req, res, next) { 
+server.get('/createTestMarker', function(req, res, next) { 
 	res.send('Creating Test Marker!') 
 	addMarker(34.5315, -123.5235, 54, 21, "Test Marker");
 });

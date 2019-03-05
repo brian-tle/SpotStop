@@ -1,6 +1,6 @@
 function createTestMarker(){
   $.ajax({
-    url : 'http://localhost:8080/create_test_marker',
+    url : 'http://localhost:8080/createTestMarker',
     method : 'GET',
     success : function(data){
       console.log(data);
