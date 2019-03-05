@@ -1,5 +1,5 @@
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/";
+var url = "mongodb+srv://test:testpassword@spot-stop-ruq20.mongodb.net/test?retryWrites=true";
 
 function addMarker(lat, lng, upvote, downvote, des){ 
 	MongoClient.connect(url, function(err, db) {
@@ -8,8 +8,8 @@ function addMarker(lat, lng, upvote, downvote, des){
 		var marker = { lat: lat, lng: lng, des: des, upvote: upvote, downvote: downvote};
 		dbo.collection("markers").insertOne(marker, function(err, res) {
 		if (err) throw err;
-			console.log("1 document inserted");
-			db.close();
+		console.log("1 document inserted");
+		db.close();
 		});
 	});
 }
