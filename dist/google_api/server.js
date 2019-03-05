@@ -27,17 +27,9 @@ function addMarker(lat, lng, upvote, downvote, des){
 // to launch a local server run (node server.js)
 // connect to it with (localhost:3000) on your browser
 
-const express = require('express');
-const server = express();
-const users = require('./users');
+const express = require('express')
+const server = express()
+const port = 8080
 
-//Adding routes
-server.get('/HelloWorld',(request,response)=>{
-	res.write("inserting document to database");
-	addMarker(0, 0, 0, 0, "Hello World");
-});
-
-//Binding to localhost://3000
-server.listen(3000,()=>{
-	console.log('Express server started at port 3000');
-});
+server.get('/hello', (req, res) => res.send('Hello World!'))
+server.listen(port, () => console.log(`Example server listening on port ${port}!`))
