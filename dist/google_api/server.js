@@ -14,19 +14,6 @@ function addMarker(lat, lng, upvote, downvote, des){
 	});
 }
 
-//for shota
-//     client sends command to server
-//     server grabs data from database
-//     server sends data to client
-
-// we have 3 different services
-//      1. html web page
-//      2. node.js server
-//      3. our our database
-
-// to launch a local server run (node server.js)
-// connect to it with (localhost:3000) on your browser
-
 const express = require('express')
 const server = express()
 const port = 8080
