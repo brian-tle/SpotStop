@@ -6,9 +6,9 @@
 // If I can set the CORS header to (Access-Control-Allow-Origin: *) everthing would be perfectly fine
 // But I have no idea what a CORS header is and how to add one...
 
-function getData(){
+function createTestMarker(){
   $.ajax({
-    url : 'http://localhost:8080/hello',
+    url : 'http://localhost:8080/create_test_marker',
     method : 'GET',
     success : function(data){
       console.log(data);
