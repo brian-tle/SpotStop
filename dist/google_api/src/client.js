@@ -1,6 +1,6 @@
  function getData(){
   $.ajax({
-    url : '/HelloWorld',
+    url : 'localhost:3000',
     method : 'GET',
     success : function(data){
       console.log(data);

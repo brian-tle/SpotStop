@@ -27,9 +27,17 @@ function addMarker(lat, lng, upvote, downvote, des){
 // to launch a local server run (node server.js)
 // connect to it with (localhost:3000) on your browser
 
-var http = require('http');
-http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.write("inserting document to database" + addMarker(0, 0, 0, 0, "Hello World"));
-  res.end();
-}).listen(3000); 
+const express = require('express');
+const server = express();
+const users = require('./users');
+
+//Adding routes
+server.get('/HelloWorld',(request,response)=>{
+	res.write("inserting document to database");
+	addMarker(0, 0, 0, 0, "Hello World");
+});
+
+//Binding to localhost://3000
+server.listen(3000,()=>{
+	console.log('Express server started at port 3000');
+});
