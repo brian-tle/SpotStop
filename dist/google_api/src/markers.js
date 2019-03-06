@@ -14,7 +14,7 @@ class Marker {
     this.marker;
 
     this.positionOffset = { lat: parseFloat(x + 0.0005), lng: parseFloat(y) };
-    createTestMarker();
+    //createTestMarker();
   }
     
   get m() {
