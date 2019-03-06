@@ -16,13 +16,13 @@ function addMarker(lat, lng, upvote, downvote, des){
 	});
 }
 
-function generateAllMarkers() {
+function getAllMarkers(res) {
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
 		dbo.collection("markers").find({}).toArray(function(err, result) {
 			if (err) throw err;
-			requestedData = result;
+			res.send(result);
 			db.close();
 		});
 	}); 
@@ -38,13 +38,8 @@ server.all('/*', function(req, res, next) {
 	next();
 });
 
-server.get('/generateAllMarkers', function(req, res, next) {
-	generateAllMarkers();
-	res.send('Generating All Markers!');
-});
-
 server.get('/getAllMarkers', function(req, res, next) {
-	res.send(requestedData);
+	getAllMarkers(res);
 });
 
 server.get('/createTestMarker', function(req, res, next) { 
