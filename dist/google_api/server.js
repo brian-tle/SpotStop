@@ -9,9 +9,9 @@ function addMarker(lat, lng, des, upvote, downvote){
 		var dbo = db.db("spot_stop");
 		var marker = { lat: lat, lng: lng, des: des, upvote: upvote, downvote: downvote};
 		dbo.collection("markers").insertOne(marker, function(err, res) {
-		if (err) throw err;
-		console.log("Inserted Marker!");
-		db.close();
+			if (err) throw err;
+			console.log("Inserted Marker at { " + lat + ", " + lng + " }");
+			db.close();
 		});
 	});
 }
@@ -23,6 +23,7 @@ function getAllMarkers(res) {
 		dbo.collection("markers").find({}).toArray(function(err, result) {
 			if (err) throw err;
 			res.send(result);
+			console.log("Sending Markers to Client");
 			db.close();
 		});
 	}); 
@@ -38,7 +39,9 @@ function upvoteMarker(lat, lng, val) {
 			var newvalues = { $set: {upvote: result.upvote + val } };
 			dbo.collection("markers").updateOne(myquery, newvalues, function(err, res) {
 				if (err) throw err;
-				console.log("1 document updated");
+				if (val > 0) {
+					console.log("Upvoted Marker at { " + lat + ", " + lng + " }");
+				}
 			});
 			db.close();
 		});
@@ -55,7 +58,9 @@ function downvoteMarker(lat, lng, val) {
 			var newvalues = { $set: {downvote: result.downvote + val } };
 			dbo.collection("markers").updateOne(myquery, newvalues, function(err, res) {
 				if (err) throw err;
-				console.log("1 document updated");
+				if (val > 0) {
+					console.log("Downvoted Marker at { " + lat + ", " + lng + " }");
+				}
 			});
 			db.close();
 		});
