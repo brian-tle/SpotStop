@@ -4,21 +4,16 @@ var mapOptions = {
   streetViewControl: false,
   fullscreenControl: false
 };
-/* // Message to Will:
-// I just commented out four default constructors to avoid creating extra documents
- */
+
 function initMap() {
-  markerList.push(new Marker(37.7219, -122.4782));
   var map = new google.maps.Map(document.getElementById("map"), {
     zoom: 12,
-    center: markerList[0].m
+    center: {lat: 37.7219, lng: -122.4782}
   });
   map.setOptions(mapOptions);
 
   addControls(map);
   addListeners(map);
-
-  markerList[0].createMarker(map);
 }
 
 function addListeners(map) {
