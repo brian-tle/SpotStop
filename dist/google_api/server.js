@@ -10,7 +10,7 @@ function addMarker(lat, lng, des, upvote, downvote){
 		var marker = { lat: lat, lng: lng, des: des, upvote: upvote, downvote: downvote};
 		dbo.collection("markers").insertOne(marker, function(err, res) {
 		if (err) throw err;
-		console.log("1 document inserted");
+		console.log("Inserted Marker!");
 		db.close();
 		});
 	});
@@ -52,7 +52,8 @@ server.get('/createTestMarker', function(req, res, next) {
 });
 
 server.post("/createMarker", (req, res) => {
-	console.log(req.body);
+	res.send('Creating Marker!');
+	addMarker(req.body.lat, req.body.lng, req.body.des, req.body.upvote, req.body.downvote);
 });
 
 server.listen(port, () => console.log(`Server listening on port ${port}!`))
