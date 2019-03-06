@@ -28,6 +28,40 @@ function getAllMarkers(res) {
 	}); 
 }
 
+function upvoteMarker(lat, lng, val) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		var myquery = { lat: lat, lng: lng };
+		dbo.collection("markers").findOne({ lat: lat, lng: lng}, function(err, result) {
+			if (err) throw err;
+			var newvalues = { $set: {upvote: result.upvote + val } };
+			dbo.collection("markers").updateOne(myquery, newvalues, function(err, res) {
+				if (err) throw err;
+				console.log("1 document updated");
+			});
+			db.close();
+		});
+	}); 
+}
+
+function downvoteMarker(lat, lng, val) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		var myquery = { lat: lat, lng: lng };
+		dbo.collection("markers").findOne({ lat: lat, lng: lng}, function(err, result) {
+			if (err) throw err;
+			var newvalues = { $set: {upvote: result.downvote + val } };
+			dbo.collection("markers").updateOne(myquery, newvalues, function(err, res) {
+				if (err) throw err;
+				console.log("1 document updated");
+			});
+			db.close();
+		});
+	}); 
+}
+
 const express = require('express')
 const server = express()
 const port = 8080
@@ -54,6 +88,16 @@ server.get('/createTestMarker', function(req, res, next) {
 server.post("/createMarker", (req, res) => {
 	res.send('Creating Marker!');
 	addMarker(req.body.lat, req.body.lng, req.body.des, req.body.upvote, req.body.downvote);
+});
+
+server.post("/upvoteMarker", (req, res) => {
+	res.send('Creating Marker!');
+	upvoteMarker(req.body.lat, req.body.lng, req.body.val);
+});
+
+server.post("/downvoteMarker", (req, res) => {
+	res.send('Creating Marker!');
+	downvoteMarker(req.body.lat, req.body.lng, req.body.val);
 });
 
 server.listen(port, () => console.log(`Server listening on port ${port}!`))
