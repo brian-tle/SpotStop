@@ -12,12 +12,15 @@ function createTestMarker(){
   });
 }
 
-function getAllMarkers(){
+function getAllMarkers(map){
   $.ajax({
     url : 'http://localhost:8080/getAllMarkers',
     method : 'GET',
     success : function(data){
-      console.log(data);
+      data.forEach(marker => {
+        markerList.push(new Marker(marker.lat, marker.lng, (marker.upvote - marker.downvote) + 30, true));
+        markerList[markerList.length - 1].createMarker(map);
+      });
     },
 
     error: function(err){

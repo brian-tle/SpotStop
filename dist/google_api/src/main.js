@@ -14,6 +14,8 @@ function initMap() {
 
   addControls(map);
   addListeners(map);
+
+  getAllMarkers(map);
 }
 
 function addListeners(map) {

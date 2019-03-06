@@ -5,7 +5,7 @@ const ICON_COLOR_GREEN = '78bc71';  //mellou
 const ICON_COLOR_DARK_GREEN = '0d9e00'; //WOO
 
 class Marker {
-  constructor(x, y, totalPoints = 30) {
+  constructor(x, y, totalPoints = 30, existing = false) {
     this.lat = x;
     this.lng = y;
     this.color;
@@ -14,7 +14,9 @@ class Marker {
     this.marker;
 
     this.positionOffset = { lat: parseFloat(x + 0.0005), lng: parseFloat(y) };
-    createMarker(x, y, "New Node", 0, 0);
+    if (!existing) {
+      createMarker(x, y, "New Node", 0, 0);
+    }
   }
     
   get m() {
