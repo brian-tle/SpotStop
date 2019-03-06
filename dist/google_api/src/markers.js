@@ -14,7 +14,6 @@ class Marker {
     this.marker;
 
     this.size = 40;
-    this.z = 2;
 
     this.positionOffset = { lat: parseFloat(x + 0.0005), lng: parseFloat(y) };
     if (!existing) {
@@ -34,23 +33,18 @@ class Marker {
       if ( this.totalPoints > 45) {
           this.color = ICON_COLOR_DARK_GREEN;
           this.size = 60;
-          this.z = 4;
       } else if (this.totalPoints <= 45 && this.totalPoints > 37) {
           this.color = ICON_COLOR_GREEN;
           this.size = 50;
-          this.z = 3;
       } else if (this.totalPoints <= 37 && this.totalPoints > 23) {
           this.color = ICON_COLOR_GRAY;
           this.size = 40;
-          this.z = 2;
       } else if (this.totalPoints <= 23 && this.totalPoints > 15) {
           this.color = ICON_COLOR_ORANGE;
           this.size = 30;
-          this.z = 1;
       } else if (this.totalPoints < 15) {
           this.color = ICON_COLOR_RED;
           this.size = 20;
-          this.z = 0;
       }
 
     this.icon = {
@@ -64,7 +58,7 @@ class Marker {
       animation: google.maps.Animation.DROP,
       map: map,
       icon: this.icon,
-      zIndex: this.z
+      zIndex: this.totalPoints
     });
 
     this.marker.addListener('click', function(event) {
@@ -112,23 +106,18 @@ class Marker {
       if ( this.totalPoints > 45) {
           this.color = ICON_COLOR_DARK_GREEN;
           this.size = 60;
-          this.z = 4;
       } else if (this.totalPoints <= 45 && this.totalPoints > 37) {
           this.color = ICON_COLOR_GREEN;
           this.size = 50;
-          this.z = 3;
       } else if (this.totalPoints <= 37 && this.totalPoints > 23) {
           this.color = ICON_COLOR_GRAY;
           this.size = 40;
-          this.z = 2;
       } else if (this.totalPoints <= 23 && this.totalPoints > 15) {
           this.color = ICON_COLOR_ORANGE;
           this.size = 30;
-          this.z = 1;
       } else if (this.totalPoints < 15) {
           this.color = ICON_COLOR_RED;
           this.size = 20;
-          this.z = 0;
       }
 
       this.icon = {
@@ -136,7 +125,7 @@ class Marker {
           scaledSize: { width: this.size, height: this.size }
       };
       
-      this.marker.setZIndex(this.z);
+      this.marker.setZIndex(this.totalPoints);
       this.marker.setIcon(this.icon);
   }
 
