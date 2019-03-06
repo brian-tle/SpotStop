@@ -11,3 +11,29 @@ function createTestMarker(){
     }
   });
 }
+
+function getAllMarkers(){
+  $.ajax({
+    url : 'http://localhost:8080/generateAllMarkers',
+    method : 'GET',
+    success : function(data){
+      console.log(data);
+    },
+
+    error: function(err){
+      console.log('Failed');
+    }
+  });
+
+  $.ajax({
+    url : 'http://localhost:8080/getAllMarkers',
+    method : 'GET',
+    success : function(data){
+      console.log(data);
+    },
+
+    error: function(err){
+      console.log('Failed');
+    }
+  });
+}

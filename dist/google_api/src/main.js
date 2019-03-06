@@ -10,7 +10,7 @@ function initMap() {
   markerList.push(new Marker(37.7319, -122.4882, 12));
   markerList.push(new Marker(37.8271, -122.4216, 46));
   markerList.push(new Marker (37.7928, -122.4834, 37));
-    markerList.push(new Marker (37.7768, -122.4239, 23));
+  markerList.push(new Marker (37.7768, -122.4239, 23));
   var map = new google.maps.Map(document.getElementById("map"), {
     zoom: 12,
     center: markerList[0].m
