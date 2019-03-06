@@ -3,7 +3,7 @@ var url = "mongodb+srv://test:testpassword@spot-stop-ruq20.mongodb.net/test?retr
 
 var requestedData;
 
-function addMarker(lat, lng, upvote, downvote, des){ 
+function addMarker(lat, lng, des, upvote, downvote){ 
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
@@ -32,9 +32,13 @@ const express = require('express')
 const server = express()
 const port = 8080
 
+const bodyParser = require('body-parser');
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({extended: false}));
+
 server.all('/*', function(req, res, next) { 
 	res.header("Access-Control-Allow-Origin", "*");
-	res.header("Access-Control-Allow-Headers", "X-Requested-With");
+	res.header("Access-Control-Allow-Headers", "Content-Type");
 	next();
 });
 
@@ -44,7 +48,11 @@ server.get('/getAllMarkers', function(req, res, next) {
 
 server.get('/createTestMarker', function(req, res, next) { 
 	res.send('Creating Test Marker!') 
-	addMarker(34.5315, -123.5235, 54, 21, "Test Marker");
+	addMarker(34.5315, -123.5235, "Test Marker", 54, 21);
 });
 
-server.listen(port, () => console.log(`Example server listening on port ${port}!`))
+server.post("/createMarker", (req, res) => {
+	console.log(req.body);
+});
+
+server.listen(port, () => console.log(`Server listening on port ${port}!`))
