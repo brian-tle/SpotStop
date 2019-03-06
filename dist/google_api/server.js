@@ -52,7 +52,7 @@ function downvoteMarker(lat, lng, val) {
 		var myquery = { lat: lat, lng: lng };
 		dbo.collection("markers").findOne({ lat: lat, lng: lng}, function(err, result) {
 			if (err) throw err;
-			var newvalues = { $set: {upvote: result.downvote + val } };
+			var newvalues = { $set: {downvote: result.downvote + val } };
 			dbo.collection("markers").updateOne(myquery, newvalues, function(err, res) {
 				if (err) throw err;
 				console.log("1 document updated");
