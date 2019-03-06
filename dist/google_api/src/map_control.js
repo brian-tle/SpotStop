@@ -47,6 +47,12 @@ function addListenerControl(map) {
       cursorRunning = false;
     }
   });
+
+  map.addListener("zoom_changed", function(event) {
+      if (map.getZoom() < 17) {
+        markerList.forEach(marker => { marker.indicator.setVisible(false); })
+      }
+  });
 }
 
 function addControls(map) {
