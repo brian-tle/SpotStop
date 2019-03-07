@@ -1,4 +1,6 @@
 var cursorRunning = false;
+var inRangeIndicator = false;
+var inRangeLabel = false;
 
 function CenterControl(controlDiv, map) {
   // Set CSS for the control border.
@@ -47,9 +49,39 @@ function addListenerControl(map) {
     }
   });
 
+  //This may seem unnecessary but it prevents refreshing all entities every zoom 
   map.addListener("zoom_changed", function(event) {
-      if (map.getZoom() < 17) {
-        markerList.forEach(marker => { marker.indicator.setVisible(false); })
+      if (map.getZoom() != 18 && inRangeIndicator) {
+        markerList.forEach(marker => { 
+          inRangeIndicator = false;
+          marker.indicator.setVisible(inRangeIndicator); 
+        })
+      }
+      else {
+        if (map.getZoom() == 18 && !inRangeIndicator) {
+          markerList.forEach(marker => { 
+            inRangeIndicator = true;
+          })
+        }
+      }
+
+      if (map.getZoom() < 15 && inRangeLabel) {
+        markerList.forEach(marker => { 
+          inRangeLabel = false;
+          marker.popup.setInRange(inRangeLabel);
+          marker.scale = ICON_SCALE_MIN;
+          marker.refreshIcon();
+        })
+      }
+      else {
+        if (map.getZoom() >= 15 && !inRangeLabel) {
+          markerList.forEach(marker => { 
+            inRangeLabel = true;
+            marker.popup.setInRange(inRangeLabel);
+            marker.scale = ICON_SCALE_MAX;
+            marker.refreshIcon();
+          })
+        }
       }
   });
 }

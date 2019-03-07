@@ -10,6 +10,7 @@ function createPopupClass() {
    */
   function Popup(position, content) {
     this.position = position;
+    this.inRange = false;
 
     content.classList.add('popup-bubble');
 
@@ -29,6 +30,10 @@ function createPopupClass() {
   // ES5 magic to extend google.maps.OverlayView.
   Popup.prototype = Object.create(google.maps.OverlayView.prototype);
 
+  Popup.prototype.setInRange = function(inRange) {
+    this.inRange = inRange;
+  }
+
   /** Called when the popup is added to the map. */
   Popup.prototype.onAdd = function() {
     this.getPanes().floatPane.appendChild(this.containerDiv);
@@ -47,7 +52,7 @@ function createPopupClass() {
 
     // Hide the popup when it is far out of view.
     var display =
-        Math.abs(divPosition.x) < 4000 && Math.abs(divPosition.y) < 4000 ?
+        this.inRange && Math.abs(divPosition.x) < 4000 && Math.abs(divPosition.y) < 4000 ?
         'block' :
         'none';
 
