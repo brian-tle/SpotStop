@@ -10,7 +10,7 @@ class Marker {
     this.lng = y;
     this.default = { lat: parseFloat(x), lng: parseFloat(y) };
     this.positionOffset = { lat: parseFloat(x + 0.0005), lng: parseFloat(y) };
-    
+
     this.totalPoints = totalPoints;
     this.existing = existing;
     this.des = des;
@@ -63,8 +63,7 @@ class Marker {
       this.indicator.setVisible(true);
     }.bind(this));
 
-    this.indicator = new MarkerIndicator(this);
-    this.indicator.init(map);
+    this.indicator = new MarkerIndicator(map, this);
     this.indicator.addListeners();
 
     this.indicator.upvote.poly.addListener(

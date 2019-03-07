@@ -1,5 +1,5 @@
 class MarkerIndicator {
-  constructor(marker) {
+  constructor(map, marker) {
     // 0 - Bad
     // 1 - Neutral
     // 2 - Good
@@ -19,6 +19,7 @@ class MarkerIndicator {
     ];
 
     this.poly = new google.maps.Polygon({
+      map: map,
       paths: this.polyCoords,
       strokeColor: "#000000",
       strokeOpacity: 1.0,
@@ -34,6 +35,7 @@ class MarkerIndicator {
     ];
 
     this.triangle = new google.maps.Polygon({
+      map: map,
       paths: this.triangleCoords,
       strokeColor: "#000000",
       strokeOpacity: 1.0,
@@ -50,6 +52,7 @@ class MarkerIndicator {
     ];
 
     this.exit = new google.maps.Polygon({
+      map: map,
       paths: this.exitCoords,
       strokeColor: "#ff0000",
       strokeOpacity: 1.0,
@@ -58,8 +61,8 @@ class MarkerIndicator {
       fillOpacity: 0.95
     });
 
-    this.upvote = new UpvoteTriangle(this);
-    this.downvote = new DownvoteTriangle(this);
+    this.upvote = new UpvoteTriangle(map, this);
+    this.downvote = new DownvoteTriangle(map, this);
 
     this.poly.setVisible(false);
     this.triangle.setVisible(false);
@@ -84,18 +87,10 @@ class MarkerIndicator {
       }.bind(this)
     );
   }
-
-  init(map) {
-    this.poly.setMap(map);
-    this.triangle.setMap(map);
-    this.exit.setMap(map);
-    this.upvote.init(map);
-    this.downvote.init(map);
-  }
 }
 
 class UpvoteTriangle {
-  constructor(indicator) {
+  constructor(map, indicator) {
     this.notVotedColor = "#474747";
     this.votedColor = "#46db46";
 
@@ -106,6 +101,7 @@ class UpvoteTriangle {
     ];
 
     this.poly = new google.maps.Polygon({
+      map: map,
       paths: this.polyCoords,
       strokeColor: "#000000",
       strokeOpacity: 1.0,
@@ -114,14 +110,10 @@ class UpvoteTriangle {
       fillOpacity: 1.0
     });
   }
-
-  init(map) {
-    this.poly.setMap(map);
-  }
 }
 
 class DownvoteTriangle {
-  constructor(indicator) {
+  constructor(map, indicator) {
     this.notVotedColor = "#474747";
     this.votedColor = "#FF0000";
 
@@ -132,6 +124,7 @@ class DownvoteTriangle {
     ];
 
     this.poly = new google.maps.Polygon({
+      map: map,
       paths: this.polyCoords,
       strokeColor: "#000000",
       strokeOpacity: 1.0,
@@ -139,9 +132,5 @@ class DownvoteTriangle {
       fillColor: this.notVotedColor,
       fillOpacity: 1.0
     });
-  }
-
-  init(map) {
-    this.poly.setMap(map);
   }
 }
