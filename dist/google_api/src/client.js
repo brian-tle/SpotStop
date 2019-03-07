@@ -18,7 +18,7 @@ function getAllMarkers(map){
     method : 'GET',
     success : function(data){
       data.forEach(marker => {
-        markerList.push(new Marker(marker.lat, marker.lng, (marker.upvote - marker.downvote) + 30, true));
+        markerList.push(new Marker(marker.lat, marker.lng, (marker.upvote - marker.downvote) + 30, true, marker.des));
         markerList[markerList.length - 1].createMarker(map);
       });
     },
