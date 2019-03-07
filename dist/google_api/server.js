@@ -70,7 +70,6 @@ function downvoteMarker(lat, lng, val) {
 
 function sendMail(req) {
 	const output = '<p> You have a new email'
-	
 	let transporter = nodemailer.createTransport({
 	  service: 'gmail.com',
 	  port: 587,
@@ -79,23 +78,19 @@ function sendMail(req) {
 		  pass: 'sfhack2019'
 	  }
 	});
-  
 	let mailOptions = {
 	  from: `shotaebikawa@gmail.com`,
 	  to: 'spotstopsfhack2019@gmail.com',
 	  subject: 'User Form Contact',
 	  body: req.body.message
 	};
-  
 	transporter.sendMail(mailOptions, function(error, info) {
 	  if (error) {
 		return console.log(error);
 	  }
-  
 	  console.log('Message sent: %s', info.messageId);
 	  console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
 	});
-	
 }
 
 const express = require('express')
