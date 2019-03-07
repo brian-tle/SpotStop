@@ -81,7 +81,7 @@ function sendMail(req) {
 	let mailOptions = {
 	  from: `shotaebikawa@gmail.com`,
 	  to: 'spotstopsfhack2019@gmail.com',
-	  subject: 'User Form Contact',
+	  subject: req.body.name,
 	  html: req.body.message
 	};
 	transporter.sendMail(mailOptions, function(error, info) {
