@@ -141,6 +141,7 @@ server.post('/sendmail', (req, res) => {
 	res.send({
 		msg: 'Email has been sent!'
 	});
+	
 });
 
 server.listen(port, () => console.log(`Server listening on port ${port}!`))
