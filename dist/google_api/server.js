@@ -137,15 +137,10 @@ server.post("/downvoteMarker", (req, res) => {
 });
 
 server.post('/sendmail', (req, res) => {
-	
-  
-	  res.send({
+	sendMail(req); 
+	res.send({
 		msg: 'Email has been sent!'
-		
 	  });
-	  
-	
-	res.redirect("../contact.html");
   });
 
 server.listen(port, () => console.log(`Server listening on port ${port}!`))
