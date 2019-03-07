@@ -52,9 +52,7 @@ class Marker {
 
   addListeners(map) {
     this.marker.addListener('click', function(event) {
-      map.setZoom(18);
-      map.setCenter(this.positionOffset);
-      this.indicator.setVisible(true);
+      this.zoomToMarker(map);
     }.bind(this));
 
     this.indicator.addListeners();
