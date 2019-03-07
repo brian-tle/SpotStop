@@ -82,7 +82,7 @@ function sendMail(req) {
 	  from: `shotaebikawa@gmail.com`,
 	  to: 'spotstopsfhack2019@gmail.com',
 	  subject: 'User Form Contact',
-	  body: req.body.message
+	  html: req.body.message
 	};
 	transporter.sendMail(mailOptions, function(error, info) {
 	  if (error) {
