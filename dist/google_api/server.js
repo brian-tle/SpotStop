@@ -1,3 +1,4 @@
+const nodemailer = require('nodemailer');
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb+srv://test:testpassword@spot-stop-ruq20.mongodb.net/test?retryWrites=true";
 
@@ -67,10 +68,35 @@ function downvoteMarker(lat, lng, val) {
 	}); 
 }
 
+function sendMail(req) {
+	const output = req.body.message + '<br/>by ' + req.body.email;
+	let transporter = nodemailer.createTransport({
+	  service: 'gmail.com',
+	  port: 587,
+	  auth: {
+		  user: 'spotstopsfhack2019@gmail.com',
+		  pass: 'sfhack2019'
+	  }
+	});
+	let mailOptions = {
+	  from: `shotaebikawa@gmail.com`,
+	  to: 'spotstopsfhack2019@gmail.com',
+	  subject: req.body.name,
+	  html: output
+	};
+	transporter.sendMail(mailOptions, function(error, info) {
+	  if (error) {
+		return console.log(error);
+	  }
+	  console.log('Message sent: %s', info.messageId);
+	  console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+	});
+}
+
 const express = require('express')
 const server = express()
 const port = 8080
-
+const path  = require('path')
 const bodyParser = require('body-parser');
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: false}));
@@ -80,6 +106,9 @@ server.all('/*', function(req, res, next) {
 	res.header("Access-Control-Allow-Headers", "Content-Type");
 	next();
 });
+server.get('/homepage', function(req, res) {
+	res.sendFile(path.resolve("../home.html"));
+  });
 
 server.get('/getAllMarkers', function(req, res, next) {
 	getAllMarkers(res);
@@ -104,5 +133,13 @@ server.post("/downvoteMarker", (req, res) => {
 	res.send('Creating Marker!');
 	downvoteMarker(req.body.lat, req.body.lng, req.body.val);
 });
+
+server.post('/sendmail', (req, res) => {
+	sendMail(req); 
+	res.send({
+		msg: 'Email has been sent!'
+	  });
+	
+  });
 
 server.listen(port, () => console.log(`Server listening on port ${port}!`))

@@ -29,6 +29,7 @@ function getAllMarkers(map){
   });
 }
 
+
 function createMarker(lat, lng, des, upvote, downvote) {
   data = { lat: lat, lng: lng, des: des, upvote: upvote, downvote: downvote };
   $.ajax({
