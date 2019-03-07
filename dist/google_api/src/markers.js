@@ -115,12 +115,4 @@ class Marker {
   getM() {
     return this.marker;
   }
-
-  get m() {
-    return this.mm();
-  }
-
-  mm() {
-    return this.default;
-  }
 }
