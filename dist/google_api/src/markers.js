@@ -1,8 +1,8 @@
-const ICON_COLOR_RED = 'ff0000';    //BAD
-const ICON_COLOR_ORANGE = 'ef9423'; //EH
-const ICON_COLOR_GRAY =  '808080'; //NOOTRAL
-const ICON_COLOR_GREEN = '78bc71';  //mellou
-const ICON_COLOR_DARK_GREEN = '0d9e00'; //WOO
+const ICON_COLOR_RED =        'ff0000';  //BAD
+const ICON_COLOR_ORANGE =     'ef9423';  //EH
+const ICON_COLOR_GRAY =       '808080';  //NOOTRAL
+const ICON_COLOR_GREEN =      '78bc71';  //mellou
+const ICON_COLOR_DARK_GREEN = '0d9e00';  //WOO
 
 class Marker {
   constructor(map, x, y, totalPoints = 30, existing = false, des = "New Marker") {
@@ -22,7 +22,7 @@ class Marker {
   }
 
   initializeMarker(map) {
-    if (!this.existing) { createMarker(x, y, des, 0, 0); }
+    if (!this.existing) { createMarker(this.lat, this.lng, this.des, 0, 0); }
 
     this.setIcon();
 
@@ -36,6 +36,14 @@ class Marker {
 
     this.indicator = new MarkerIndicator(map, this);
     this.addListeners(map);
+
+    Popup = createPopupClass();
+    this.label = document.createElement('div');
+    this.label.innerHTML = this.des;
+    this.label.setAttribute('id', 'testcontent')
+
+    this.popup = new Popup(new google.maps.LatLng(this.lat , this.lng), this.label);
+    this.popup.setMap(map);
   }
 
   addListeners(map) {

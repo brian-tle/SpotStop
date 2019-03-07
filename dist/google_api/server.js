@@ -1,6 +1,15 @@
+const MongoClient = require('mongodb').MongoClient;
+const express = require('express');
 const nodemailer = require('nodemailer');
-var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb+srv://test:testpassword@spot-stop-ruq20.mongodb.net/test?retryWrites=true";
+const bodyParser = require('body-parser');
+
+const url = "mongodb+srv://test:testpassword@spot-stop-ruq20.mongodb.net/test?retryWrites=true";
+const server = express()
+const port = 8080
+const path  = require('path')
+
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({extended: false}));
 
 var requestedData;
 
@@ -93,22 +102,15 @@ function sendMail(req) {
 	});
 }
 
-const express = require('express')
-const server = express()
-const port = 8080
-const path  = require('path')
-const bodyParser = require('body-parser');
-server.use(bodyParser.json());
-server.use(bodyParser.urlencoded({extended: false}));
-
 server.all('/*', function(req, res, next) { 
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Headers", "Content-Type");
 	next();
 });
+
 server.get('/homepage', function(req, res) {
 	res.sendFile(path.resolve("../home.html"));
-  });
+});
 
 server.get('/getAllMarkers', function(req, res, next) {
 	getAllMarkers(res);
@@ -138,8 +140,7 @@ server.post('/sendmail', (req, res) => {
 	sendMail(req); 
 	res.send({
 		msg: 'Email has been sent!'
-	  });
-	
-  });
+	});
+});
 
 server.listen(port, () => console.log(`Server listening on port ${port}!`))
