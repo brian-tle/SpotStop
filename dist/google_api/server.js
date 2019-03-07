@@ -68,8 +68,7 @@ function downvoteMarker(lat, lng, val) {
 	}); 
 }
 
-function sendMail() {
-
+function sendMail(req) {
 	const output = '<p> You have a new email'
 	
 	let transporter = nodemailer.createTransport({
@@ -95,7 +94,8 @@ function sendMail() {
   
 	  console.log('Message sent: %s', info.messageId);
 	  console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-  
+	});
+	
 }
 
 const express = require('express')
@@ -137,11 +137,15 @@ server.post("/downvoteMarker", (req, res) => {
 });
 
 server.post('/sendmail', (req, res) => {
+	
+  
 	  res.send({
 		msg: 'Email has been sent!'
+		
 	  });
-	  sendMail();
-	});
+	  
 	
+	res.redirect("../contact.html");
+  });
 
 server.listen(port, () => console.log(`Server listening on port ${port}!`))
