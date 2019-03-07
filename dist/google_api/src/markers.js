@@ -90,6 +90,12 @@ class Marker {
     );
   }
 
+  zoomToMarker(map) {
+    map.setZoom(18);
+    map.setCenter(this.positionOffset);
+    this.indicator.setVisible(true);
+  }
+
   refreshIcon() {
       this.setIcon();   
       this.marker.setZIndex(this.totalPoints);

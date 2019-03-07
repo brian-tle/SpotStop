@@ -41,6 +41,7 @@ function addListenerControl(map) {
   map.addListener("click", function(event) {
     if (cursorRunning) {
       markerList.push(new Marker(map, event.latLng.lat(), event.latLng.lng()));
+      markerList[markerList.length - 1].zoomToMarker(map);
       map.setOptions({
         draggableCursor:
           "url(https://maps.gstatic.com/mapfiles/openhand_8_8.cur), default"
