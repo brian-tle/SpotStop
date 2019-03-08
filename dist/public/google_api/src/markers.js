@@ -10,15 +10,29 @@ const ICON_SCALE_MIN = 0.43;
 const MARKER_INDICATOR_RANGE = 18;
 const MARKER_LABEL_RANGE = 15;
 
+var infowindow;
+var formStr = "<input type='text' id='marker-label' value='New Marker' /><input type='button' value='submit' onclick='addLabel();' />"
+
+function addLabel() {
+  markerList[markerList.length - 1].des = document.getElementById('marker-label').value;
+  markerList[markerList.length - 1].createLabel(Marker.map);
+  createMarker(this.lat, this.lng, this.des, 0, 0);
+  markerList[markerList.length - 1].popupCreated = true;
+  markerList[markerList.length - 1].popup.inRange = true;
+  infowindow.close();
+}
+
 class Marker {
   constructor(map, x, y, totalPoints = 30, existing = false, des = "New Marker") {
     this.lat = x;
     this.lng = y;
     this.default = { lat: parseFloat(x), lng: parseFloat(y) };
     this.positionOffset = { lat: parseFloat(x + 0.0005), lng: parseFloat(y) };
+    this.infoWindowOffset = { lat: parseFloat(x + 0.0002), lng: parseFloat(y) };
 
     this.totalPoints = totalPoints;
     this.existing = existing;
+    this.popupCreated = existing;
     this.des = des;
 
     this.color;
@@ -29,7 +43,18 @@ class Marker {
   }
 
   initializeMarker(map) {
-    if (!this.existing) { createMarker(this.lat, this.lng, this.des, 0, 0); }
+    Popup = createPopupClass();
+
+    if (!this.existing) { 
+      infowindow = new google.maps.InfoWindow({ 
+        content: formStr,
+        position: this.infoWindowOffset
+      });
+      infowindow.open(map);
+    }
+    else {
+      this.createLabel(map);
+    }
 
     this.setIcon();
 
@@ -43,8 +68,9 @@ class Marker {
 
     this.indicator = new MarkerIndicator(map, this);
     this.addListeners(map);
+  }
 
-    Popup = createPopupClass();
+  createLabel(map) {
     this.label = document.createElement('div');
     this.label.innerHTML = this.des;
     this.label.setAttribute('id', 'testcontent')
@@ -91,10 +117,10 @@ class Marker {
     );
   }
 
-  zoomToMarker(map) {
+  zoomToMarker(map, showIndicator = true) {
     map.setZoom(18);
     map.setCenter(this.positionOffset);
-    this.indicator.setVisible(true);
+    this.indicator.setVisible(showIndicator);
   }
 
   refreshIcon() {

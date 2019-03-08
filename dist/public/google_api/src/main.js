@@ -12,6 +12,8 @@ function initMap() {
   });
   map.setOptions(mapOptions);
 
+  Marker.map = map;
+
   addControls(map);
   addListeners(map);
 
