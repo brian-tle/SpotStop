@@ -151,7 +151,7 @@ server.post("/downvoteMarker", (req, res) => {
 
 server.post('/sendmail', (req, res) => {
 	sendMail(req); 
-	res.redirect('http://localhost:8080/homepage');
+	res.redirect('/homepage');
 	
 
 });
