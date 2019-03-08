@@ -16,9 +16,9 @@ var formStr = "<input type='text' id='marker-label' value='New Marker' /><input 
 function addLabel() {
   markerList[markerList.length - 1].des = document.getElementById('marker-label').value;
   markerList[markerList.length - 1].createLabel(Marker.map);
-  createMarker(this.lat, this.lng, this.des, 0, 0);
   markerList[markerList.length - 1].popupCreated = true;
   markerList[markerList.length - 1].popup.inRange = true;
+  createMarker(markerList[markerList.length - 1].lat, markerList[markerList.length - 1].lng, markerList[markerList.length - 1].des, 0, 0);
   infowindow.close();
 }
 
