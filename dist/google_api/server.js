@@ -108,9 +108,22 @@ server.all('/*', function(req, res, next) {
 	next();
 });
 
+server.use(express.static(path.resolve('../public')));
+server.use(express.static(path.resolve('/res')));
+server.use(express.static(('/src')));
+
 server.get('/homepage', function(req, res) {
 	res.sendFile(path.resolve("../home.html"));
 });
+
+server.get('/contact', function(req, res) {
+	res.sendFile(path.resolve("../contact.html"));
+});
+
+server.get('/map', function(req, res) {
+	res.sendFile(path.resolve("index.html"));
+});
+
 
 server.get('/getAllMarkers', function(req, res, next) {
 	getAllMarkers(res);
@@ -138,10 +151,11 @@ server.post("/downvoteMarker", (req, res) => {
 
 server.post('/sendmail', (req, res) => {
 	sendMail(req); 
-	res.send({
-		msg: 'Email has been sent!'
-	});
+	res.redirect('http://localhost:8080/homepage');
 	
+
 });
+
+
 
 server.listen(port, () => console.log(`Server listening on port ${port}!`))
