@@ -19,6 +19,7 @@ function addLabel() {
   markerList[markerList.length - 1].popupCreated = true;
   markerList[markerList.length - 1].popup.inRange = true;
   createMarker(markerList[markerList.length - 1].lat, markerList[markerList.length - 1].lng, markerList[markerList.length - 1].des, 0, 0);
+  markerList[markerList.length - 1].indicator.setVisible(true);
   infowindow.close();
 }
 
@@ -50,6 +51,9 @@ class Marker {
       infowindow = new google.maps.InfoWindow({ 
         content: formStr,
         position: this.infoWindowOffset
+      });
+      infowindow.addListener('closeclick', function(event) {
+
       });
       infowindow.open(map);
     }
