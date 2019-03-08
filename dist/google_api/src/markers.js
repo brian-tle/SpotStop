@@ -7,6 +7,9 @@ const ICON_COLOR_DARK_GREEN = '0d9e00';  //WOO
 const ICON_SCALE_MAX = 1.00;
 const ICON_SCALE_MIN = 0.43;
 
+const MARKER_INDICATOR_RANGE = 18;
+const MARKER_LABEL_RANGE = 15;
+
 class Marker {
   constructor(map, x, y, totalPoints = 30, existing = false, des = "New Marker") {
     this.lat = x;

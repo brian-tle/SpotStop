@@ -52,21 +52,21 @@ function addListenerControl(map) {
 
   //This may seem unnecessary but it prevents refreshing all entities every zoom 
   map.addListener("zoom_changed", function(event) {
-      if (map.getZoom() != 18 && inRangeIndicator) {
+      if (map.getZoom() != MARKER_INDICATOR_RANGE && inRangeIndicator) {
         markerList.forEach(marker => { 
           inRangeIndicator = false;
           marker.indicator.setVisible(inRangeIndicator); 
         })
       }
       else {
-        if (map.getZoom() == 18 && !inRangeIndicator) {
+        if (map.getZoom() == MARKER_INDICATOR_RANGE && !inRangeIndicator) {
           markerList.forEach(marker => { 
             inRangeIndicator = true;
           })
         }
       }
 
-      if (map.getZoom() < 15 && inRangeLabel) {
+      if (map.getZoom() < MARKER_LABEL_RANGE && inRangeLabel) {
         markerList.forEach(marker => { 
           inRangeLabel = false;
           marker.popup.setInRange(inRangeLabel);
@@ -75,7 +75,7 @@ function addListenerControl(map) {
         })
       }
       else {
-        if (map.getZoom() >= 15 && !inRangeLabel) {
+        if (map.getZoom() >= MARKER_LABEL_RANGE && !inRangeLabel) {
           markerList.forEach(marker => { 
             inRangeLabel = true;
             marker.popup.setInRange(inRangeLabel);

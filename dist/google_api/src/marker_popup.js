@@ -1,13 +1,6 @@
 var Popup;
 
 function createPopupClass() {
-  /**
-   * A customized popup on the map.
-   * @param {!google.maps.LatLng} position
-   * @param {!Element} content The bubble div.
-   * @constructor
-   * @extends {google.maps.OverlayView}
-   */
   function Popup(position, content) {
     this.position = position;
     this.inRange = false;
