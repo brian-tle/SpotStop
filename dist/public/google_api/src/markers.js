@@ -46,6 +46,7 @@ class Marker {
     Popup = createPopupClass();
 
     if (!this.existing) { 
+      this.scale = ICON_SCALE_MAX;
       infowindow = new google.maps.InfoWindow({ 
         content: formStr,
         position: this.infoWindowOffset
