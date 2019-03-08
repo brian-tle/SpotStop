@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+      integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="css/main.css" />
+    <title>Contact Us</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="menu-btn">
+        <div class="btn-line"></div>
+        <div class="btn-line"></div>
+        <div class="btn-line"></div>
+      </div>
+
+      <nav class="menu">
+        <div class="menu-branding">
+          <div class="portrait"></div>
+        </div>
+        <ul class="menu-nav">
+          <li class="nav-item">
+            <a href="home.html" class="nav-link">
+              Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="google_api\index.html" class="nav-link">
+              The Map
+            </a>
+          </li>
+          <li class="nav-item current">
+            <a href="contact.html" class="nav-link">
+              Contact us
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="contact">
+      <h1 class="lg-heading">Contact <span class="text-secondary">Us</span></h1>
+      <h2 class="sm-heading">
+        Send us an Email...
+      </h2>
+      <div class="contact-form">
+        <form id="contact-form" method="post" action="http://localhost:8080/sendmail">
+          <input
+            name="name"
+            type="text"
+            class="form-control"
+            placeholder="Your Name"
+            required
+          />
+          <br />
+          <input
+            name="email"
+            type="email"
+            class="form-control"
+            placeholder="Your Email"
+            required
+          />
+          <br />
+
+          <textarea
+            name="message"
+            class="form-control"
+            placeholder="Message"
+            row="4"
+            required
+          ></textarea
+          ><br />
+
+          <input
+            type="submit"
+            class="form-control submit"
+            value="SEND MESSAGE"
+          />
+        </form>
+      </div>
+    </main>
+
+    <footer id="main-footer">
+      Copyright &copy; 2019
+    </footer>
+    <script src="js/main.js"></script>
+  </body>
+</html>
