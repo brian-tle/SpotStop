@@ -23,6 +23,11 @@ function addLabel() {
   infowindow.close();
 }
 
+function removeLastMarker() {
+  markerList[markerList.length - 1].marker.setMap(null);
+  markerList.pop();
+}
+
 class Marker {
   constructor(map, x, y, totalPoints = 30, existing = false, des = "New Marker") {
     this.lat = x;
@@ -53,7 +58,7 @@ class Marker {
         position: this.infoWindowOffset
       });
       infowindow.addListener('closeclick', function(event) {
-
+        removeLastMarker();
       });
       infowindow.open(map);
     }
