@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 
 const url = "mongodb://test:testpassword@spot-stop-shard-00-00-ruq20.mongodb.net:27017,spot-stop-shard-00-01-ruq20.mongodb.net:27017,spot-stop-shard-00-02-ruq20.mongodb.net:27017/test?ssl=true&replicaSet=spot-stop-shard-0&authSource=admin&retryWrites=true";
 const server = express()
-const port = 8080
+const port = 2222
 const path  = require('path')
 
 server.use(bodyParser.json());
@@ -108,7 +108,7 @@ server.all('/*', function(req, res, next) {
 	next();
 });
 
-server.get('/homepage', function(req, res) {
+server.get('https://sfhacks2019-1551558382883.appspot.com/homepage', function(req, res) {
 	res.sendFile(path.resolve("../home.html"));
 });
 
