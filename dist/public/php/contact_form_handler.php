@@ -1,22 +1,30 @@
 <?php
-$name = $_Post['name'];
-$visitor_email=$_Post['email'];
-$message = $_POST['message'];
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
-$email_from = 'shotaebikawa@gmail.com';
+require '/PHPMailer/src/Exception.php';
+require '/PHPMailer/src/PHPMailer.php';
+require '/PHPMailer/src/SMTP.php';
+try {
+$mail = new PHPMailer(true);
+$mail->isSMTP();
+$mail->SMPTPAuth();
+$mail->SMTPSecure = 'ssl';
+$mail->Host = 'smtp.domain.com';
+$mail->Port = '993';
+$mail->isHTML();
+$mail->Username = 'spotstop@onespotstop.com';
+$mail->Password = 'Spotstopsfhack2019';
+$mail->SetFrom('shotaebikawa@gmail.com');
+$mail->Subject = $_POST['name'];
+$mail->Body = $_POST['message'];
+$mail->AddAddress('shotaebikawa@gmail.com');
+$mail->Send();
+} catch (Exception $e) {
+    echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
 
-$email_subject = "New Form Submission";
+}
 
-$email_body = "User Name: $name.\n",
-                "User Email: $visitor_email.\n",
-                "User Message: $message.\n";
+?>
 
-$to = "spotstop@onespotstop.com";
 
-$headers = "From: $email_from \r\n";
-
-$headers = "reply-To: $visitor_email \r\n";
-
-mail($to,$email_subject,$email_body,$headers);
-
-header("Location: contact.html");
