@@ -11,7 +11,7 @@
       crossorigin="anonymous"
     />
     <!-- ICON -->
-    <link rel="icon" type = "image/png" href="res/icons/cropped_spot_sign2.png"</link>
+    <link rel="icon" type = "image/png" href="res/icons/cropped_spot_sign2.png"></link>
     <link rel="stylesheet" href="..\css\main.css" />
     <title>The Map</title>
     <style>
@@ -112,13 +112,14 @@
       </nav>
     </header>
     <h2 class="lg-heading-map">The <span class="text-secondary">Map</span></h2>
-    
+    <div style="position: relative; left: 1000%; top: 1000%">
+      <input  style="position: relative; width: 300px; height: 30px;"id="pac-input" class="controls" type="text" placeholder="Search Box">
+  </div>
     <!--The div element for the map -->
-    <div id="map"></div>
-    <div style="position: relative; width: 300px; height: 30px; bottom: 585px; padding-left: 25%">
-        <input  style="position: relative; width: 300px; height: 30px;"id="pac-input" class="controls" type="text" placeholder="Search Box">
+    <div id="map">
+      
     </div>
-   
+
     <script src="src/marker_popup.js"></script>
     <script src="src/marker_indicator.js"></script>
     <script src="src/map_control.js"></script>
@@ -133,6 +134,8 @@
         async defer></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAB9mKKlFjElb2rqQZR2ZlUP19EoK7TIB8&libraries=places&callback=initialize"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+   
     <footer id="main-footer">
       Copyright &copy; 2019
     </footer>
