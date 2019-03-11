@@ -28,7 +28,6 @@ function getAllMarkers(map){
   });
 }
 
-
 function createMarker(lat, lng, des, upvote, downvote) {
   data = { lat: lat, lng: lng, des: des, upvote: upvote, downvote: downvote };
   $.ajax({
@@ -38,7 +37,9 @@ function createMarker(lat, lng, des, upvote, downvote) {
     data: JSON.stringify(data),
     dataType: 'json',
     contentType: 'application/json; charset=utf-8',
-    success: function (data) {  process_cache_changes(data);  },
+    success: function (data) {
+      markerList[markerList.length - 1]._id = data;
+    },
     error: function (xhr, ajaxOptions, thrownError) { }
   });
 }

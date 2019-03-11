@@ -13,17 +13,17 @@ server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: false}));
 
 var ip;
-var requestedData;
 var clientList = [];
 
-function addMarker(lat, lng, des, upvote, downvote){ 
+function addMarker(res, lat, lng, des, upvote, downvote){ 
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
 		var marker = { lat: lat, lng: lng, des: des, upvote: upvote, downvote: downvote};
-		dbo.collection("markers").insertOne(marker, function(err, res) {
+		dbo.collection("markers").insertOne(marker, function(err, result) {
 			if (err) throw err;
-			console.log("Inserted Marker at { " + lat + ", " + lng + " }");
+			res.send(marker._id);
+			console.log("Inserted Marker at { " + lat + ", " + lng + " } with ID { " + marker._id + " }");
 			db.close();
 		});
 	});
@@ -122,12 +122,11 @@ server.get('/getAllMarkers', function(req, res, next) {
 
 server.get('/createTestMarker', function(req, res, next) { 
 	res.send('Creating Test Marker!') 
-	addMarker(34.5315, -123.5235, "Test Marker", 54, 21);
+	addMarker(res, 34.5315, -123.5235, "Test Marker", 54, 21);
 });
 
 server.post("/createMarker", (req, res) => {
-	res.send('Creating Marker!');
-	addMarker(req.body.lat, req.body.lng, req.body.des, req.body.upvote, req.body.downvote);
+	addMarker(res, req.body.lat, req.body.lng, req.body.des, req.body.upvote, req.body.downvote);
 });
 
 server.post("/upvoteMarker", (req, res) => {
