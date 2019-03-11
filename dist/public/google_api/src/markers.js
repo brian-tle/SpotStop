@@ -18,8 +18,9 @@ function addLabel() {
   markerList[markerList.length - 1].createLabel(Marker.map);
   markerList[markerList.length - 1].popupCreated = true;
   markerList[markerList.length - 1].popup.inRange = true;
-  createMarker(markerList[markerList.length - 1].lat, markerList[markerList.length - 1].lng, markerList[markerList.length - 1].des, 0, 0);
   markerList[markerList.length - 1].indicator.setVisible(true);
+  createMarker(markerList[markerList.length - 1].lat, markerList[markerList.length - 1].lng, markerList[markerList.length - 1].des, 0, 0);
+  //getMarkerIDFromLatLng(markerList[markerList.length - 1].lat, markerList[markerList.length - 1].lng);
   infowindow.close();
 }
 
