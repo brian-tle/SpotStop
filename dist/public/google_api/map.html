@@ -110,10 +110,13 @@
       </nav>
     </header>
     <h2 class="lg-heading-map">The <span class="text-secondary">Map</span></h2>
-
+    
     <!--The div element for the map -->
     <div id="map"></div>
-  
+    <div>
+        <input style="position: relative; width: 300px; height: 30px; bottom: 580px; left: 370px;" id="pac-input" class="controls" type="text" placeholder="Search Box">
+    </div>
+   
     <script src="src/marker_popup.js"></script>
     <script src="src/marker_indicator.js"></script>
     <script src="src/map_control.js"></script>
@@ -121,10 +124,13 @@
     <script src="src/client.js"></script>
     <script src="src/main.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"> </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAB9mKKlFjElb2rqQZR2ZlUP19EoK7TIB8&callback=initMap"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAB9mKKlFjElb2rqQZR2ZlUP19EoK7TIB8&libraries=places&callback=initialize"></script>
+   
     <footer id="main-footer">
       Copyright &copy; 2019
     </footer>
-    <input style = "position: relative; bottom: 610px; left: 390px; width: 300px; height: 30px;"id="pac-input" class="controls" type="text" placeholder="Search Box">
+  
+
+  
   </body>
 </html>
