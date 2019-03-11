@@ -18,7 +18,7 @@ function getAllMarkers(map){
     method : 'GET',
     success : function(data){
       data.forEach(marker => {
-        markerList.push(new Marker(map, marker.lat, marker.lng, (marker.upvote - marker.downvote) + 30, true, marker.des));
+        markerList.push(new Marker(map, marker.lat, marker.lng, (marker.upvote - marker.downvote) + 30, true, marker.des, marker._id));
       });
     },
 
@@ -43,8 +43,8 @@ function createMarker(lat, lng, des, upvote, downvote) {
   });
 }
 
-function upvoteMarker(lat, lng, val) {
-  data = { lat: lat, lng: lng, val: val };
+function upvoteMarker(_id, val) {
+  data = { _id: _id, val: val };
   $.ajax({
     type: 'POST',
     url: "https://sfhacks2019-1551558382883.appspot.com/upvoteMarker",
@@ -57,8 +57,8 @@ function upvoteMarker(lat, lng, val) {
   });
 }
 
-function downvoteMarker(lat, lng, val) {
-  data = { lat: lat, lng: lng, val: val };
+function downvoteMarker(_id, val) {
+  data = { _id: _id, val: val };
   $.ajax({
     type: 'POST',
     url: "https://sfhacks2019-1551558382883.appspot.com/downvoteMarker",

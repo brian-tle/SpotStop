@@ -29,7 +29,7 @@ function removeLastMarker() {
 }
 
 class Marker {
-  constructor(map, x, y, totalPoints = 30, existing = false, des = "New Marker") {
+  constructor(map, x, y, totalPoints = 30, existing = false, des = "New Marker", _id = 'undefined') {
     this.lat = x;
     this.lng = y;
     this.default = { lat: parseFloat(x), lng: parseFloat(y) };
@@ -40,6 +40,7 @@ class Marker {
     this.existing = existing;
     this.popupCreated = existing;
     this.des = des;
+    this._id = _id;
 
     this.color;
     this.size = 40;
@@ -103,8 +104,8 @@ class Marker {
         var colorOption2 = { fillColor: "#474747" };
         this.indicator.upvote.poly.setOptions(colorOption);
         this.indicator.downvote.poly.setOptions(colorOption2);
-        if (this.indicator.status == 0) { this.totalPoints += 2; upvoteMarker(this.lat, this.lng, 1); downvoteMarker(this.lat, this.lng, -1); }
-        else { if (this.indicator.status == 1) { this.totalPoints += 1; upvoteMarker(this.lat, this.lng, 1); } }
+        if (this.indicator.status == 0) { this.totalPoints += 2; upvoteMarker(this._id, 1); downvoteMarker(this._id, -1); }
+        else { if (this.indicator.status == 1) { this.totalPoints += 1; upvoteMarker(this._id, 1); } }
         this.refreshIcon();
         this.indicator.status = 2;
         this.indicator.active = true;
@@ -118,8 +119,8 @@ class Marker {
         var colorOption2 = { fillColor: "#474747" };
         this.indicator.downvote.poly.setOptions(colorOption);
         this.indicator.upvote.poly.setOptions(colorOption2);
-        if (this.indicator.status == 2) { this.totalPoints -= 2; downvoteMarker(this.lat, this.lng, 1); upvoteMarker(this.lat, this.lng, -1); }
-        else { if (this.indicator.status == 1) { this.totalPoints -= 1; downvoteMarker(this.lat, this.lng, 1);  } }
+        if (this.indicator.status == 2) { this.totalPoints -= 2; downvoteMarker(this._id, 1); upvoteMarker(this._id, -1); }
+        else { if (this.indicator.status == 1) { this.totalPoints -= 1; downvoteMarker(this._id, 1);  } }
         this.refreshIcon();
         this.indicator.status = 0;
         this.indicator.active = true;
