@@ -34,41 +34,65 @@ function initMap() {
 
 function initAutocomplete() {
 
-  // Create the search box and link it to the UI element.
-  var input = document.getElementById('pac-input');
-  var searchBox = new google.maps.places.SearchBox(input);
-  input.index = 0;
-  map.controls[google.maps.ControlPosition.LEFT_TOP].push(input);
-  
+  // query is essentially an input tag w/ the search box
+  var query = document.getElementById('pac-input');
+  // search_engine is what enables query to access the api
+  var search_engine = new google.maps.places.SearchBox(query);
+  // make query part of maps control
+  map.controls[google.maps.ControlPosition.LEFT_TOP].push(query);
 
-  // Bias the SearchBox results towards current map's viewport.
-  map.addListener('bounds_changed', function() {
-    searchBox.setBounds(map.getBounds());
+
+  // search_engine results will change based on current map's viewport.
+  map.addListener('bounds_changed', function () {
+    search_engine.setBounds(map.getBounds());
   });
 
   var markers = [];
   // Listen for the event fired when the user selects a prediction and retrieve
   // more details for that place.
-  searchBox.addListener('places_changed', function() {
-    var places = searchBox.getPlaces();
+  search_engine.addListener('places_changed', function () {
+    // getPlaces() returns arrays of predicted places
+    // essentially var places = array of predicted places
+    var places = search_engine.getPlaces();
 
+    // returns nothing if there are no predicted places
     if (places.length == 0) {
       return;
     }
+
+    // Clear out the old markers.
+    // Pretty self-explanatory
+    markers.forEach(function (marker) {
+      marker.setMap(null);
+    });
+    markers = [];
+
     // For each place, get the icon, name and location.
     var bounds = new google.maps.LatLngBounds();
-    places.forEach(function(place) {
+
+    // this works because var places is an array
+    places.forEach(function (place) {
+      // I guess this means that if the predicted places has no geometry
       if (!place.geometry) {
         console.log("Returned place contains no geometry");
         return;
       }
-      var icon = {
+      var query_icon = {
         url: place.icon,
         size: new google.maps.Size(71, 71),
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(17, 34),
         scaledSize: new google.maps.Size(25, 25)
       };
+
+      // Create a marker for each place.
+      markers.push(new google.maps.Marker({
+        map: map,
+        icon: query_icon,
+        title: place.name,
+        // stores lat lng of the place
+        position: place.geometry.location
+      }));
 
       if (place.geometry.viewport) {
         // Only geocodes have viewport.
