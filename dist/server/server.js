@@ -12,12 +12,19 @@ const path  = require('path')
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: false}));
 
-var ip;
 var clientList = [];
 
 function Client(ip) {
 	this.ip = ip;
 	this.markerList = [];
+}
+
+function checkClientExists(ip) {
+	for (var x = 0; x < clientList.length; x++) {
+		if (clientList[x].ip == ip) { return true; }
+	}
+
+	return false;
 }
 
 function addMarker(res, lat, lng, des, upvote, downvote){ 
@@ -122,8 +129,10 @@ server.get('https://sfhacks2019-1551558382883.appspot.com/homepage', function(re
 
 server.get('/getAllMarkers', function(req, res, next) {
 	getAllMarkers(res);
-	ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
-	clientList.push(new Client(ip));
+	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
+	if (!checkClientExists(ip)) {
+		clientList.push(new Client(ip));
+	}
 });
 
 server.get('/getClientList', function(req, res, next) {
