@@ -14,7 +14,13 @@ function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 12,
     center: {lat: 37.7219, lng: -122.4782},
-    controls: google.maps
+    controls: google.maps,
+    mapTypeControlOptions: {      
+      mapTypeIds: [
+        google.maps.MapTypeId.ROADMAP,
+        google.maps.MapTypeId.SATELLITE
+      ]
+    }
   });
   map.setOptions(mapOptions);
 
@@ -31,6 +37,7 @@ function initAutocomplete() {
   // Create the search box and link it to the UI element.
   var input = document.getElementById('pac-input');
   var searchBox = new google.maps.places.SearchBox(input);
+  input.index = 0;
   map.controls[google.maps.ControlPosition.LEFT_TOP].push(input);
   
 
