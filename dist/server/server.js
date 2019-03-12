@@ -13,7 +13,12 @@ server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: false}));
 
 var ip;
-var clientList = new Map();
+var clientList = [];
+
+function Client(ip) {
+	this.ip = ip;
+	this.markerList = [];
+}
 
 function addMarker(res, lat, lng, des, upvote, downvote){ 
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
@@ -118,9 +123,11 @@ server.get('https://sfhacks2019-1551558382883.appspot.com/homepage', function(re
 server.get('/getAllMarkers', function(req, res, next) {
 	getAllMarkers(res);
 	ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
-	if (!clientList.hasOwnProperty(ip)) {
-		clientList.set(ip, new Map());
-	}
+	clientList.push(new Client(ip));
+});
+
+server.get('/getClientList', function(req, res, next) {
+	res.send(clientList);
 });
 
 server.get('/createTestMarker', function(req, res, next) { 
