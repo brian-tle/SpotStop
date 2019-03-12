@@ -13,7 +13,7 @@ server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: false}));
 
 var ip;
-var clientList = [];
+var clientList = new Map();
 
 function addMarker(res, lat, lng, des, upvote, downvote){ 
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
@@ -118,6 +118,9 @@ server.get('https://sfhacks2019-1551558382883.appspot.com/homepage', function(re
 server.get('/getAllMarkers', function(req, res, next) {
 	getAllMarkers(res);
 	ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
+	if (!clientList.hasOwnProperty(ip)) {
+		clientList.set(ip, new Map());
+	}
 });
 
 server.get('/createTestMarker', function(req, res, next) { 
@@ -131,12 +134,34 @@ server.post("/createMarker", (req, res) => {
 
 server.post("/upvoteMarker", (req, res) => {
 	res.send('Upvoting Marker!');
-	upvoteMarker(req.body._id, req.body.val);
+	if (clientList.hasOwnProperty(ip)) {
+		if (!clientList.get(ip).hasOwnProperty(req.body._id)) {
+			upvoteMarker(req.body._id, 1);
+			clientList.get(ip).set(req.body._id, 1);
+		}
+		else {
+			if (clientList.get(ip).get(req.body._id) < 1) {
+				upvoteMarker(req.body._id, 1);
+				clientList.get(ip).set(req.body._id, 1);
+			}
+		}
+	}
 });
 
 server.post("/downvoteMarker", (req, res) => {
 	res.send('Downvoting Marker!');
-	downvoteMarker(req.body._id, req.body.val);
+	if (clientList.hasOwnProperty(ip)) {
+		if (!clientList.get(ip).hasOwnProperty(req.body._id)) {
+			downvoteMarker(req.body._id, 1);
+			clientList.get(ip).set(req.body._id, -1);
+		}
+		else {
+			if (clientList.get(ipd).get(req.body._id) > -1) {
+				downvoteMarker(req.body._id, 1);
+				clientList.get(ip).set(req.body._id, -1);
+			}
+		}
+	}
 });
 
 server.post('/sendmail', (req, res) => {

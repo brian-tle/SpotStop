@@ -1,6 +1,11 @@
+//  https://sfhacks2019-1551558382883.appspot.com
+//  localhost:8080
+
+const url = 'https://sfhacks2019-1551558382883.appspot.com';
+
 function createTestMarker(){
   $.ajax({
-    url : 'https://sfhacks2019-1551558382883.appspot.com/createTestMarker',
+    url : url + '/createTestMarker',
     method : 'GET',
     success : function(data){
       console.log(data);
@@ -14,7 +19,7 @@ function createTestMarker(){
 
 function getAllMarkers(map){
   $.ajax({
-    url : 'https://sfhacks2019-1551558382883.appspot.com/getAllMarkers',
+    url : url + '/getAllMarkers',
     method : 'GET',
     success : function(data){
       data.forEach(marker => {
@@ -32,7 +37,7 @@ function createMarker(lat, lng, des, upvote, downvote) {
   data = { lat: lat, lng: lng, des: des, upvote: upvote, downvote: downvote };
   $.ajax({
     type: 'POST',
-    url: "https://sfhacks2019-1551558382883.appspot.com/createMarker",
+    url: url + '/createMarker',
     async: true,
     data: JSON.stringify(data),
     dataType: 'json',
@@ -48,7 +53,7 @@ function upvoteMarker(_id, val) {
   data = { _id: _id, val: val };
   $.ajax({
     type: 'POST',
-    url: "https://sfhacks2019-1551558382883.appspot.com/upvoteMarker",
+    url: url + '/upvoteMarker',
     async: true,
     data: JSON.stringify(data),
     dataType: 'json',
@@ -62,7 +67,7 @@ function downvoteMarker(_id, val) {
   data = { _id: _id, val: val };
   $.ajax({
     type: 'POST',
-    url: "https://sfhacks2019-1551558382883.appspot.com/downvoteMarker",
+    url: url + '/downvoteMarker',
     async: true,
     data: JSON.stringify(data),
     dataType: 'json',
