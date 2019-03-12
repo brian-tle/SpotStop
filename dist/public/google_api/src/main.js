@@ -77,18 +77,11 @@ function initAutocomplete() {
         console.log("Returned place contains no geometry");
         return;
       }
-      var query_icon = {
-        url: place.icon,
-        size: new google.maps.Size(71, 71),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(17, 34),
-        scaledSize: new google.maps.Size(25, 25)
-      };
 
       // Create a marker for each place.
       markers.push(new google.maps.Marker({
         map: map,
-        icon: query_icon,
+        icon: 'http://maps.google.com/mapfiles/kml/pushpin/red-pushpin.png',
         title: place.name,
         // stores lat lng of the place
         position: place.geometry.location
