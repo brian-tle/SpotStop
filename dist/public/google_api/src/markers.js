@@ -105,8 +105,9 @@ class Marker {
         var colorOption2 = { fillColor: "#474747" };
         this.indicator.upvote.poly.setOptions(colorOption);
         this.indicator.downvote.poly.setOptions(colorOption2);
-        if (this.indicator.status == 0) { this.totalPoints += 2; upvoteMarker(this._id, 1); downvoteMarker(this._id, -1); }
-        else { if (this.indicator.status == 1) { this.totalPoints += 1; upvoteMarker(this._id, 1); } }
+        if (this.indicator.status == 0) { this.totalPoints += 2; }
+        else { if (this.indicator.status == 1) { this.totalPoints += 1; } }
+        upvoteMarker(this._id, 1);
         this.refreshIcon();
         this.indicator.status = 2;
         this.indicator.active = true;
@@ -120,8 +121,9 @@ class Marker {
         var colorOption2 = { fillColor: "#474747" };
         this.indicator.downvote.poly.setOptions(colorOption);
         this.indicator.upvote.poly.setOptions(colorOption2);
-        if (this.indicator.status == 2) { this.totalPoints -= 2; downvoteMarker(this._id, 1); upvoteMarker(this._id, -1); }
-        else { if (this.indicator.status == 1) { this.totalPoints -= 1; downvoteMarker(this._id, 1);  } }
+        if (this.indicator.status == 2) { this.totalPoints -= 2; }
+        else { if (this.indicator.status == 1) { this.totalPoints -= 1; } }
+        downvoteMarker(this._id, 1);
         this.refreshIcon();
         this.indicator.status = 0;
         this.indicator.active = true;

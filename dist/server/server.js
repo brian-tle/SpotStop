@@ -16,18 +16,32 @@ var clientList = [];
 
 function Client(ip) {
 	this.ip = ip;
-	this.markerList = [];
+	this.markerListM = [];
+	this.markerListC = [];
+}
+
+function Marker(id, value) {
+	this.id = id;
+	this.value = value;
 }
 
 function checkClientExists(ip) {
 	for (var x = 0; x < clientList.length; x++) {
-		if (clientList[x].ip == ip) { return true; }
+		if (clientList[x].ip == ip) { return x; }
 	}
 
-	return false;
+	return -1;
 }
 
-function addMarker(res, lat, lng, des, upvote, downvote){ 
+function checkMarkerExists(markerList, id) {
+	for (var x = 0; x < markerList.length; x++) {
+		if (markerList[x].id == id) { return x; }
+	}
+
+	return -1;
+}
+
+function addMarker(res, clientIndex, lat, lng, des, upvote, downvote){ 
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
@@ -36,6 +50,7 @@ function addMarker(res, lat, lng, des, upvote, downvote){
 			if (err) throw err;
 			res.send(marker._id);
 			console.log("Inserted Marker at { " + lat + ", " + lng + " } with ID { " + marker._id + " }");
+			clientList[clientIndex].markerListC.push(marker._id);
 			db.close();
 		});
 	});
@@ -130,7 +145,7 @@ server.get('https://sfhacks2019-1551558382883.appspot.com/homepage', function(re
 server.get('/getAllMarkers', function(req, res, next) {
 	getAllMarkers(res);
 	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
-	if (!checkClientExists(ip)) {
+	if (checkClientExists(ip) == -1) {
 		clientList.push(new Client(ip));
 	}
 });
@@ -145,17 +160,55 @@ server.get('/createTestMarker', function(req, res, next) {
 });
 
 server.post("/createMarker", (req, res) => {
-	addMarker(res, req.body.lat, req.body.lng, req.body.des, req.body.upvote, req.body.downvote);
+	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
+	var clientIndex = checkClientExists(ip);
+	if (clientIndex != -1) {
+		addMarker(res, clientIndex, req.body.lat, req.body.lng, req.body.des, req.body.upvote, req.body.downvote);
+	}
 });
 
 server.post("/upvoteMarker", (req, res) => {
 	res.send('Upvoting Marker!');
-	upvoteMarker(req.body._id, req.body.val);
+	var markerIncrement = 1;
+	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
+	var clientIndex = checkClientExists(ip);
+	var markerIndex;
+	if (clientIndex != -1) {
+		markerIndex = checkMarkerExists(clientList[clientIndex].markerListM, req.body._id);
+		if (markerIndex == -1) {
+			clientList[clientIndex].markerListM.push(new Marker(req.body._id, markerIncrement));
+			upvoteMarker(req.body._id, markerIncrement);
+		}
+		else {
+			if (clientList[clientIndex].markerListM[markerIndex].value < markerIncrement) {
+				clientList[clientIndex].markerListM[markerIndex].value = markerIncrement;
+				upvoteMarker(req.body._id, markerIncrement);
+				downvoteMarker(req.body._id, -markerIncrement);
+			}
+		}
+	}
 });
 
 server.post("/downvoteMarker", (req, res) => {
 	res.send('Downvoting Marker!');
-	downvoteMarker(req.body._id, req.body.val);
+	var markerIncrement = 1;
+	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
+	var clientIndex = checkClientExists(ip);
+	var markerIndex;
+	if (clientIndex != -1) {
+		markerIndex = checkMarkerExists(clientList[clientIndex].markerListM, req.body._id);
+		if (markerIndex == -1) {
+			clientList[clientIndex].markerListM.push(new Marker(req.body._id, -markerIncrement));
+			downvoteMarker(req.body._id, markerIncrement);
+		}
+		else {
+			if (clientList[clientIndex].markerListM[markerIndex].value > -markerIncrement) {
+				clientList[clientIndex].markerListM[markerIndex].value = -markerIncrement;
+				downvoteMarker(req.body._id, markerIncrement);
+				upvoteMarker(req.body._id, -markerIncrement);
+			}
+		}
+	}
 });
 
 server.post('/sendmail', (req, res) => {
