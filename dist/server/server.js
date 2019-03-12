@@ -41,7 +41,7 @@ function checkMarkerExists(markerList, id) {
 	return -1;
 }
 
-function addMarker(res, lat, lng, des, upvote, downvote){ 
+function addMarker(res, clientIndex, lat, lng, des, upvote, downvote){ 
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
@@ -50,6 +50,7 @@ function addMarker(res, lat, lng, des, upvote, downvote){
 			if (err) throw err;
 			res.send(marker._id);
 			console.log("Inserted Marker at { " + lat + ", " + lng + " } with ID { " + marker._id + " }");
+			clientList[clientIndex].markerListC.push(marker._id);
 			db.close();
 		});
 	});
@@ -159,26 +160,30 @@ server.get('/createTestMarker', function(req, res, next) {
 });
 
 server.post("/createMarker", (req, res) => {
-	addMarker(res, req.body.lat, req.body.lng, req.body.des, req.body.upvote, req.body.downvote);
+	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
+	var clientIndex = checkClientExists(ip);
+	if (clientIndex != -1) {
+		addMarker(res, clientIndex, req.body.lat, req.body.lng, req.body.des, req.body.upvote, req.body.downvote);
+	}
 });
 
 server.post("/upvoteMarker", (req, res) => {
 	res.send('Upvoting Marker!');
-	var increment = 1;
+	var markerIncrement = 1;
 	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
 	var clientIndex = checkClientExists(ip);
 	var markerIndex;
 	if (clientIndex != -1) {
 		markerIndex = checkMarkerExists(clientList[clientIndex].markerListM, req.body._id);
 		if (markerIndex == -1) {
-			clientList[clientIndex].markerListM.push(new Marker(req.body._id, increment));
-			upvoteMarker(req.body._id, increment);
+			clientList[clientIndex].markerListM.push(new Marker(req.body._id, markerIncrement));
+			upvoteMarker(req.body._id, markerIncrement);
 		}
 		else {
-			if (clientList[clientIndex].markerListM[markerIndex].value < 1) {
-				clientList[clientIndex].markerListM[markerIndex].value = increment;
-				upvoteMarker(req.body._id, increment);
-				downvoteMarker(req.body._id, -increment);
+			if (clientList[clientIndex].markerListM[markerIndex].value < markerIncrement) {
+				clientList[clientIndex].markerListM[markerIndex].value = markerIncrement;
+				upvoteMarker(req.body._id, markerIncrement);
+				downvoteMarker(req.body._id, -markerIncrement);
 			}
 		}
 	}
@@ -186,21 +191,21 @@ server.post("/upvoteMarker", (req, res) => {
 
 server.post("/downvoteMarker", (req, res) => {
 	res.send('Downvoting Marker!');
-	var increment = 1;
+	var markerIncrement = 1;
 	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
 	var clientIndex = checkClientExists(ip);
 	var markerIndex;
 	if (clientIndex != -1) {
 		markerIndex = checkMarkerExists(clientList[clientIndex].markerListM, req.body._id);
 		if (markerIndex == -1) {
-			clientList[clientIndex].markerListM.push(new Marker(req.body._id, -increment));
-			downvoteMarker(req.body._id, increment);
+			clientList[clientIndex].markerListM.push(new Marker(req.body._id, -markerIncrement));
+			downvoteMarker(req.body._id, markerIncrement);
 		}
 		else {
-			if (clientList[clientIndex].markerListM[markerIndex].value > -1) {
-				clientList[clientIndex].markerListM[markerIndex].value = -increment;
-				downvoteMarker(req.body._id, increment);
-				upvoteMarker(req.body._id, -increment);
+			if (clientList[clientIndex].markerListM[markerIndex].value > -markerIncrement) {
+				clientList[clientIndex].markerListM[markerIndex].value = -markerIncrement;
+				downvoteMarker(req.body._id, markerIncrement);
+				upvoteMarker(req.body._id, -markerIncrement);
 			}
 		}
 	}
