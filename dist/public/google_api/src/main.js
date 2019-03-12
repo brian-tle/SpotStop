@@ -24,10 +24,6 @@ function initMap() {
   addListeners(map);
 
   getAllMarkers(map);
-
-  
-
-    
 }
 
 function initAutocomplete() {

@@ -134,34 +134,12 @@ server.post("/createMarker", (req, res) => {
 
 server.post("/upvoteMarker", (req, res) => {
 	res.send('Upvoting Marker!');
-	if (clientList.hasOwnProperty(ip)) {
-		if (!clientList.get(ip).hasOwnProperty(req.body._id)) {
-			upvoteMarker(req.body._id, 1);
-			clientList.get(ip).set(req.body._id, 1);
-		}
-		else {
-			if (clientList.get(ip).get(req.body._id) < 1) {
-				upvoteMarker(req.body._id, 1);
-				clientList.get(ip).set(req.body._id, 1);
-			}
-		}
-	}
+	upvoteMarker(req.body._id, req.body.val);
 });
 
 server.post("/downvoteMarker", (req, res) => {
 	res.send('Downvoting Marker!');
-	if (clientList.hasOwnProperty(ip)) {
-		if (!clientList.get(ip).hasOwnProperty(req.body._id)) {
-			downvoteMarker(req.body._id, 1);
-			clientList.get(ip).set(req.body._id, -1);
-		}
-		else {
-			if (clientList.get(ipd).get(req.body._id) > -1) {
-				downvoteMarker(req.body._id, 1);
-				clientList.get(ip).set(req.body._id, -1);
-			}
-		}
-	}
+	downvoteMarker(req.body._id, req.body.val);
 });
 
 server.post('/sendmail', (req, res) => {
