@@ -164,19 +164,21 @@ server.post("/createMarker", (req, res) => {
 
 server.post("/upvoteMarker", (req, res) => {
 	res.send('Upvoting Marker!');
+	var increment = 1;
 	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
 	var clientIndex = checkClientExists(ip);
 	var markerIndex;
 	if (clientIndex != -1) {
 		markerIndex = checkMarkerExists(clientList[clientIndex].markerListM, req.body._id);
 		if (markerIndex == -1) {
-			clientList[clientIndex].markerListM.push(new Marker(req.body._id, req.body.val));
-			upvoteMarker(req.body._id, req.body.val);
+			clientList[clientIndex].markerListM.push(new Marker(req.body._id, increment));
+			upvoteMarker(req.body._id, increment);
 		}
 		else {
 			if (clientList[clientIndex].markerListM[markerIndex].value < 1) {
-				clientList[clientIndex].markerListM[markerIndex].value = req.body.val;
-				upvoteMarker(req.body._id, req.body.val);
+				clientList[clientIndex].markerListM[markerIndex].value = increment;
+				upvoteMarker(req.body._id, increment);
+				downvoteMarker(req.body._id, -increment);
 			}
 		}
 	}
@@ -184,19 +186,21 @@ server.post("/upvoteMarker", (req, res) => {
 
 server.post("/downvoteMarker", (req, res) => {
 	res.send('Downvoting Marker!');
+	var increment = 1;
 	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
 	var clientIndex = checkClientExists(ip);
 	var markerIndex;
 	if (clientIndex != -1) {
 		markerIndex = checkMarkerExists(clientList[clientIndex].markerListM, req.body._id);
 		if (markerIndex == -1) {
-			clientList[clientIndex].markerListM.push(new Marker(req.body._id, -req.body.val));
-			upvoteMarker(req.body._id, req.body.val);
+			clientList[clientIndex].markerListM.push(new Marker(req.body._id, -increment));
+			downvoteMarker(req.body._id, increment);
 		}
 		else {
 			if (clientList[clientIndex].markerListM[markerIndex].value > -1) {
-				clientList[clientIndex].markerListM[markerIndex].value = -req.body.val;
-				upvoteMarker(req.body._id, req.body.val);
+				clientList[clientIndex].markerListM[markerIndex].value = -increment;
+				downvoteMarker(req.body._id, increment);
+				upvoteMarker(req.body._id, -increment);
 			}
 		}
 	}
