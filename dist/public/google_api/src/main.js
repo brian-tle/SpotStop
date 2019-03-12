@@ -81,7 +81,7 @@ function initAutocomplete() {
       // Create a marker for each place.
       markers.push(new google.maps.Marker({
         map: map,
-        icon: 'http://maps.google.com/mapfiles/kml/pushpin/red-pushpin.png',
+        icon: 'http://earth.google.com/images/kml-icons/track-directional/track-8.png',
         title: place.name,
         // stores lat lng of the place
         position: place.geometry.location
