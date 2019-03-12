@@ -35,67 +35,62 @@ function initMap() {
 function initAutocomplete() {
 
   // query is essentially an input tag w/ the search box
-  var query = document.getElementById('pac-input');
+  var search_engine;
+  var search_div = document.getElementById('search-div');
+  var query = document.getElementById('input');
+  var search_options = document.getElementById('options');
+  var infowindow;
+  var infowindowContent;
+  var marker;
+  var place;
+  var autocomplete;
   // search_engine is what enables query to access the api
-  var search_engine = new google.maps.places.SearchBox(query);
   // make query part of maps control
-  map.controls[google.maps.ControlPosition.LEFT_TOP].push(query);
+  map.controls[google.maps.ControlPosition.LEFT_TOP].push(search_div);
 
+  document.getElementById('all-searches').onchange = function () {
+    if (document.getElementById('all-searches').checked == true) {
+      search_engine = new google.maps.places.Autocomplete(query);
 
-  // search_engine results will change based on current map's viewport.
-  map.addListener('bounds_changed', function () {
-    search_engine.setBounds(map.getBounds());
-  });
+      // bind the bound so that it will prioritize the search based on the given location
+      search_engine.bindTo('bounds', map);
 
-  var markers = [];
-  // Listen for the event fired when the user selects a prediction and retrieve
-  // more details for that place.
-  search_engine.addListener('places_changed', function () {
-    // getPlaces() returns arrays of predicted places
-    // essentially var places = array of predicted places
-    var places = search_engine.getPlaces();
-
-    // returns nothing if there are no predicted places
-    if (places.length == 0) {
-      return;
-    }
-
-    // Clear out the old markers.
-    // Pretty self-explanatory
-    markers.forEach(function (marker) {
-      marker.setMap(null);
-    });
-    markers = [];
-
-    // For each place, get the icon, name and location.
-    var bounds = new google.maps.LatLngBounds();
-
-    // this works because var places is an array
-    places.forEach(function (place) {
-      // I guess this means that if the predicted places has no geometry
-      if (!place.geometry) {
-        console.log("Returned place contains no geometry");
-        return;
-      }
-
-      // Create a marker for each place.
-      markers.push(new google.maps.Marker({
+      infowindow = new google.maps.InfoWindow();
+      infowindowContent = document.getElementById('infowindow-content');
+      infowindow.setContent(infowindowContent);
+      marker = new google.maps.Marker({
         map: map,
         icon: 'http://earth.google.com/images/kml-icons/track-directional/track-8.png',
-        title: place.name,
-        // stores lat lng of the place
-        position: place.geometry.location
-      }));
+        anchorPoint: new google.maps.Point(0, -29)
+      });
 
-      if (place.geometry.viewport) {
-        // Only geocodes have viewport.
-        bounds.union(place.geometry.viewport);
-      } else {
-        bounds.extend(place.geometry.location);
-      }
-    });
-    map.fitBounds(bounds);
-  });
+      autcomplete = search_engine.addListener('place_changed', function () {
+        infowindow.close();
+        marker.setVisible(false);
+        place = search_engine.getPlace();
+        if (!place.geometry) {
+          return;
+        }
+        if (place.geometry.viewport) {
+          map.fitBounds(place.geometry.viewport);
+        }
+        else {
+          map.setCenter(place.geometry.location);
+          map.setZoom(13);
+        }
+        marker.setPosition(place.geometry.location);
+        marker.setVisible(true);
+      });
+    }
+  }
+  document.getElementById('database').onchange = function () {
+    if (document.getElementById('database').checked == true) {
+      google.maps.event.removeListener(autocomplete);
+      google.maps.event.clearInstanceListeners(search_engine);
+      $('.pac-container').remove();
+    }
+  }
+
 }
 
 
