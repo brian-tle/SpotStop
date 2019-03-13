@@ -23,7 +23,7 @@ function getAllMarkers(map){
     method : 'GET',
     success : function(data){
       data.forEach(marker => {
-        markerList.push(new Marker(map, marker.lat, marker.lng, (marker.upvote - marker.downvote) + 30, true, marker.des, marker._id));
+        markerList.push(new Marker(map, marker.lat, marker.lng, (marker.upvote - marker.downvote) + 20, true, marker.des, marker._id));
       });
     },
 

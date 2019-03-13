@@ -27,7 +27,7 @@ function CenterControl(controlDiv, map) {
   controlText.innerHTML = "Propose Marker";
   controlUI.appendChild(controlText);
 
-  // Setup the click event listeners: transform cursor to red
+    // Setup the click event listeners: transform cursor to red (No longer red: just the crosshair)
   controlUI.addEventListener("click", function() {
     cursorRunning = true;
     map.setOptions({

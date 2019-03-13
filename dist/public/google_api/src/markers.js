@@ -13,6 +13,12 @@ const MARKER_LABEL_RANGE = 15;
 var infowindow;
 var formStr = "<input type='text' id='marker-label' value='New Marker' /><input type='button' value='submit' onclick='addLabel();' />"
 
+//––––––––––– Url info for icon (at bottom) –––––––––––
+var iconUrl1 = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2238%22%20height%3D%2238%22%20viewBox%3D%220%200%2038%2038%22%3E%3Cpath%20fill%3D%22%23";
+var iconUrl2 = "%22%20stroke%3D%22%23ccc%22%20stroke-width%3D%22.5%22%20d%3D%22M34.305%2016.234c0%208.83-15.148%2019.158-15.148%2019.158S3.507%2025.065%203.507%2016.1c0-8.505%206.894-14.304%2015.4-14.304%208.504%200%2015.398%205.933%2015.398%2014.438z%22%2F%3E%3Ctext%20transform%3D%22translate%2819%2018.5%29%22%20fill%3D%22%23fff%22%20style%3D%22font-family%3A%20Arial%2C%20sans-serif%3Bfont-weight%3Abold%3Btext-align%3Acenter%3B%22%20font-size%3D%2212%22%20text-anchor%3D%22middle%22%3E";
+var iconUrl3 = "%3C%2Ftext%3E%3C%2Fsvg%3E";
+//–––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
 function addLabel() {
   markerList[markerList.length - 1].des = document.getElementById('marker-label').value;
   markerList[markerList.length - 1].createLabel(Marker.map);
@@ -30,7 +36,7 @@ function removeLastMarker() {
 }
 
 class Marker {
-  constructor(map, x, y, totalPoints = 30, existing = false, des = "New Marker", _id = 'undefined') {
+  constructor(map, x, y, totalPoints = 20, existing = false, des = "New Marker", _id = 'undefined') {
     this.lat = x;
     this.lng = y;
     this.default = { lat: parseFloat(x), lng: parseFloat(y) };
@@ -144,25 +150,25 @@ class Marker {
   }
 
   setIcon() {
-    if ( this.totalPoints > 45) {
+    if ( this.totalPoints > 31) {
           this.color = ICON_COLOR_DARK_GREEN;
           this.size = 60;
-      } else if (this.totalPoints <= 45 && this.totalPoints > 37) {
+      } else if (this.totalPoints <= 31 && this.totalPoints > 23) {
           this.color = ICON_COLOR_GREEN;
           this.size = 50;
-      } else if (this.totalPoints <= 37 && this.totalPoints > 23) {
+      } else if (this.totalPoints <= 23 && this.totalPoints > 17) {
           this.color = ICON_COLOR_GRAY;
           this.size = 40;
-      } else if (this.totalPoints <= 23 && this.totalPoints > 15) {
+      } else if (this.totalPoints <= 17 && this.totalPoints >= 10) {
           this.color = ICON_COLOR_ORANGE;
           this.size = 30;
-      } else if (this.totalPoints < 15) {
+      } else if (this.totalPoints < 10) {
           this.color = ICON_COLOR_RED;
           this.size = 20;
       }
 
       this.icon = {
-          url: 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2238%22%20height%3D%2238%22%20viewBox%3D%220%200%2038%2038%22%3E%3Cpath%20fill%3D%22%23' + this.color + '%22%20stroke%3D%22%23ccc%22%20stroke-width%3D%22.5%22%20d%3D%22M34.305%2016.234c0%208.83-15.148%2019.158-15.148%2019.158S3.507%2025.065%203.507%2016.1c0-8.505%206.894-14.304%2015.4-14.304%208.504%200%2015.398%205.933%2015.398%2014.438z%22%2F%3E%3Ctext%20transform%3D%22translate%2819%2018.5%29%22%20fill%3D%22%23fff%22%20style%3D%22font-family%3A%20Arial%2C%20sans-serif%3Bfont-weight%3Abold%3Btext-align%3Acenter%3B%22%20font-size%3D%2212%22%20text-anchor%3D%22middle%22%3E' + this.totalPoints + '%3C%2Ftext%3E%3C%2Fsvg%3E',
+          url: iconUrl1 + this.color + iconUrl2 + this.totalPoints + iconUrl3,
           scaledSize: { width: this.size * this.scale, height: this.size * this.scale }
       };
   }
