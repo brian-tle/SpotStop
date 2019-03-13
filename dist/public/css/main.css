@@ -1,3 +1,10 @@
+.leaderboard-container {
+  display: flex;
+}
+.leaderboard-container > div {
+  flex: 1; /*grow*/
+}
+
 .menu-btn {
   position: absolute;
   z-index: 3;
