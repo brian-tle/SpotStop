@@ -29,7 +29,7 @@ function handleMarkerC(ip, _id) {
 		dbo.collection("clients").findOne({ip: ip}, function(err, result) {
 			if (err) throw err;
 			if (result) {
-				dbo.collection("clients").update({ip: ip}, { $push: { markerListC: _id } });
+				dbo.collection("clients").updateOne({ip: ip}, { $push: { markerListC: _id } });
 			}
 			db.close();
 		});
@@ -40,7 +40,7 @@ function checkMarkerExistsM(ip, id) {
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
-		dbo.collection("clients").findOnegcl({ ip: ip, markerListM: [id] }, function(err, result) {
+		dbo.collection("clients").findOne({ ip: ip, markerListM: [id] }, function(err, result) {
 			if (err) throw err;
 			if (result) { 
 				db.close();
