@@ -17,8 +17,7 @@ function initMap() {
     controls: google.maps,
     mapTypeControlOptions: {      
       mapTypeIds: [
-        google.maps.MapTypeId.ROADMAP,
-        google.maps.MapTypeId.SATELLITE
+
       ]
     }
   });
