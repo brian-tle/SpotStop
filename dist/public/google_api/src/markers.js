@@ -36,7 +36,7 @@ function removeLastMarker() {
 }
 
 class Marker {
-  constructor(map, x, y, totalPoints = 40, existing = false, des = "New Marker", _id = 'undefined') {
+  constructor(map, x, y, totalPoints = 20, existing = false, des = "New Marker", _id = 'undefined') {
     this.lat = x;
     this.lng = y;
     this.default = { lat: parseFloat(x), lng: parseFloat(y) };
