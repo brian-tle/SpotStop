@@ -48,10 +48,8 @@ function initAutocomplete() {
   document.getElementById('all-searches').onchange = function () {
     if (document.getElementById('all-searches').checked == true) {
       search_engine = new google.maps.places.Autocomplete(query);
-
       // bind the bound so that it will prioritize the search based on the given location
       search_engine.bindTo('bounds', map);
-
       infowindow = new google.maps.InfoWindow();
       infowindowContent = document.getElementById('infowindow-content');
       infowindow.setContent(infowindowContent);
