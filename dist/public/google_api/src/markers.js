@@ -1,7 +1,7 @@
 const ICON_COLOR_RED =        'ff0000';  //BAD
 const ICON_COLOR_ORANGE =     'ffab44';  //EH
 const ICON_COLOR_NEUTRAL_BLUE =       '2568db';  //NOOTRAL
-const ICON_COLOR_GREEN =      '63ff85';  //mellou
+const ICON_COLOR_TEAL =      '49a2af';  //mellou
 const ICON_COLOR_DARK_GREEN = '0d9e00';  //WOO
 
 const ICON_SCALE_MAX = 1.00;
@@ -36,7 +36,7 @@ function removeLastMarker() {
 }
 
 class Marker {
-  constructor(map, x, y, totalPoints = 20, existing = false, des = "New Marker", _id = 'undefined') {
+  constructor(map, x, y, totalPoints = 40, existing = false, des = "New Marker", _id = 'undefined') {
     this.lat = x;
     this.lng = y;
     this.default = { lat: parseFloat(x), lng: parseFloat(y) };
@@ -154,7 +154,7 @@ class Marker {
           this.color = ICON_COLOR_DARK_GREEN;
           this.size = 60;
       } else if (this.totalPoints <= 31 && this.totalPoints > 23) {
-          this.color = ICON_COLOR_GREEN;
+          this.color = ICON_COLOR_TEAL;
           this.size = 50;
       } else if (this.totalPoints <= 23 && this.totalPoints > 17) {
           this.color = ICON_COLOR_NEUTRAL_BLUE;
