@@ -29,7 +29,7 @@ function handleMarkerC(ip, _id) {
 		dbo.collection("clients").findOne({ip: ip}, function(err, result) {
 			if (err) throw err;
 			if (result) {
-				dbo.collection("clients").update({ip: ip}, { $push: { markerListC: [_id] } });
+				dbo.collection("clients").update({ip: ip}, { $push: { markerListC: _id } });
 			}
 			db.close();
 		});
