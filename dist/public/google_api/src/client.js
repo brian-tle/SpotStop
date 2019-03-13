@@ -23,7 +23,7 @@ function getAllMarkers(map){
     method : 'GET',
     success : function(data){
       data.forEach(marker => {
-        markerList.push(new Marker(map, marker.lat, marker.lng, (marker.upvote - marker.downvote) + 20, true, marker.des, marker._id));
+        markerList.push(new Marker(map, marker.lat, marker.lng, marker.display_name, (marker.upvote - marker.downvote) + 20, true, marker.des, marker._id));
       });
     },
 
@@ -33,8 +33,8 @@ function getAllMarkers(map){
   });
 }
 
-function createMarker(lat, lng, des, upvote, downvote) {
-  data = { lat: lat, lng: lng, des: des, upvote: upvote, downvote: downvote };
+function createMarker(lat, lng, name, des, upvote, downvote) {
+  data = { lat: lat, lng: lng, name: name, des: des, upvote: upvote, downvote: downvote };
   $.ajax({
     type: 'POST',
     url: url + '/createMarker',

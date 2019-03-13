@@ -1,13 +1,11 @@
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectID
 const express = require('express');
-const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
-
 const url = "mongodb://test:testpassword@spot-stop-shard-00-00-ruq20.mongodb.net:27017,spot-stop-shard-00-01-ruq20.mongodb.net:27017,spot-stop-shard-00-02-ruq20.mongodb.net:27017/test?ssl=true&replicaSet=spot-stop-shard-0&authSource=admin&retryWrites=true";
-const server = express()
-const port = 8080
-const path  = require('path')
+const server = express();
+const port = 8080;
+const path  = require('path');
 
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: false}));
@@ -41,11 +39,11 @@ function checkMarkerExists(markerList, id) {
 	return -1;
 }
 
-function addMarker(res, clientIndex, lat, lng, des, upvote, downvote){ 
+function addMarker(res, clientIndex, name, lat, lng, des, upvote, downvote){ 
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
-		var marker = { lat: lat, lng: lng, des: des, upvote: upvote, downvote: downvote};
+		var marker = { lat: lat, lng: lng, name:name,des: des, upvote: upvote, downvote: downvote};
 		dbo.collection("markers").insertOne(marker, function(err, result) {
 			if (err) throw err;
 			res.send(marker._id);
@@ -107,30 +105,6 @@ function downvoteMarker(_id, val) {
 	}); 
 }
 
-function sendMail(req) {
-	const output = req.body.message + '<br/>by ' + req.body.email;
-	let transporter = nodemailer.createTransport({
-	  service: 'gmail.com',
-	  port: 587,
-	  auth: {
-		  user: 'spotstopsfhack2019@gmail.com',
-		  pass: 'sfhack2019'
-	  }
-	});
-	let mailOptions = {
-	  from: `shotaebikawa@gmail.com`,
-	  to: 'spotstopsfhack2019@gmail.com',
-	  subject: req.body.name,
-	  html: output
-	};
-	transporter.sendMail(mailOptions, function(error, info) {
-	  if (error) {
-		return console.log(error);
-	  }
-	  console.log('Message sent: %s', info.messageId);
-	  console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-	});
-}
 
 server.all('/*', function(req, res, next) { 
 	res.header("Access-Control-Allow-Origin", "*");
@@ -138,9 +112,6 @@ server.all('/*', function(req, res, next) {
 	next();
 });
 
-server.get('https://sfhacks2019-1551558382883.appspot.com/homepage', function(req, res) {
-	res.sendFile(path.resolve("../home.html"));
-});
 
 server.get('/getAllMarkers', function(req, res, next) {
 	getAllMarkers(res);
@@ -163,7 +134,7 @@ server.post("/createMarker", (req, res) => {
 	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
 	var clientIndex = checkClientExists(ip);
 	if (clientIndex != -1) {
-		addMarker(res, clientIndex, req.body.lat, req.body.lng, req.body.des, req.body.upvote, req.body.downvote);
+		addMarker(res, clientIndex, req.body.name, req.body.lat, req.body.lng, req.body.des, req.body.upvote, req.body.downvote);
 	}
 });
 
@@ -211,12 +182,5 @@ server.post("/downvoteMarker", (req, res) => {
 	}
 });
 
-server.post('/sendmail', (req, res) => {
-	sendMail(req); 
-	res.send({
-		msg: 'Email has been sent!'
-	});
-	
-});
 
 server.listen(port, () => console.log(`Server listening on port ${port}!`));

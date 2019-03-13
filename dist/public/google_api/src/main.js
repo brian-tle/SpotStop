@@ -32,7 +32,6 @@ function initMap() {
 }
 
 function initAutocomplete() {
-
   // query is essentially an input tag w/ the search box
   var search_engine;
   var search_div = document.getElementById('search-div');
@@ -46,7 +45,6 @@ function initAutocomplete() {
   // search_engine is what enables query to access the api
   // make query part of maps control
   map.controls[google.maps.ControlPosition.LEFT_TOP].push(search_div);
-
   document.getElementById('all-searches').onchange = function () {
     if (document.getElementById('all-searches').checked == true) {
       search_engine = new google.maps.places.Autocomplete(query);
@@ -62,7 +60,6 @@ function initAutocomplete() {
         icon: 'http://earth.google.com/images/kml-icons/track-directional/track-8.png',
         anchorPoint: new google.maps.Point(0, -29)
       });
-
       autcomplete = search_engine.addListener('place_changed', function () {
         infowindow.close();
         marker.setVisible(false);
@@ -87,6 +84,7 @@ function initAutocomplete() {
       google.maps.event.removeListener(autocomplete);
       google.maps.event.clearInstanceListeners(search_engine);
       $('.pac-container').remove();
+      
     }
   }
 

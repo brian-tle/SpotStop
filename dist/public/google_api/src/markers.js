@@ -25,7 +25,7 @@ function addLabel() {
   markerList[markerList.length - 1].popupCreated = true;
   markerList[markerList.length - 1].popup.inRange = true;
   markerList[markerList.length - 1].indicator.setVisible(true);
-  createMarker(markerList[markerList.length - 1].lat, markerList[markerList.length - 1].lng, markerList[markerList.length - 1].des, 0, 0);
+  createMarker(markerList[markerList.length - 1].lat, markerList[markerList.length - 1].lng,markerList[markerList.length-1].display_name, markerList[markerList.length - 1].des, 0, 0);
   //getMarkerIDFromLatLng(markerList[markerList.length - 1].lat, markerList[markerList.length - 1].lng);
   infowindow.close();
 }
@@ -36,9 +36,10 @@ function removeLastMarker() {
 }
 
 class Marker {
-  constructor(map, x, y, totalPoints = 20, existing = false, des = "New Marker", _id = 'undefined') {
+  constructor(map, x, y, display_name, totalPoints = 20, existing = false, des = "New Marker", _id = 'undefined') {
     this.lat = x;
     this.lng = y;
+    this.display_name = display_name;
     this.default = { lat: parseFloat(x), lng: parseFloat(y) };
     this.positionOffset = { lat: parseFloat(x + 0.0005), lng: parseFloat(y) };
     this.infoWindowOffset = { lat: parseFloat(x + 0.0002), lng: parseFloat(y) };

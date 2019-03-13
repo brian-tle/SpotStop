@@ -1,7 +1,7 @@
 var cursorRunning = false;
 var inRangeIndicator = false;
 var inRangeLabel = false;
-
+var display_name;
 function CenterControl(controlDiv, map) {
   // Set CSS for the control border.
   var controlUI = document.createElement("div");
@@ -40,7 +40,16 @@ function CenterControl(controlDiv, map) {
 function addListenerControl(map) {
   map.addListener("click", function(event) {
     if (cursorRunning) {
-      markerList.push(new Marker(map, event.latLng.lat(), event.latLng.lng()));
+      $.getJSON("https://nominatim.openstreetmap.org/reverse?format=json&lat="+event.latLng.lat()+"&lon="+event.latLng.lng(), function(json){
+               //do some thing with json  or assign global variable to incoming json.
+                display_name=json;
+          });
+          if (!display_name) {
+            markerList.push(new Marker(map, event.latLng.lat(), event.latLng.lng()));
+          }
+          else {
+            markerList.push(new Marker(map, event.latLng.lat(), event.latLng.lng(), display_name["display_name"]));
+          }
       markerList[markerList.length - 1].zoomToMarker(map, false);
       map.setOptions({
         draggableCursor:
