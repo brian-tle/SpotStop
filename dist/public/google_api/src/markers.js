@@ -1,6 +1,6 @@
 const ICON_COLOR_RED =        'ff0000';  //BAD
 const ICON_COLOR_ORANGE =     'ffab44';  //EH
-const ICON_COLOR_NEUTRAL_BLUE =       '0090ff';  //NOOTRAL
+const ICON_COLOR_NEUTRAL_BLUE =       '2568db';  //NOOTRAL
 const ICON_COLOR_GREEN =      '63ff85';  //mellou
 const ICON_COLOR_DARK_GREEN = '0d9e00';  //WOO
 
