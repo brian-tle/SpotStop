@@ -52,22 +52,6 @@ function handleUpvoteMarkerM(ip, _id) {
 	return false;
 }
 
-function handleDownvoteMarkerM(ip, _id) {
-	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
-		if (err) throw err;
-		var dbo = db.db("spot_stop");
-		dbo.collection("clients").findOne({ ip: ip }, function(err, result) {
-			if (err) throw err;
-			if (result) {
-				handleDownvoteDecision(ip, _id);
-			}
-			db.close();
-		});
-	});
-
-	return false;
-}
-
 function handleUpvoteDecision(ip, _id) {
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;
@@ -96,11 +80,27 @@ function handleUpvoteSwitch(ip, _id) {
 				dbo.collection("clients").updateOne({ip: ip}, { $pull: { markerListM: {_id: _id, value: -1} } });
 				dbo.collection("clients").updateOne({ip: ip}, { $push: { markerListM: {_id: _id, value: 1} } });
 				upvoteMarker(_id, 1);
-				downvoteMarker(_id -1);
+				downvoteMarker(_id, -1);
 			}
 			db.close();
 		});
 	});
+}
+
+function handleDownvoteMarkerM(ip, _id) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		dbo.collection("clients").findOne({ ip: ip }, function(err, result) {
+			if (err) throw err;
+			if (result) {
+				handleDownvoteDecision(ip, _id);
+			}
+			db.close();
+		});
+	});
+
+	return false;
 }
 
 function handleDownvoteDecision(ip, _id) {
@@ -218,7 +218,6 @@ function downvoteMarker(_id, val) {
 	}); 
 }
 
-
 server.all('/*', function(req, res, next) { 
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Headers", "Content-Type");
@@ -244,14 +243,12 @@ server.post("/createMarker", (req, res) => {
 
 server.post("/upvoteMarker", (req, res) => {
 	res.send('Upvoting Marker!');
-	var markerIncrement = 1;
 	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
 	handleUpvoteMarkerM(ip, req.body._id);
 });
 
 server.post("/downvoteMarker", (req, res) => {
 	res.send('Downvoting Marker!');
-	var markerIncrement = 1;
 	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
 	handleDownvoteMarkerM(ip, req.body._id);
 });
