@@ -36,20 +36,107 @@ function handleMarkerC(ip, _id) {
 	});
 }
 
-function checkMarkerExistsM(ip, id) {
+function handleUpvoteMarkerM(ip, _id) {
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
-		dbo.collection("clients").findOne({ ip: ip, markerListM: [id] }, function(err, result) {
+		dbo.collection("clients").findOne({ ip: ip }, function(err, result) {
 			if (err) throw err;
-			if (result) { 
-				db.close();
+			if (result) {
+				handleUpvoteDecision(ip, _id);
 			}
 			db.close();
 		});
 	});
 
 	return false;
+}
+
+function handleDownvoteMarkerM(ip, _id) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		dbo.collection("clients").findOne({ ip: ip }, function(err, result) {
+			if (err) throw err;
+			if (result) {
+				handleDownvoteDecision(ip, _id);
+			}
+			db.close();
+		});
+	});
+
+	return false;
+}
+
+function handleUpvoteDecision(ip, _id) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		dbo.collection("clients").findOne({ ip: ip, markerListM: {$elemMatch: {_id: _id}} }, function(err, result) {
+			if (err) throw err;
+			if (result) { 
+				handleUpvoteSwitch(ip, _id);
+			}
+			else {
+				dbo.collection("clients").updateOne({ip: ip}, { $push: { markerListM: {_id: _id, value: 1} } });
+				upvoteMarker(_id, 1);
+			}
+			db.close();
+		});
+	});
+}
+
+function handleUpvoteSwitch(ip, _id) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		dbo.collection("clients").findOne({ ip: ip, markerListM: {$elemMatch: {_id: _id, value: -1}} }, function(err, result) {
+			if (err) throw err;
+			if (result) { 
+				dbo.collection("clients").updateOne({ip: ip}, { $pull: { markerListM: {_id: _id, value: -1} } });
+				dbo.collection("clients").updateOne({ip: ip}, { $push: { markerListM: {_id: _id, value: 1} } });
+				upvoteMarker(_id, 1);
+				downvoteMarker(_id -1);
+			}
+			db.close();
+		});
+	});
+}
+
+function handleDownvoteDecision(ip, _id) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		var client = { ip: ip, markerListM: [], markerListC: [] };
+		dbo.collection("clients").findOne({ ip: ip, markerListM: {$elemMatch: {_id: _id}} }, function(err, result) {
+			if (err) throw err;
+			if (result) { 
+				handleDownvoteSwitch(ip, _id);
+			}
+			else {
+				dbo.collection("clients").updateOne({ip: ip}, { $push: { markerListM: {_id: _id, value: -1} } });
+				downvoteMarker(_id, 1);
+			}
+			db.close();
+		});
+	});
+}
+
+function handleDownvoteSwitch(ip, _id) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		dbo.collection("clients").findOne({ ip: ip, markerListM: {$elemMatch: {_id: _id, value: 1}} }, function(err, result) {
+			if (err) throw err;
+			if (result) { 
+				dbo.collection("clients").updateOne({ip: ip}, { $pull: { markerListM: {_id: _id, value: 1} } });
+				dbo.collection("clients").updateOne({ip: ip}, { $push: { markerListM: {_id: _id, value: -1} } });
+				downvoteMarker(_id, 1);
+				upvoteMarker(_id, -1);
+			}
+			db.close();
+		});
+	});
 }
 
 function addClient(ip) {
@@ -159,46 +246,14 @@ server.post("/upvoteMarker", (req, res) => {
 	res.send('Upvoting Marker!');
 	var markerIncrement = 1;
 	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
-	// var clientIndex = checkClientExists(ip);
-	// var markerIndex;
-	// if (clientIndex != -1) {
-	// 	markerIndex = checkMarkerExists(clientList[clientIndex].markerListM, req.body._id);
-	// 	if (markerIndex == -1) {
-	// 		clientList[clientIndex].markerListM.push(new Marker(req.body._id, markerIncrement));
-	// 		upvoteMarker(req.body._id, markerIncrement);
-	// 	}
-	// 	else {
-	// 		if (clientList[clientIndex].markerListM[markerIndex].value < markerIncrement) {
-	// 			clientList[clientIndex].markerListM[markerIndex].value = markerIncrement;
-	// 			upvoteMarker(req.body._id, markerIncrement);
-	// 			downvoteMarker(req.body._id, -markerIncrement);
-	// 		}
-	// 	}
-	// }
-	upvoteMarker(req.body._id, markerIncrement);
+	handleUpvoteMarkerM(ip, req.body._id);
 });
 
 server.post("/downvoteMarker", (req, res) => {
 	res.send('Downvoting Marker!');
 	var markerIncrement = 1;
 	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
-	// var clientIndex = checkClientExists(ip);
-	// var markerIndex;
-	// if (clientIndex != -1) {
-	// 	markerIndex = checkMarkerExists(clientList[clientIndex].markerListM, req.body._id);
-	// 	if (markerIndex == -1) {
-	// 		clientList[clientIndex].markerListM.push(new Marker(req.body._id, -markerIncrement));
-	// 		downvoteMarker(req.body._id, markerIncrement);
-	// 	}
-	// 	else {
-	// 		if (clientList[clientIndex].markerListM[markerIndex].value > -markerIncrement) {
-	// 			clientList[clientIndex].markerListM[markerIndex].value = -markerIncrement;
-	// 			downvoteMarker(req.body._id, markerIncrement);
-	// 			upvoteMarker(req.body._id, -markerIncrement);
-	// 		}
-	// 	}
-	// }
-	downvoteMarker(req.body._id, markerIncrement);
+	handleDownvoteMarkerM(ip, req.body._id);
 });
 
 
