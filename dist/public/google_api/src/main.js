@@ -186,7 +186,7 @@ function initAutocomplete() {
 // set the map's center to the given result's latitude and longitude
 function getMarkers(x, y) {
   map.setCenter({lat:x, lng:y});
-  map.setZoom(17);
+  map.setZoom(25);
 }
 
 
