@@ -1,5 +1,14 @@
 markerList = [];
+var count;
 var map;
+// stores the query marker name
+var s = [];
+// stores query markers lat lng
+var m_list = {};
+// stores query
+var m_l = {};
+var onkey;
+var marker_pred;
 var mapOptions = {
   streetViewControl: false,
   fullscreenControl: false
@@ -42,50 +51,124 @@ function initAutocomplete() {
   var marker;
   var place;
   var autocomplete;
-  // search_engine is what enables query to access the api
-  // make query part of maps control
   map.controls[google.maps.ControlPosition.LEFT_TOP].push(search_div);
+
+
+// THIS ENABLES THE GOOLE API AUTOCOMPLETE FEATURE
   document.getElementById('all-searches').onchange = function () {
+    // IF ALL RADIO BUTTON IS CLICKED
     if (document.getElementById('all-searches').checked == true) {
+      // hide the marker search widget
+      $('#search_list').hide();
+      // reset this count to zero
+      count = 0;
+      // initialize autocomplete
       search_engine = new google.maps.places.Autocomplete(query);
       // bind the bound so that it will prioritize the search based on the given location
       search_engine.bindTo('bounds', map);
       infowindow = new google.maps.InfoWindow();
       infowindowContent = document.getElementById('infowindow-content');
       infowindow.setContent(infowindowContent);
+      // initialize new marker that points to the location results
       marker = new google.maps.Marker({
         map: map,
         icon: 'http://earth.google.com/images/kml-icons/track-directional/track-8.png',
         anchorPoint: new google.maps.Point(0, -29)
       });
+      // this enables autocomplete to give user the location of their query
       autcomplete = search_engine.addListener('place_changed', function () {
         infowindow.close();
         marker.setVisible(false);
         place = search_engine.getPlace();
+        // IF place doesn't have geometry
         if (!place.geometry) {
           return;
         }
+        // IF place has a viewport
         if (place.geometry.viewport) {
           map.fitBounds(place.geometry.viewport);
         }
+        // set the map's center view to the give search results' lat and lng
         else {
           map.setCenter(place.geometry.location);
           map.setZoom(13);
         }
+        // set search result's lat and lng to the marker
         marker.setPosition(place.geometry.location);
         marker.setVisible(true);
       });
     }
   }
+
+
+  // THIS ENABLES MARKER SEARCH FEATURE
   document.getElementById('database').onchange = function () {
+    // IF MARKER RADIO BUTTON IS CLICKED
     if (document.getElementById('database').checked == true) {
-      google.maps.event.removeListener(autocomplete);
-      google.maps.event.clearInstanceListeners(search_engine);
+      // if search_engine variable was initialized from All radio search,
+      // get rid of it
+      if (search_engine) {
+        google.maps.event.removeListener(autocomplete);
+        google.maps.event.clearInstanceListeners(search_engine);
+      }
+      // show the search widget list
+      // and get rid of the autocomplete widget list
+      $('#search_list').show();
       $('.pac-container').remove();
-      
+      // make an api call to get all the existing marker's data
+      $.getJSON('https://sfhacks2019-1551558382883.appspot.com/getAllMarkers', function (data) {
+        marker_pred = data;
+      });
+      // count is set to zero so that m_l knows which element to store and vice versa
+      count = 0;
+      // this keeps track of every input changes
+      // var i is to keep track the s array
+      // var m stores the marker of the given query
+      $('#input').on('input', function () {
+        var i = 0;
+        var m;
+        // IF count is still 0 and input value is none,
+        // store all the existing markers to m_list
+        if (count == 0 || document.getElementById('input').value == '') {
+          for (var key in marker_pred) {
+            if (marker_pred.hasOwnProperty(key)) {
+              m = new google.maps.Marker({
+                map: map
+              });
+              m_list[marker_pred[key].name] = { lat: parseFloat(marker_pred[key].lat), lng: parseFloat(marker_pred[key].lng) };
+              s.push(marker_pred[key].name);
+              if (!m_l[s[i]]) {
+                m_l[s[i]] = 0;
+              }
+              if ((s[i] && document.getElementById('input').value != '' || s[i] && document.getElementById('input').value != ' ') && s[i].includes(document.getElementById('input').value)) {
+                if (m_l[s[i]] == 0) {
+                  document.getElementById('search_list').innerHTML += '<li style="width: 300px;list-style-type:none; ">' + '<a href = "javascript:getMarkers(parseFloat(' + m_list[marker_pred[key].name].lat + '), parseFloat(' + m_list[marker_pred[key].name].lng + '))" style="color:black">' + s[i] + '</a>' + '<hr/>' + '</li>';
+                  m_l[s[i]] = 1;
+                }
+                onkey = $('#input').on('keydown', function (e) {
+                  const kk = e.key;
+                  if (kk) {
+                    document.getElementById('search_list').innerHTML = '';
+                    for (var k in m_l) {
+                      if (m_l.hasOwnProperty(k)) {
+                        m_l[k] = 0;
+                      }
+                    }
+                  }
+                });
+              }
+              i++;
+            }
+          }
+        }
+      });
     }
   }
+}
 
+function getMarkers(x, y) {
+  map.setCenter({lat:x, lng:y});
+  map.setZoom(17);
 }
 
 
