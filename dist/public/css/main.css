@@ -1,8 +1,5 @@
 .leaderboard-container {
-  display: flex;
-}
-.leaderboard-container > div {
-  flex: 1; /*grow*/
+  margin: auto;
 }
 
 .menu-btn {

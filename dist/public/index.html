@@ -16,7 +16,9 @@
     <title>Spot Stop</title>
   </head>
 
-  <body id="bg-img" onload="initialize()" onresize="initialize()">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js"></script>
+
+  <body id="bg-img">
     <header>
       <div class="menu-btn">
         <div class="btn-line"></div>
@@ -91,23 +93,11 @@
         </div>
         </div>
       </div> -->
-      <div class="leaderboard-container">
-        <div style="text-align: center">
-          <canvas id="leaderboard1" style="border:4px solid #d3d3d3;">
-          Your browser does not support the HTML5 canvas tag.</canvas>
-        </div>
-        <div style="text-align: center">
-          <canvas id="leaderboard2" style="border:4px solid #d3d3d3;">
-          Your browser does not support the HTML5 canvas tag.</canvas>
-        </div>
-        <div style="text-align: center">
-          <canvas id="leaderboard3" style="border:4px solid #d3d3d3;">
-          Your browser does not support the HTML5 canvas tag.</canvas>
-        </div>
+      <div class="engine-container">
+        <script src="js/leaderboard/engine.js"></script>
+        <script src="js/leaderboard/joiner.js"></script>
       </div>
     </main>
-
     <script src="js/main.js"></script>
-    <script src="js/leaderboard.js"></script>
   </body>
 </html>
