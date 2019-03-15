@@ -1,5 +1,6 @@
 markerList = [];
 var count;
+var list_number;
 var map;
 // stores the query marker name
 var s = [];
@@ -58,6 +59,7 @@ function initAutocomplete() {
   document.getElementById('all-searches').onchange = function () {
     // IF ALL RADIO BUTTON IS CLICKED
     if (document.getElementById('all-searches').checked == true) {
+      list_number = 0;
       // hide the marker search widget
       $('#search_list').hide();
       // reset this count to zero
@@ -132,31 +134,46 @@ function initAutocomplete() {
         if (count == 0 || document.getElementById('input').value == '') {
           for (var key in marker_pred) {
             if (marker_pred.hasOwnProperty(key)) {
+              // initialize a marker
               m = new google.maps.Marker({
                 map: map
               });
+              // add a marker to m_list with {marker's name: {lat: value of lat, lng: value of lng}}
               m_list[marker_pred[key].name] = { lat: parseFloat(marker_pred[key].lat), lng: parseFloat(marker_pred[key].lng) };
+              // have array s push the name
               s.push(marker_pred[key].name);
+              // if the given name hasn't been added to m_l, 
+              // ADD THAT NAME
               if (!m_l[s[i]]) {
                 m_l[s[i]] = 0;
               }
+              // if given query input IS INCLUDED IN MARKER'S NAME AS A SUBSTRING
               if ((s[i] && document.getElementById('input').value != '' || s[i] && document.getElementById('input').value != ' ') && s[i].includes(document.getElementById('input').value)) {
-                if (m_l[s[i]] == 0) {
+                // value of 0 means that it has not been added to the list tag
+                // so it will add it to the list tag. BUT if the value is 1, it means
+                // that it was already added to the list tag, so omit
+                if (m_l[s[i]] == 0 && list_number < 5) {
                   document.getElementById('search_list').innerHTML += '<li style="width: 300px;list-style-type:none; ">' + '<a href = "javascript:getMarkers(parseFloat(' + m_list[marker_pred[key].name].lat + '), parseFloat(' + m_list[marker_pred[key].name].lng + '))" style="color:black">' + s[i] + '</a>' + '<hr/>' + '</li>';
                   m_l[s[i]] = 1;
+                  list_number += 1;
+
                 }
+                // if input value is changed, either delete the list tag with irrelevant name
                 onkey = $('#input').on('keydown', function (e) {
                   const kk = e.key;
                   if (kk) {
                     document.getElementById('search_list').innerHTML = '';
+                    // set all m_l's value back to 0
                     for (var k in m_l) {
                       if (m_l.hasOwnProperty(k)) {
                         m_l[k] = 0;
+                        list_number = 0;
                       }
                     }
                   }
                 });
               }
+              // increment array s's index by 1
               i++;
             }
           }
@@ -166,6 +183,7 @@ function initAutocomplete() {
   }
 }
 
+// set the map's center to the given result's latitude and longitude
 function getMarkers(x, y) {
   map.setCenter({lat:x, lng:y});
   map.setZoom(17);
