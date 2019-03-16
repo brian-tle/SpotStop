@@ -22,7 +22,7 @@ class Joiner {
 
 		this.valve = new Valve('img/valve.png', SCREENWIDTH / 2, SCREENHEIGHT / 2);
 
-		this.introStep = 0;
+		this.introStep = -1;
 		this.introTimer = 0;
 	}
 
@@ -37,6 +37,16 @@ class Joiner {
 	}
 
 	updateIntro(elapsedTimeS) {
+		if (this.introStep == -1) {
+			if (this.introTimer > 0.8) {
+				this.introStep += 1;
+				this.introTimer = 0;
+			}
+			else {
+				this.introTimer += elapsedTimeS;
+			}
+		}
+
 		if (this.introStep == 0) {
 			if (this.introTimer > 1.0435) {
 				this.introStep += 1;
@@ -49,9 +59,9 @@ class Joiner {
 		}
 
 		if (this.introStep == 1) {
-			if (this.vaultBarLeft.sprite.y + this.vaultBarLeft.sprite.height > 100) {
-				this.vaultBarLeft.slideUp(elapsedTimeS, 800);
-				this.vaultBarRight.slideDown(elapsedTimeS, 800);
+			if (this.vaultBarLeft.sprite.y + this.vaultBarLeft.sprite.height > 125) {
+				this.vaultBarLeft.slideUp(elapsedTimeS, 1000);
+				this.vaultBarRight.slideDown(elapsedTimeS, 1000);
 			}
 			else {
 				this.introStep += 1;
