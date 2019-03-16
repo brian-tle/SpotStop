@@ -1,6 +1,7 @@
 class Joiner {
 	constructor() {
 		this.container1 = new Rectangle(0, 0, SCREENWIDTH / 3, SCREENHEIGHT);
+		this.containerText1 = new TextObject("Leaderboard", 96, 0x9A0000, SCREENWIDTH / 2, 48);
 		this.container2 = new Rectangle(SCREENWIDTH / 3, 0, SCREENWIDTH / 3, SCREENHEIGHT);
 		this.container3 = new Rectangle(SCREENWIDTH * (2 / 3), 0, SCREENWIDTH / 3, SCREENHEIGHT);
 
@@ -16,9 +17,11 @@ class Joiner {
 		this.vaultBarRight = new VaultBar('img/vault_bar.png', (SCREENWIDTH / 2) + 50, 0);
 
 		this.vaultLockLeftTop = new VaultLock('img/vault_lock.png', (SCREENWIDTH / 2) - 85, 0);
+		this.vaultLockLeftTop2 = new VaultLock('img/vault_lock_2.png', (SCREENWIDTH / 2) - 85, 40);
 		this.vaultLockLeftBottom = new VaultLock('img/vault_lock.png', (SCREENWIDTH / 2) - 85, SCREENHEIGHT - 40);
 		this.vaultLockRightTop = new VaultLock('img/vault_lock.png', (SCREENWIDTH / 2) + 45, 0);
 		this.vaultLockRightBottom = new VaultLock('img/vault_lock.png', (SCREENWIDTH / 2) + 45, SCREENHEIGHT - 40);
+		this.vaultLockRightBottom2 = new VaultLock('img/vault_lock_3.png', (SCREENWIDTH / 2) + 45, SCREENHEIGHT - 80);
 
 		this.valve = new Valve('img/valve.png', SCREENWIDTH / 2, SCREENHEIGHT / 2);
 
@@ -32,8 +35,12 @@ class Joiner {
 
 	draw() {
 		drawRectOutline(0, 0, SCREENWIDTH, SCREENHEIGHT, 0x000000, 20);
-		drawLine(SCREENWIDTH / 3, 10, SCREENWIDTH / 3, SCREENHEIGHT - 10, 0x000000, 10);
-		drawLine(SCREENWIDTH * (2 / 3), 10, SCREENWIDTH * (2 / 3), SCREENHEIGHT - 10, 0x000000, 10);
+		drawLine(SCREENWIDTH * 0.3, 90, SCREENWIDTH * 0.7, 90, 0x000000, 10);
+		drawLine(SCREENWIDTH * 0.3, 0, SCREENWIDTH * 0.3, 95, 0x000000, 10);
+		drawLine(SCREENWIDTH * 0.7, 0, SCREENWIDTH * 0.7, 95, 0x000000, 10);
+		drawLine(SCREENWIDTH / 3, 90, SCREENWIDTH / 3, SCREENHEIGHT - 10, 0x000000, 10);
+		drawLine(SCREENWIDTH / 3, 90, SCREENWIDTH / 3, SCREENHEIGHT - 10, 0x000000, 10);
+		drawLine(SCREENWIDTH * (2 / 3), 90, SCREENWIDTH * (2 / 3), SCREENHEIGHT - 10, 0x000000, 10);
 	}
 
 	updateIntro(elapsedTimeS) {
@@ -59,7 +66,7 @@ class Joiner {
 		}
 
 		if (this.introStep == 1) {
-			if (this.vaultBarLeft.sprite.y + this.vaultBarLeft.sprite.height > 125) {
+			if (this.vaultBarLeft.sprite.y + this.vaultBarLeft.sprite.height > 150) {
 				this.vaultBarLeft.slideUp(elapsedTimeS, 1000);
 				this.vaultBarRight.slideDown(elapsedTimeS, 1000);
 			}
@@ -80,25 +87,24 @@ class Joiner {
 
 		if (this.introStep == 3) {
 			if (this.doorLeft.sprite.x + this.doorLeft.sprite.width > 0) {
-				this.gearLeftTop.spinClockwise(elapsedTimeS, 2.5);
-				this.gearLeftBottom.spinCounterClockwise(elapsedTimeS, 2.5);
 				this.doorLeft.slideLeft(elapsedTimeS, 500);
 				this.vaultBarLeft.slideLeft(elapsedTimeS, 500);
 				this.vaultLockLeftBottom.slideLeft(elapsedTimeS, 500);
 				this.vaultLockLeftTop.slideLeft(elapsedTimeS, 500);
-			}
-
-			if (this.valve.sprite.x + this.valve.sprite.width > 0) {
-				this.valve.slideLeft(elapsedTimeS, 500);
-			}
-
-			if (this.doorRight.sprite.x < SCREENWIDTH) {
-				this.gearRightTop.spinCounterClockwise(elapsedTimeS, 2.5);
-				this.gearRightBottom.spinClockwise(elapsedTimeS, 2.5);
+				this.vaultLockLeftTop2.slideLeft(elapsedTimeS, 500);
 				this.doorRight.slideRight(elapsedTimeS, 500);
 				this.vaultBarRight.slideRight(elapsedTimeS, 500);
 				this.vaultLockRightBottom.slideRight(elapsedTimeS, 500);
+				this.vaultLockRightBottom2.slideRight(elapsedTimeS, 500);
 				this.vaultLockRightTop.slideRight(elapsedTimeS, 500);
+			}
+
+			if (this.valve.sprite.x + this.valve.sprite.width > 0) {
+				this.gearLeftTop.spinClockwise(elapsedTimeS, 2.5);
+				this.gearLeftBottom.spinCounterClockwise(elapsedTimeS, 2.5);
+				this.gearRightTop.spinCounterClockwise(elapsedTimeS, 2.5);
+				this.gearRightBottom.spinClockwise(elapsedTimeS, 2.5);
+				this.valve.slideLeft(elapsedTimeS, 500);
 			}
 		}
 	}

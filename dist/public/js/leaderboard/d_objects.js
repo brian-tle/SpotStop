@@ -12,6 +12,17 @@ class Rectangle {
 	drawOutlineFill(color = 0x000000, outlineColor = 0x000000, thickness = 1) { drawRectOutlineFill(this.x, this.y, this.width, this.height, color, outlineColor, thickness); }
 }
 
+class TextObject {
+	constructor(text, size, color, x, y) {
+		this.text = new PIXI.Text(text, {fontFamily : 'Arial', fontSize: size, fill : color, align : 'center'});
+		this.text.anchor.set(0.5);
+		this.text.x = x;
+		this.text.y = y;
+
+		stage.addChild(this.text);
+	}
+}
+
 class Door {
 	constructor(image, x) {
 		this.sprite = PIXI.Sprite.fromImage(image);

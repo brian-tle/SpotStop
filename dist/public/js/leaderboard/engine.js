@@ -26,8 +26,9 @@ function resize() {
 	renderer.view.style.top = ((window.innerHeight + renderer.height) / 8) + 'px';
 }
 
+//0x6495ed
 function initialize() {
-	renderer = PIXI.autoDetectRenderer(SCREENWIDTH, SCREENHEIGHT, {backgroundColor : 0x6495ed});
+	renderer = PIXI.autoDetectRenderer(SCREENWIDTH, SCREENHEIGHT, {backgroundColor : 0x707070});
 	document.body.appendChild(renderer.view);
 
 	stage = new PIXI.Container();
