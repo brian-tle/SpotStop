@@ -44,7 +44,6 @@ class StaticRectangleOutline {
 	}
 }
 
-
 class TextObject {
 	constructor(text, size, color, x, y) {
 		this.text = new PIXI.Text(text, {fontFamily : 'Arial', fontSize: size, fill : color, align : 'center'});
@@ -57,9 +56,9 @@ class TextObject {
 }
 
 class SpaceBackground {
-	constructor(image) {
-		this.sprite1 = PIXI.Sprite.fromImage(image);
-		this.sprite2 = PIXI.Sprite.fromImage(image);
+	constructor() {
+		this.sprite1 = new PIXI.Sprite(PIXI.loader.resources.space.texture);
+		this.sprite2 = new PIXI.Sprite(PIXI.loader.resources.space.texture);
 		this.sprite1.x = SCREENWIDTH / 3; this.sprite1.y = 75;
 		this.sprite2.x =  SCREENWIDTH * (2 / 3); this.sprite2.y = 75;
 
@@ -77,8 +76,8 @@ class SpaceBackground {
 }
 
 class SecondPanel {
-	constructor(image, x) {
-		this.sprite = PIXI.Sprite.fromImage(image);
+	constructor(x) {
+		this.sprite = new PIXI.Sprite(PIXI.loader.resources.panel_2.texture);
 		this.sprite.x = x;
 		this.sprite.y = 0;
 
@@ -87,8 +86,14 @@ class SecondPanel {
 }
 
 class Door {
-	constructor(image, x) {
-		this.sprite = PIXI.Sprite.fromImage(image);
+	constructor(index, x) {
+		if (index == 1) {
+			this.sprite = new PIXI.Sprite(PIXI.loader.resources.door_left.texture);
+		}
+		if (index == 2) {
+			this.sprite = new PIXI.Sprite(PIXI.loader.resources.door_right.texture);
+		}
+
 		this.sprite.x = x;
 		this.sprite.y = 0;
 
@@ -100,8 +105,8 @@ class Door {
 }
 
 class Gear { 
-	constructor(image, x, y) {
-		this.sprite = PIXI.Sprite.fromImage(image);
+	constructor(x, y) {
+		this.sprite = new PIXI.Sprite(PIXI.loader.resources.door_gear.texture);
 		this.sprite.anchor.set(0.5);
 		this.sprite.x = x;
 		this.sprite.y = y;
@@ -114,8 +119,8 @@ class Gear {
 }
 
 class Valve {
-	constructor(image, x, y) {
-		this.sprite = PIXI.Sprite.fromImage(image);
+	constructor(x, y) {
+		this.sprite = new PIXI.Sprite(PIXI.loader.resources.valve.texture);
 		this.sprite.anchor.set(0.5);
 		this.sprite.x = x;
 		this.sprite.y = y;
@@ -128,8 +133,8 @@ class Valve {
 }
 
 class VaultBar {
-	constructor(image, x, y) {
-		this.sprite = PIXI.Sprite.fromImage(image);
+	constructor(x, y) {
+		this.sprite = new PIXI.Sprite(PIXI.loader.resources.vault_bar.texture);
 		this.sprite.x = x;
 		this.sprite.y = y;
 
@@ -143,8 +148,17 @@ class VaultBar {
 }
 
 class VaultLock {
-	constructor(image, x, y) {
-		this.sprite = PIXI.Sprite.fromImage(image);
+	constructor(index, x, y) {
+		if (index == 1) {
+			this.sprite = new PIXI.Sprite(PIXI.loader.resources.vault_lock.texture);
+		}
+		if (index == 2) {
+			this.sprite = new PIXI.Sprite(PIXI.loader.resources.vault_lock_2.texture);
+		}
+		if (index == 3) {
+			this.sprite = new PIXI.Sprite(PIXI.loader.resources.vault_lock_3.texture);
+		}
+
 		this.sprite.x = x;
 		this.sprite.y = y;
 
@@ -156,17 +170,15 @@ class VaultLock {
 }
 
 class Confetti {
-	constructor(image) {
+	constructor() {
 		this.spriteList = [];
 		this.velocityXList = [];
 		this.velocityYList = [];
-
-		this.image = image;
 	}
 
 	generate(count, posX, posY) {
 		for (var x = 0; x < count; x++) {
-			this.spriteList.push(PIXI.Sprite.fromImage(this.image));
+			this.spriteList.push(new PIXI.Sprite(PIXI.loader.resources.confetti.texture));
 			this.velocityYList.push(-(Math.floor(Math.random() * (1200 - 600 + 1) + 600)));
 			this.velocityXList.push(Math.floor(Math.random() * (275 + 275 + 1) - 275));
 

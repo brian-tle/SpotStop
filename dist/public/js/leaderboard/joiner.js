@@ -1,8 +1,9 @@
 class Joiner {
 	constructor() {
-		this.spaceBackground = new SpaceBackground('img/leaderboard/space.png');
+		this.spaceBackground = new SpaceBackground();
+		this.container2 = new SecondPanel(SCREENWIDTH / 3);
+		this.player = new Player(SCREENWIDTH / 3, SCREENHEIGHT - 30);
 		this.container1 = new StaticRectangleOutlineFill(0, 0, SCREENWIDTH / 3, SCREENHEIGHT, 0x505050, 0x000000, 10);
-		this.container2 = new SecondPanel('img/leaderboard/panel_2.png', SCREENWIDTH / 3);
 		this.container3 = new StaticRectangleOutlineFill(SCREENWIDTH * (2 / 3), 0, SCREENWIDTH / 3, SCREENHEIGHT, 0x505050, 0x000000, 10);
 		this.container4 = new StaticRectangleOutlineFill(SCREENWIDTH * 0.3, 0, (SCREENWIDTH * 0.7) - (SCREENWIDTH * 0.3), 95, 0x505050, 0x000000, 10);
 		this.containerText1 = new TextObject("Top", 50, 0xFF7FBF, this.container1.x + (this.container1.width / 2), 48);
@@ -20,32 +21,32 @@ class Joiner {
 	draw() { }
 
 	initializeIntro() {
-		this.confetti = new Confetti('img/leaderboard/confetti.png');
+		this.confetti = new Confetti();
 		this.confetti.generate(15, SCREENWIDTH / 2, SCREENHEIGHT + 150);
-		this.confettiLeft = new Confetti('img/leaderboard/confetti.png');
+		this.confettiLeft = new Confetti();
 		this.confettiLeft.generate(15, SCREENWIDTH / 4, SCREENHEIGHT + 150);
-		this.confettiRight = new Confetti('img/leaderboard/confetti.png');
+		this.confettiRight = new Confetti();
 		this.confettiRight.generate(15, SCREENWIDTH * (3 / 4), SCREENHEIGHT + 150);
 
-		this.doorLeft = new Door('img/leaderboard/door_left.png', 0);
-		this.gearLeftTop = new Gear('img/leaderboard/door_gear.png', 5, 0);
-		this.gearLeftBottom = new Gear('img/leaderboard/door_gear.png', 5, SCREENHEIGHT);
+		this.doorLeft = new Door(1, 0);
+		this.gearLeftTop = new Gear(5, 0);
+		this.gearLeftBottom = new Gear(5, SCREENHEIGHT);
 
-		this.doorRight = new Door('img/leaderboard/door_right.png', SCREENWIDTH / 2);
-		this.gearRightTop = new Gear('img/leaderboard/door_gear.png', SCREENWIDTH - 5, 0);
-		this.gearRightBottom = new Gear('img/leaderboard/door_gear.png', SCREENWIDTH - 5, SCREENHEIGHT);
+		this.doorRight = new Door(2, SCREENWIDTH / 2);
+		this.gearRightTop = new Gear(SCREENWIDTH - 5, 0);
+		this.gearRightBottom = new Gear(SCREENWIDTH - 5, SCREENHEIGHT);
 
-		this.vaultBarLeft = new VaultBar('img/leaderboard/vault_bar.png', (SCREENWIDTH / 2) - 80, 0);
-		this.vaultBarRight = new VaultBar('img/leaderboard/vault_bar.png', (SCREENWIDTH / 2) + 50, 0);
+		this.vaultBarLeft = new VaultBar((SCREENWIDTH / 2) - 80, 0);
+		this.vaultBarRight = new VaultBar((SCREENWIDTH / 2) + 50, 0);
 
-		this.vaultLockLeftTop = new VaultLock('img/leaderboard/vault_lock.png', (SCREENWIDTH / 2) - 85, 0);
-		this.vaultLockLeftTop2 = new VaultLock('img/leaderboard/vault_lock_2.png', (SCREENWIDTH / 2) - 85, 40);
-		this.vaultLockLeftBottom = new VaultLock('img/leaderboard/vault_lock.png', (SCREENWIDTH / 2) - 85, SCREENHEIGHT - 40);
-		this.vaultLockRightTop = new VaultLock('img/leaderboard/vault_lock.png', (SCREENWIDTH / 2) + 45, 0);
-		this.vaultLockRightBottom = new VaultLock('img/leaderboard/vault_lock.png', (SCREENWIDTH / 2) + 45, SCREENHEIGHT - 40);
-		this.vaultLockRightBottom2 = new VaultLock('img/leaderboard/vault_lock_3.png', (SCREENWIDTH / 2) + 45, SCREENHEIGHT - 80);
+		this.vaultLockLeftTop = new VaultLock(1, (SCREENWIDTH / 2) - 85, 0);
+		this.vaultLockLeftTop2 = new VaultLock(2, (SCREENWIDTH / 2) - 85, 40);
+		this.vaultLockLeftBottom = new VaultLock(1, (SCREENWIDTH / 2) - 85, SCREENHEIGHT - 40);
+		this.vaultLockRightTop = new VaultLock(1, (SCREENWIDTH / 2) + 45, 0);
+		this.vaultLockRightBottom = new VaultLock(1, (SCREENWIDTH / 2) + 45, SCREENHEIGHT - 40);
+		this.vaultLockRightBottom2 = new VaultLock(3, (SCREENWIDTH / 2) + 45, SCREENHEIGHT - 80);
 
-		this.valve = new Valve('img/leaderboard/valve.png', SCREENWIDTH / 2, SCREENHEIGHT / 2);
+		this.valve = new Valve(SCREENWIDTH / 2, SCREENHEIGHT / 2);
 
 		this.introStep = -1;
 		this.introTimer = 0;

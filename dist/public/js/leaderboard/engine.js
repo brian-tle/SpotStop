@@ -1,8 +1,6 @@
 const SCREENWIDTH = 1500;
 const SCREENHEIGHT = 700;
 
-//1920:884
-
 var renderer;
 var stage;
 var graphics;
@@ -14,7 +12,26 @@ var joiner;
 var scaleX = 1.0;
 var scaleY = 1.0;
 
-initialize();
+const loader = PIXI.loader;
+
+loader.add('space', 'img/leaderboard/space.png');
+loader.add('panel_2', 'img/leaderboard/panel_2.png');
+loader.add('player', 'img/leaderboard/player.png');
+loader.add('confetti', 'img/leaderboard/confetti.png');
+loader.add('door_left', 'img/leaderboard/door_left.png');
+loader.add('door_right', 'img/leaderboard/door_right.png');
+loader.add('door_gear', 'img/leaderboard/door_gear.png');
+loader.add('vault_bar', 'img/leaderboard/vault_bar.png');
+loader.add('vault_lock', 'img/leaderboard/vault_lock.png');
+loader.add('vault_lock_2', 'img/leaderboard/vault_lock_2.png');
+loader.add('vault_lock_3', 'img/leaderboard/vault_lock_3.png');
+loader.add('valve', 'img/leaderboard/valve.png');
+
+loader.once('complete', function(loader, resources) {
+    initialize();
+})
+
+loader.load();
 
 function resize() {
 	stage.setTransform(0, 0, scaleX, scaleY);
@@ -26,13 +43,11 @@ function resize() {
 	renderer.view.style.top = ((window.innerHeight + renderer.height) / 8) + 'px';
 }
 
-//0x6495ed
 function initialize() {
 	renderer = PIXI.autoDetectRenderer(SCREENWIDTH, SCREENHEIGHT, {backgroundColor : 0x505050});
 	document.body.appendChild(renderer.view);
 
 	stage = new PIXI.Container();
-	//stage.sortableChildren = true;
 	graphics = new PIXI.Graphics();
 	stage.addChild(graphics);
 
