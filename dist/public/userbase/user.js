@@ -34,8 +34,13 @@ class User {
 }
 
 function createUser() {
-    var user = document.getElementById("username").innerHTML;
-    var pass = document.getElementById("password").innerHTML;
-    window.open();
-    window.alert('Signed Up!!!');
+    var user = document.getElementById("username").value;
+    var pass = document.getElementById("password").value;
+    var re_pass = document.getElementById("repeat_password").value;
+    if (pass == re_pass) {
+        window.alert('Signed Up!!!');
+    }
+    else {
+        window.alert("Password is incorrect!!!")
+    }
 }
