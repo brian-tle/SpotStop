@@ -32,6 +32,7 @@ function initialize() {
 	document.body.appendChild(renderer.view);
 
 	stage = new PIXI.Container();
+	//stage.sortableChildren = true;
 	graphics = new PIXI.Graphics();
 	stage.addChild(graphics);
 

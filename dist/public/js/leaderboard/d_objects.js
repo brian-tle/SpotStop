@@ -12,6 +12,39 @@ class Rectangle {
 	drawOutlineFill(color = 0x000000, outlineColor = 0x000000, thickness = 1) { drawRectOutlineFill(this.x, this.y, this.width, this.height, color, outlineColor, thickness); }
 }
 
+class StaticRectangleOutlineFill {
+	constructor(x, y, width, height, color, outlineColor, thickness) {
+		this.x = x;
+		this.y = y;
+
+		this.width = width;
+		this.height = height;
+
+		this.graphics = new PIXI.Graphics();
+		this.graphics.beginFill(color);
+		this.graphics.lineStyle(thickness, outlineColor);
+		this.graphics.drawRect(x, y, width, height);
+		this.graphics.endFill();
+		stage.addChild(this.graphics);
+	}
+}
+
+class StaticRectangleOutline {
+	constructor(x, y, width, height, outlineColor, thickness) {
+		this.x = x;
+		this.y = y;
+
+		this.width = width;
+		this.height = height;
+
+		this.graphics = new PIXI.Graphics();
+		this.graphics.lineStyle(thickness, outlineColor);
+		this.graphics.drawRect(x, y, width, height);
+		stage.addChild(this.graphics);
+	}
+}
+
+
 class TextObject {
 	constructor(text, size, color, x, y) {
 		this.text = new PIXI.Text(text, {fontFamily : 'Arial', fontSize: size, fill : color, align : 'center'});
@@ -20,6 +53,36 @@ class TextObject {
 		this.text.y = y;
 
 		stage.addChild(this.text);
+	}
+}
+
+class SpaceBackground {
+	constructor(image) {
+		this.sprite1 = PIXI.Sprite.fromImage(image);
+		this.sprite2 = PIXI.Sprite.fromImage(image);
+		this.sprite1.x = SCREENWIDTH / 3; this.sprite1.y = 75;
+		this.sprite2.x =  SCREENWIDTH * (2 / 3); this.sprite2.y = 75;
+
+		stage.addChild(this.sprite1);
+		stage.addChild(this.sprite2);
+	}
+
+	update(elapsedTimeS) {
+		this.sprite1.x -= 150 * elapsedTimeS;
+		this.sprite2.x -= 150 * elapsedTimeS;
+
+		if (this.sprite1.x <= 0) { this.sprite1.x = SCREENWIDTH * (2 / 3); this.sprite2.x = SCREENWIDTH * (1 / 3); }
+		if (this.sprite2.x <= 0) { this.sprite2.x = SCREENWIDTH * (2 / 3); this.sprite1.x = SCREENWIDTH * (1 / 3); }
+	}
+}
+
+class SecondPanel {
+	constructor(image, x) {
+		this.sprite = PIXI.Sprite.fromImage(image);
+		this.sprite.x = x;
+		this.sprite.y = 0;
+
+		stage.addChild(this.sprite);
 	}
 }
 
@@ -92,17 +155,6 @@ class VaultLock {
 	slideLeft(elapsedTimeS, speed) { this.sprite.x -= speed * elapsedTimeS; }
 }
 
-class Window {
-	constructor(image, x, y) {
-		this.sprite = PIXI.Sprite.fromImage(image);
-		this.sprite.anchor(0.5);
-		this.sprite.x = x;
-		this.sprite.y = y;
-
-		stage.addChild(this.sprite);
-	}
-}
-
 class Confetti {
 	constructor(image) {
 		this.spriteList = [];
@@ -112,16 +164,15 @@ class Confetti {
 		this.image = image;
 	}
 
-	generate(count) {
+	generate(count, posX, posY) {
 		for (var x = 0; x < count; x++) {
 			this.spriteList.push(PIXI.Sprite.fromImage(this.image));
-			this.velocityYList.push(-(Math.floor(Math.random() * (1200 - 800 + 1) + 800)));
+			this.velocityYList.push(-(Math.floor(Math.random() * (1200 - 600 + 1) + 600)));
 			this.velocityXList.push(Math.floor(Math.random() * (275 + 275 + 1) - 275));
 
-			this.spriteList[x].anchor.x = 0.5;
-			this.spriteList[x].anchor.y = 0.5;
-			this.spriteList[x].x = (SCREENWIDTH / 2);
-			this.spriteList[x].y = SCREENHEIGHT + 150;
+			this.spriteList[x].anchor.set(0.5);
+			this.spriteList[x].x = posX;
+			this.spriteList[x].y = posY;
 
 			stage.addChild(this.spriteList[x]);
 		}
