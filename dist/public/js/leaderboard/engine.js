@@ -28,6 +28,11 @@ loader.add('vault_lock_3', 'img/leaderboard/vault_lock_3.png');
 loader.add('valve', 'img/leaderboard/valve.png');
 
 loader.once('complete', function(loader, resources) {
+	console.log("Assets loaded.");
+	document.addEventListener('keydown', onKeyDown);
+	document.addEventListener('keyup', onKeyUp);
+	document.addEventListener('mousedown', onMouseDown);
+	document.addEventListener('mouseup', onMouseUp);
     initialize();
 })
 

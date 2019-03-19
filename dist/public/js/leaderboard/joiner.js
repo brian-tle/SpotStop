@@ -2,7 +2,7 @@ class Joiner {
 	constructor() {
 		this.spaceBackground = new SpaceBackground();
 		this.container2 = new SecondPanel(SCREENWIDTH / 3);
-		this.player = new Player(SCREENWIDTH / 3, SCREENHEIGHT - 30);
+		this.player = new Player(SCREENWIDTH / 3 + 50, SCREENHEIGHT - 85);
 		this.container1 = new StaticRectangleOutlineFill(0, 0, SCREENWIDTH / 3, SCREENHEIGHT, 0x505050, 0x000000, 10);
 		this.container3 = new StaticRectangleOutlineFill(SCREENWIDTH * (2 / 3), 0, SCREENWIDTH / 3, SCREENHEIGHT, 0x505050, 0x000000, 10);
 		this.container4 = new StaticRectangleOutlineFill(SCREENWIDTH * 0.3, 0, (SCREENWIDTH * 0.7) - (SCREENWIDTH * 0.3), 95, 0x505050, 0x000000, 10);
@@ -16,6 +16,11 @@ class Joiner {
 
 	update(elapsedTimeS) {
 		this.updateIntro(elapsedTimeS);
+
+		if (this.introStep == -2 || this.introStep == 3) {
+			this.spaceBackground.update(elapsedTimeS);
+			this.player.update(elapsedTimeS);
+		}
 	}
 
 	draw() { }
@@ -53,10 +58,7 @@ class Joiner {
 	}
 
 	updateIntro(elapsedTimeS) {
-		if (this.introStep == -2) {
-			this.spaceBackground.update(elapsedTimeS);
-		}
-		else {
+		if (this.introStep != -2) {
 			if (this.introStep == -1) {
 				if (this.introTimer > 0.8) {
 					this.introStep += 1;
