@@ -29,7 +29,12 @@ loader.add('valve', 'img/leaderboard/valve.png');
 
 loader.once('complete', function(loader, resources) {
 	console.log("Assets loaded.");
-	document.addEventListener('keydown', onKeyDown);
+	document.addEventListener('keydown', function(event) {
+		if ([32, 37, 38, 39, 40].indexOf(event.keyCode) != -1) {
+			event.preventDefault();
+		}
+		onKeyDown(event);
+	});
 	document.addEventListener('keyup', onKeyUp);
 	document.addEventListener('mousedown', onMouseDown);
 	document.addEventListener('mouseup', onMouseUp);
