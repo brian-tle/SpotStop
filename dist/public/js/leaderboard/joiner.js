@@ -2,7 +2,7 @@ class Joiner {
 	constructor() {
 		this.spaceBackground = new SpaceBackground();
 		this.container2 = new SecondPanel(SCREENWIDTH / 3);
-		this.player = new Player(SCREENWIDTH / 3 + 50, SCREENHEIGHT - 85);
+		this.player = new Player(SCREENWIDTH / 3 + 50, SCREENHEIGHT - 55);
 		this.container1 = new StaticRectangleOutlineFill(0, 0, SCREENWIDTH / 3, SCREENHEIGHT, 0x505050, 0x000000, 10);
 		this.container3 = new StaticRectangleOutlineFill(SCREENWIDTH * (2 / 3), 0, SCREENWIDTH / 3, SCREENHEIGHT, 0x505050, 0x000000, 10);
 		this.container4 = new StaticRectangleOutlineFill(SCREENWIDTH * 0.3, 0, (SCREENWIDTH * 0.7) - (SCREENWIDTH * 0.3), 95, 0x505050, 0x000000, 10);
