@@ -2,6 +2,8 @@ class Joiner {
 	constructor() {
 		this.spaceBackground = new SpaceBackground();
 		this.container2 = new SecondPanel(SCREENWIDTH / 3);
+		this.chair = new Chair(SCREENWIDTH * (2 / 3) - 450, SCREENHEIGHT - 185);
+		this.table = new Table(SCREENWIDTH * (2 / 3) - 210, SCREENHEIGHT - 185);
 		this.player = new Player(SCREENWIDTH / 3 + 50, SCREENHEIGHT - 55);
 		this.container1 = new StaticRectangleOutlineFill(0, 0, SCREENWIDTH / 3, SCREENHEIGHT, 0x505050, 0x000000, 10);
 		this.container3 = new StaticRectangleOutlineFill(SCREENWIDTH * (2 / 3), 0, SCREENWIDTH / 3, SCREENHEIGHT, 0x505050, 0x000000, 10);
@@ -20,6 +22,15 @@ class Joiner {
 		if (this.introStep == -2 || this.introStep == 3) {
 			this.spaceBackground.update(elapsedTimeS);
 			this.player.update(elapsedTimeS);
+			if (this.player.checkCollision(this.chair.platformList[0])) {
+				this.player.handleCollision(this.chair.platformList[0]);
+			}
+			if (this.player.checkCollision(this.chair.platformList[1])) {
+				this.player.handleCollision(this.chair.platformList[1]);
+			}
+			if (this.player.checkCollision(this.table.platformList[0])) {
+				this.player.handleCollision(this.table.platformList[0]);
+			}
 		}
 	}
 

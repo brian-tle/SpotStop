@@ -18,7 +18,7 @@ function onMouseUp(event) {
 function onKeyDown(key) {
   if (keyList.indexOf(key.keyCode) == -1) {
     keyList.push(key.keyCode);
-    console.log(key.keyCode);
+    // console.log(key.keyCode);
   }
 
   //keyList.forEach(function (item, index, array) { console.log(item, index); });
