@@ -39,6 +39,7 @@ function createUser() {
     var re_pass = document.getElementById("repeat_password").value;
     if (pass == re_pass) {
         window.alert('Signed Up!!!');
+        addUser(user, pass);
     }
     else {
         window.alert("Password is incorrect!!!")

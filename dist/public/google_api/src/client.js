@@ -1,7 +1,7 @@
 //  https://sfhacks2019-1551558382883.appspot.com
 //  localhost:8080
 
-const url = 'https://sfhacks2019-1551558382883.appspot.com';
+const url = 'http://localhost:8080';
 
 function createTestMarker(){
   $.ajax({
@@ -25,6 +25,19 @@ function getAllMarkers(map){
       data.forEach(marker => {
         markerList.push(new Marker(map, marker.lat, marker.lng, marker.display_name, (marker.upvote - marker.downvote) + 20, true, marker.des, marker._id));
       });
+    },
+
+    error: function(err){
+      console.log('Failed');
+    }
+  });
+}
+
+function getAllUsers(){
+  $.ajax({
+    url : url + '/getAllUsers',
+    method : 'GET',
+    success : function(data){
     },
 
     error: function(err){
@@ -59,6 +72,20 @@ function upvoteMarker(_id, val) {
     dataType: 'json',
     contentType: 'application/json; charset=utf-8',
     success: function (data) {  process_cache_changes(data);  },
+    error: function (xhr, ajaxOptions, thrownError) { }
+  });
+}
+
+function addUser(user, pass) {
+  data = {username: user, password: pass};
+  $.ajax({
+    type: 'POST',
+    url: url + '/addUser',
+    async: true,
+    data: JSON.stringify(data),
+    dataType: 'json',
+    contentType: 'application/json; charset=utf-8',
+    success: function (data) { console.log('added user'); },
     error: function (xhr, ajaxOptions, thrownError) { }
   });
 }

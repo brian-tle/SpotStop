@@ -139,6 +139,20 @@ function handleDownvoteSwitch(ip, _id) {
 	});
 }
 
+
+function handleUser(user, pass) {
+	MongoClient.connect(url, {useNewUrlParser: true}, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		var yuza = {username: user, password: pass, marker: [], rating: []};
+		dbo.collection("users").insertOne(yuza, function(err, result) {
+			if (err) throw err;
+			console.log("User {" + user +"} added");
+			db.close();
+		});
+	});
+}
+
 function addClient(ip) {
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;
@@ -232,6 +246,20 @@ function getTopMarkers(res) {
 	}); 
 }
 
+function getAllUsers(res) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		dbo.collection("users").find({}).toArray(function(err, result) {
+			if (err) throw err;
+			res.send(result);
+			console.log("Sending Users Data");
+			db.close();
+		});
+	}); 
+}
+
+
 function getControversialMarkers(res) {
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;
@@ -266,6 +294,10 @@ server.get('/getAllMarkers', function(req, res, next) {
 	handleClient(ip);
 });
 
+server.get('/getAllUsers', function(req, res, next) {
+	getAllUsers(res);
+});
+
 server.get('/createTestMarker', function(req, res, next) { 
 	res.send('Creating Test Marker!') 
 	addMarker(res, 34.5315, -123.5235, "Test Marker", 54, 21);
@@ -286,6 +318,11 @@ server.post("/downvoteMarker", (req, res) => {
 	res.send('Downvoting Marker!');
 	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
 	handleDownvoteMarkerM(ip, req.body._id);
+});
+
+server.post("/addUser", (req, res) => {
+	res.send('Adding User!');
+	handleUser(req.body.username, req.body.password);
 });
 
 
