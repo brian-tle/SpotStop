@@ -222,7 +222,7 @@ function getTopMarkers(res) {
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
-		var sortingOrder = { upvote: -1 };
+		var sortingOrder = { upvote: -1, downvote: 1 };
 		dbo.collection("markers").find().sort(sortingOrder).limit(15).toArray(function(err, result) {
 			if (err) throw err;
 			res.send(result);
@@ -232,6 +232,20 @@ function getTopMarkers(res) {
 	}); 
 }
 
+function getControversialMarkers(res) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		var sortingOrder = { upvote: -1, downvote: -1 };
+		dbo.collection("markers").find().sort(sortingOrder).limit(15).toArray(function(err, result) {
+			if (err) throw err;
+			res.send(result);
+			console.log("Sending Top Markers to Client");
+			db.close();
+		});
+	});
+}
+
 server.all('/*', function(req, res, next) { 
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Headers", "Content-Type");
@@ -239,6 +253,10 @@ server.all('/*', function(req, res, next) {
 });
 
 server.get('/getTopMarkers', function(req, res, next) {
+	getTopMarkers(res);
+});
+
+server.get('/getControversialMarkers', function(req, res, next) {
 	getTopMarkers(res);
 });
 

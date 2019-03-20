@@ -5,9 +5,24 @@ function getTopMarkers(){
     url : url + '/getTopMarkers',
     method : 'GET',
     success : function(data){
-      console.log(data);
       data.forEach(marker => {
+        topMarkersList.push(marker);
+      });
+    },
 
+    error: function(err){
+      console.log('Failed');
+    }
+  });
+}
+
+function getControversialMarkers() {
+  $.ajax({
+    url : url + '/getControversialMarkers',
+    method : 'GET',
+    success : function(data){
+      data.forEach(marker => {
+        controversialMarkersList.push(marker);
       });
     },
 

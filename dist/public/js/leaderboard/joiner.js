@@ -1,3 +1,6 @@
+topMarkersList = [];
+controversialMarkersList = [];
+
 class Joiner {
 	constructor() {
 		this.spaceBackground = new SpaceBackground();

@@ -41,6 +41,8 @@ loader.once('complete', function(loader, resources) {
 	document.addEventListener('keyup', onKeyUp);
 	document.addEventListener('mousedown', onMouseDown);
 	document.addEventListener('mouseup', onMouseUp);
+	getTopMarkers();
+	getControversialMarkers();
     initialize();
 })
 
