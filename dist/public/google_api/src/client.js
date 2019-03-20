@@ -1,7 +1,7 @@
 //  https://sfhacks2019-1551558382883.appspot.com
 //  localhost:8080
 
-const url = 'http://localhost:8080';
+const url = 'https://sfhacks2019-1551558382883.appspot.com';
 
 function createTestMarker(){
   $.ajax({
