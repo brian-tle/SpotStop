@@ -2,10 +2,10 @@ class Joiner {
 	constructor() {
 		this.spaceBackground = new SpaceBackground();
 		this.container2 = new SecondPanel(SCREENWIDTH / 3);
-		this.chair = new Chair(SCREENWIDTH * (2 / 3) - 450, SCREENHEIGHT - 185);
-		this.table = new Table(SCREENWIDTH * (2 / 3) - 210, SCREENHEIGHT - 185);
+		this.shelf = new Shelf(SCREENWIDTH / 3, SCREENHEIGHT - 360);
 		this.player = new Player(SCREENWIDTH / 3 + 50, SCREENHEIGHT - 55);
-		this.container1 = new StaticRectangleOutlineFill(0, 0, SCREENWIDTH / 3, SCREENHEIGHT, 0x505050, 0x000000, 10);
+		this.chair = new Chair(SCREENWIDTH * (2 / 3) - 450, SCREENHEIGHT - 185);
+		this.table = new Table(SCREENWIDTH * (2 / 3) - 220, SCREENHEIGHT - 185);		this.container1 = new StaticRectangleOutlineFill(0, 0, SCREENWIDTH / 3, SCREENHEIGHT, 0x505050, 0x000000, 10);
 		this.container3 = new StaticRectangleOutlineFill(SCREENWIDTH * (2 / 3), 0, SCREENWIDTH / 3, SCREENHEIGHT, 0x505050, 0x000000, 10);
 		this.container4 = new StaticRectangleOutlineFill(SCREENWIDTH * 0.3, 0, (SCREENWIDTH * 0.7) - (SCREENWIDTH * 0.3), 95, 0x505050, 0x000000, 10);
 		this.containerText1 = new TextObject("Top", 50, 0xFF7FBF, this.container1.x + (this.container1.width / 2), 48);
@@ -21,7 +21,6 @@ class Joiner {
 
 		if (this.introStep == -2 || this.introStep == 3) {
 			this.spaceBackground.update(elapsedTimeS);
-			this.player.update(elapsedTimeS);
 			if (this.player.checkCollision(this.chair.platformList[0])) {
 				this.player.handleCollision(this.chair.platformList[0]);
 			}
@@ -31,6 +30,8 @@ class Joiner {
 			if (this.player.checkCollision(this.table.platformList[0])) {
 				this.player.handleCollision(this.table.platformList[0]);
 			}
+
+			this.player.update(elapsedTimeS);
 		}
 	}
 
@@ -75,9 +76,7 @@ class Joiner {
 					this.introStep += 1;
 					this.introTimer = 0;
 				}
-				else {
-					this.introTimer += elapsedTimeS;
-				}
+				else { this.introTimer += elapsedTimeS; }
 			}
 
 			if (this.introStep == 0) {
@@ -96,9 +95,7 @@ class Joiner {
 					this.vaultBarLeft.slideUp(elapsedTimeS, 1000);
 					this.vaultBarRight.slideDown(elapsedTimeS, 1000);
 				}
-				else {
-					this.introStep += 1;
-				}
+				else { this.introStep += 1; }
 			}
 
 			if (this.introStep == 2) {
@@ -106,9 +103,7 @@ class Joiner {
 					this.introStep += 1;
 					this.introTimer = 0;
 				}
-				else {
-					this.introTimer += elapsedTimeS;
-				}
+				else { this.introTimer += elapsedTimeS; }
 			}
 
 			if (this.introStep == 3) {

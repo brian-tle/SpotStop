@@ -87,12 +87,8 @@ class SecondPanel {
 
 class Door {
 	constructor(index, x) {
-		if (index == 1) {
-			this.sprite = new PIXI.Sprite(PIXI.loader.resources.door_left.texture);
-		}
-		if (index == 2) {
-			this.sprite = new PIXI.Sprite(PIXI.loader.resources.door_right.texture);
-		}
+		if (index == 1) { this.sprite = new PIXI.Sprite(PIXI.loader.resources.door_left.texture); }
+		if (index == 2) { this.sprite = new PIXI.Sprite(PIXI.loader.resources.door_right.texture); }
 
 		this.sprite.x = x;
 		this.sprite.y = 0;
@@ -149,15 +145,9 @@ class VaultBar {
 
 class VaultLock {
 	constructor(index, x, y) {
-		if (index == 1) {
-			this.sprite = new PIXI.Sprite(PIXI.loader.resources.vault_lock.texture);
-		}
-		if (index == 2) {
-			this.sprite = new PIXI.Sprite(PIXI.loader.resources.vault_lock_2.texture);
-		}
-		if (index == 3) {
-			this.sprite = new PIXI.Sprite(PIXI.loader.resources.vault_lock_3.texture);
-		}
+		if (index == 1) { this.sprite = new PIXI.Sprite(PIXI.loader.resources.vault_lock.texture); }
+		if (index == 2) { this.sprite = new PIXI.Sprite(PIXI.loader.resources.vault_lock_2.texture); }
+		if (index == 3) { this.sprite = new PIXI.Sprite(PIXI.loader.resources.vault_lock_3.texture); }
 
 		this.sprite.x = x;
 		this.sprite.y = y;

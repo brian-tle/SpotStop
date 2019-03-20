@@ -142,3 +142,13 @@ class Table {
 		stage.addChild(this.sprite);
 	}
 }
+
+class Shelf {
+	constructor(x, y) {
+		this.sprite = new PIXI.Sprite(PIXI.loader.resources.shelf.texture);
+		this.sprite.x = x;
+		this.sprite.y = y;
+
+		stage.addChild(this.sprite);
+	}
+}

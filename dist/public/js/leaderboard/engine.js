@@ -28,6 +28,7 @@ loader.add('vault_lock_3', 'img/leaderboard/vault_lock_3.png');
 loader.add('valve', 'img/leaderboard/valve.png');
 loader.add('chair', 'img/leaderboard/chair.png');
 loader.add('table', 'img/leaderboard/table.png');
+loader.add('shelf', 'img/leaderboard/shelf.png');
 
 loader.once('complete', function(loader, resources) {
 	console.log("Assets loaded.");
