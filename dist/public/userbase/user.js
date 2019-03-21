@@ -41,8 +41,8 @@ function createUser() {
     var check = 0;
 
     if (pass == re_pass) {
-        window.alert('Signed Up!!!');
         addUser(user, pass);
+        window.alert('Signed Up!!!');
     }
 
     else {
