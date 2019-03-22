@@ -229,6 +229,7 @@ function toggleMenu() {
   }
 }
 
+
 // Get modal element
 var modal = document.getElementById("simpleModal");
 
