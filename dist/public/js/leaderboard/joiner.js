@@ -1,5 +1,7 @@
-topMarkersList = [];
-controversialMarkersList = [];
+bufferTM = [];
+bufferCM = [];
+
+const MARKER_INTERVAL = 1.25;
 
 class Joiner {
 	constructor() {
@@ -15,6 +17,12 @@ class Joiner {
 		this.containerText3 = new TextObject("Rising", 50, 0xFF7FBF, this.container3.x + (this.container3.width / 2), 48);
 		this.leaderboardText = new TextObject("Leaderboard", 96, 0xFF7FB6, SCREENWIDTH / 2, 48);
 		this.containerOutline = new StaticRectangleOutline(0, 0, SCREENWIDTH, SCREENHEIGHT, 0x000000, 20);
+
+		this.listTM = [];
+		this.listCM = [];
+		this.markerTimer = 0.0;
+
+		this.createBodyBounds();
 
 		this.initializeIntro();
 	}
@@ -35,10 +43,51 @@ class Joiner {
 			}
 
 			this.player.update(elapsedTimeS);
+
+			world.step(elapsedTimeS);
+			this.updateMarkers(elapsedTimeS);
 		}
 	}
 
+	updateMarkers(elapsedTimeS) {
+		if (bufferTM.length > 0) {
+			if (this.markerTimer >= MARKER_INTERVAL) {
+				this.listTM.push(new Marker(Math.floor(Math.random() * (((SCREENWIDTH / 3) / 2 + 75) - ((SCREENWIDTH / 3) / 2 - 75) + 1) + ((SCREENWIDTH / 3) / 2 - 75)), -50, 1));
+				bufferTM.shift();
+				this.markerTimer = 0;
+			}
+			else {
+				this.markerTimer += elapsedTimeS;
+			}
+		}
+
+		this.listTM.forEach(marker => {
+			marker.update();
+		});
+	}
+
 	draw() { }
+
+	createBodyBounds() {
+		this.bottomShape = new p2.Plane();
+		this.bottomBody = new p2.Body({ position: [0, 0] });
+        //this.bottomBody = new p2.Body({ position: [0, 25 / 100] });
+        this.bottomBody.addShape(this.bottomShape);
+        world.addBody(this.bottomBody);
+
+        this.leftShape = new p2.Plane();
+        this.leftBody = new p2.Body({ angle: (3 * Math.PI) / 2 });
+        this.leftBody.addShape(this.leftShape);
+        world.addBody(this.leftBody);
+
+        this.rightShape = new p2.Plane();
+        this.rightBody = new p2.Body({ 
+        	angle: Math.PI / 2,
+        	position: [(SCREENWIDTH / 3) / 100, 0]
+        });
+        this.rightBody.addShape(this.rightShape);
+        world.addBody(this.rightBody);
+	}
 
 	initializeIntro() {
 		this.confetti = new Confetti();
