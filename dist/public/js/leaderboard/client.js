@@ -6,7 +6,7 @@ function getTopMarkers(){
     method : 'GET',
     success : function(data){
       data.forEach(marker => {
-        topMarkersList.push(marker);
+        bufferTM.push(marker);
       });
     },
 
@@ -22,7 +22,7 @@ function getControversialMarkers() {
     method : 'GET',
     success : function(data){
       data.forEach(marker => {
-        controversialMarkersList.push(marker);
+        bufferCM.push(marker);
       });
     },
 
@@ -31,3 +31,43 @@ function getControversialMarkers() {
     }
   });
 }
+
+/*
+
+function getTopMarkers(res) {
+  MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("spot_stop");
+    var sortingOrder = { upvote: -1, downvote: 1 };
+    dbo.collection("markers").find().sort(sortingOrder).limit(15).toArray(function(err, result) {
+      if (err) throw err;
+      res.send(result);
+      console.log("Sending Top Markers to Client");
+      db.close();
+    });
+  }); 
+}
+
+function getControversialMarkers(res) {
+  MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("spot_stop");
+    var sortingOrder = { upvote: -1, downvote: -1 };
+    dbo.collection("markers").find().sort(sortingOrder).limit(15).toArray(function(err, result) {
+      if (err) throw err;
+      res.send(result);
+      console.log("Sending Top Markers to Client");
+      db.close();
+    });
+  });
+}
+
+server.get('/getTopMarkers', function(req, res, next) {
+  getTopMarkers(res);
+});
+
+server.get('/getControversialMarkers', function(req, res, next) {
+  getTopMarkers(res);
+});
+
+*/

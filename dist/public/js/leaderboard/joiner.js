@@ -1,5 +1,7 @@
-topMarkersList = [];
-controversialMarkersList = [];
+bufferTM = [];
+bufferCM = [];
+listTM = [];
+listCM = [];
 
 class Joiner {
 	constructor() {
@@ -16,11 +18,19 @@ class Joiner {
 		this.leaderboardText = new TextObject("Leaderboard", 96, 0xFF7FB6, SCREENWIDTH / 2, 48);
 		this.containerOutline = new StaticRectangleOutline(0, 0, SCREENWIDTH, SCREENHEIGHT, 0x000000, 20);
 
+		this.createBodyBounds();
+		this.marker = new Marker(SCREENWIDTH / 3, 250, 1);
+
 		this.initializeIntro();
 	}
 
 	update(elapsedTimeS) {
 		this.updateIntro(elapsedTimeS);
+
+		if (this.introStep == -2) {
+			world.step(getElapsedTimeS());
+			this.marker.update();
+		}
 
 		if (this.introStep == -2 || this.introStep == 3) {
 			this.spaceBackground.update(elapsedTimeS);
@@ -39,6 +49,13 @@ class Joiner {
 	}
 
 	draw() { }
+
+	createBodyBounds() {
+		this.bottomShape = new p2.Plane();
+        this.bottomBody = new p2.Body({ position:[0,0] });
+        this.bottomBody.addShape(this.bottomShape);
+        world.addBody(this.bottomBody);
+	}
 
 	initializeIntro() {
 		this.confetti = new Confetti();

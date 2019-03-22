@@ -4,6 +4,7 @@ const SCREENHEIGHT = 700;
 var renderer;
 var stage;
 var graphics;
+var world;
 
 var frameStart = Date.now(), frameEnd = 0;
 var elapsedTimeMS = 0;
@@ -29,6 +30,7 @@ loader.add('valve', 'img/leaderboard/valve.png');
 loader.add('chair', 'img/leaderboard/chair.png');
 loader.add('table', 'img/leaderboard/table.png');
 loader.add('shelf', 'img/leaderboard/shelf.png');
+loader.add('marker_1', 'img/leaderboard/marker_1.png');
 
 loader.once('complete', function(loader, resources) {
 	console.log("Assets loaded.");
@@ -59,6 +61,8 @@ function resize() {
 }
 
 function initialize() {
+	world = new p2.World({ gravity:[0, -9.8] });
+
 	renderer = PIXI.autoDetectRenderer(SCREENWIDTH, SCREENHEIGHT, {backgroundColor : 0x505050});
 	document.body.appendChild(renderer.view);
 
@@ -78,7 +82,6 @@ function update() {
     frameEnd = Date.now();
     elapsedTimeMS = frameEnd - frameStart;
     frameStart = frameEnd;
-
     joiner.update(getElapsedTimeS());
 
     requestAnimationFrame(update);
