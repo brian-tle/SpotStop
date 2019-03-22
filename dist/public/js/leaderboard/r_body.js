@@ -8,7 +8,7 @@ class Marker {
         this.boxBody = new p2.Body({
             mass: 1,
             position:[x / 100, (SCREENHEIGHT - y) / 100],
-            angularVelocity: 10
+            angularVelocity: Math.floor(Math.random() * (10 + 10 + 1) - 10)
         });
         this.boxBody.addShape(this.boxShape);
         world.addBody(this.boxBody);
