@@ -12,7 +12,7 @@ function signIn() {
     var validate = 0;
     var now = new Date();
     var time = now.getTime();
-    var expireTime = time + 1000*36000;
+    var expireTime = time + (1800 * 1000);
     now.setTime(expireTime);
 
     for (var key in user_data) {
@@ -26,7 +26,8 @@ function signIn() {
     }
 
     if (validate > 0) {
-        document.cookie = "username=" + dummy_user;
+        deleteAllCookies();
+        document.cookie = "username=" + dummy_user + "; expires=" + now.toUTCString()+';path=/';
         window.alert(document.cookie);
         event.preventDefault();
     }
@@ -46,3 +47,11 @@ function getCookie(username) {
     }
     return "";
 }
+
+function deleteAllCookies() {
+    if (document.cookie) {
+        var c = document.cookie.split("; ");
+        for (i in c) 
+         document.cookie =/^[^=]+/.exec(c[i])[0]+"=;expires=Thu, 01 Jan 1970 00:00:00 GMT";   
+    } 
+   }
