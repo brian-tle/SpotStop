@@ -76,8 +76,8 @@ function upvoteMarker(_id, val) {
   });
 }
 
-function addUser(user, pass) {
-  data = {username: user, password: pass};
+function addUser(user, em, pass) {
+  data = {username: user, email:em, password: pass};
   $.ajax({
     type: 'POST',
     url: url + '/addUser',
