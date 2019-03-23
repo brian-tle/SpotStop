@@ -183,12 +183,18 @@ main#home h1 {
 }
 
 #main-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
   text-align: center;
   padding: 1rem;
   background: #2b2b2b;
   color: #fff;
   height: 60px;
+padding-bottom: 2px;
 }
+
+
 
 form {
   margin-top: 50px;
@@ -289,3 +295,4 @@ form .submit:hover {
   background: #c4c4c4;
   color: #333;
 }
+
