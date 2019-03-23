@@ -140,11 +140,11 @@ function handleDownvoteSwitch(ip, _id) {
 }
 
 
-function handleUser(user, pass) {
+function handleUser(user, em, pass) {
 	MongoClient.connect(url, {useNewUrlParser: true}, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
-		var yuza = {username: user, password: pass, marker: [], rating: []};
+		var yuza = {username: user, email: em, password: pass, marker: [], rating: []};
 		dbo.collection("users").insertOne(yuza, function(err, result) {
 			if (err) throw err;
 			console.log("User {" + user +"} added");
@@ -322,7 +322,7 @@ server.post("/downvoteMarker", (req, res) => {
 
 server.post("/addUser", (req, res) => {
 	res.send('Adding User!');
-	handleUser(req.body.username, req.body.password);
+	handleUser(req.body.username, req.body.email, req.body.password);
 });
 
 
