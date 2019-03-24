@@ -104,36 +104,51 @@ class Marker {
     }.bind(this));
 
     this.indicator.addListeners();
-
+    
+    // this event is for upvoting the marking
+    // if the cookie isn't empty, it increments 1 point
+    // to the marker.
     this.indicator.upvote.poly.addListener(
       "click",
       function(event) {
+        // upvote the given marker if the cookie isn't empty
+        if (document.cookie != '') {
         var colorOption = { fillColor: "#46db46" };
         var colorOption2 = { fillColor: "#474747" };
         this.indicator.upvote.poly.setOptions(colorOption);
         this.indicator.downvote.poly.setOptions(colorOption2);
-        if (this.indicator.status == 0) { this.totalPoints += 2; }
-        else { if (this.indicator.status == 1) { this.totalPoints += 1; } }
-        upvoteMarker(this._id, 1);
-        this.refreshIcon();
-        this.indicator.status = 2;
-        this.indicator.active = true;
+          if (this.indicator.status == 0) { this.totalPoints += 2; }
+          else { if (this.indicator.status == 1) { this.totalPoints += 1; } }
+          upvoteMarker(this._id, 1);
+          this.refreshIcon();
+          this.indicator.status = 2;
+          this.indicator.active = true;
+        }
+        // display window alert if the cookie is empty
+        else {
+          window.alert("please register and/or sign in to vote!");
+        }
       }.bind(this)
     );
 
     this.indicator.downvote.poly.addListener(
       "click",
       function(event) {
-        var colorOption = { fillColor: "#FF0000" };
-        var colorOption2 = { fillColor: "#474747" };
-        this.indicator.downvote.poly.setOptions(colorOption);
-        this.indicator.upvote.poly.setOptions(colorOption2);
-        if (this.indicator.status == 2) { this.totalPoints -= 2; }
-        else { if (this.indicator.status == 1) { this.totalPoints -= 1; } }
-        downvoteMarker(this._id, 1);
-        this.refreshIcon();
-        this.indicator.status = 0;
-        this.indicator.active = true;
+        if (document.cookie != '') {
+          var colorOption = { fillColor: "#FF0000" };
+          var colorOption2 = { fillColor: "#474747" };
+          this.indicator.downvote.poly.setOptions(colorOption);
+          this.indicator.upvote.poly.setOptions(colorOption2);
+          if (this.indicator.status == 2) { this.totalPoints -= 2; }
+          else { if (this.indicator.status == 1) { this.totalPoints -= 1; } }
+          downvoteMarker(this._id, 1);
+          this.refreshIcon();
+          this.indicator.status = 0;
+          this.indicator.active = true;
+        }
+        else {
+          window.alert("please register and/or sign in to vote!");
+        }
       }.bind(this)
     );
   }
