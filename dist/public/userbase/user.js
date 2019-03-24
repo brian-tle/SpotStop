@@ -37,7 +37,12 @@ $.getJSON('https://sfhacks2019-1551558382883.appspot.com/getAllUsers', function 
     }
 } */
 
+// function createUser adds
+// new user to the database
+// if all the condition satisfies
 function createUser() {
+    // retrieves user input, email input,
+    // password input, and repeat password input
     var user = document.getElementById("username").value;
     var email = document.getElementById("email").value;
     var pass = document.getElementById("password").value;

@@ -3,18 +3,27 @@ $.getJSON('https://sfhacks2019-1551558382883.appspot.com/getAllUsers', function 
     user_data = data;
 });
 
+// signIn function stores the cookie of one's username
 function signIn() {
+    // get username input
+    // get password input
     var user = document.getElementById('username').value;
     var pass = document.getElementById('password').value;
-    var decodedCookie;
+    // stores the username input
+    // stores the password input
     var dummy_user;
     var dummy_pass;
+    // checks if the username and password matches
+    // the database
     var validate = 0;
+    // set the expiration date of the cookie to 30 minutes
     var now = new Date();
     var time = now.getTime();
     var expireTime = time + (1800 * 1000);
     now.setTime(expireTime);
 
+    // checks the database to see
+    // matching username and password
     for (var key in user_data) {
         if (user_data.hasOwnProperty(key)) {
             if ((user == user_data[key].username) && (pass == user_data[key].password)) {
@@ -25,6 +34,7 @@ function signIn() {
         }
     }
 
+    // store username, with expiration date of 30 minutes, in the cookie
     if (validate > 0) {
         deleteAllCookies();
         document.cookie = "username=" + dummy_user + "; expires=" + now.toUTCString()+';path=/';
@@ -32,12 +42,17 @@ function signIn() {
         event.preventDefault();
         window.location.href = "http://onespotstop.com/";
     }
+    // executes window alert that tell the user that 
+    // username and/or password is wrong
     else {
         window.alert("username and/or password is incorrect!");
         event.preventDefault();
     }
 }
 
+// haven't used this function yet
+// but is used to retrieve the stored username
+// in the cookie
 function getCookie(username) {
     if (document.cookie.length > 0) {
         var c_start = document.cookie.indexOf(username + "=");
@@ -53,6 +68,8 @@ function getCookie(username) {
     return "";
 }
 
+// clears the cookie by setting the 
+// expiration date to January 1st, 1970
 function deleteAllCookies() {
     var date = new Date();
     date.setTime(date.getTime() + (-1 * 24 * 60 * 60 * 1000));
