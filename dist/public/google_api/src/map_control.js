@@ -29,35 +29,56 @@ function CenterControl(controlDiv, map) {
 
     // Setup the click event listeners: transform cursor to red (No longer red: just the crosshair)
   controlUI.addEventListener("click", function() {
-    cursorRunning = true;
-    map.setOptions({
-      //draggableCursor: "url(res/icons/6YToyEF.png), auto"
-                   draggableCursor: "crosshair"
-    });
+      // execute the event if the user is logged in
+      // call window alert if the user is:
+      // 1) not logged in
+      // 2) trying to access the function when the cookie is expired
+    if (document.cookie != '') {
+      cursorRunning = true;
+      map.setOptions({
+        //draggableCursor: "url(res/icons/6YToyEF.png), auto"
+                     draggableCursor: "crosshair"
+      });
+    }
+    else {
+      window.alert("Please sign in or register to add a marker!!!")
+    }
+
   });
 }
 
 function addListenerControl(map) {
-  map.addListener("click", function(event) {
-    if (cursorRunning) {
-      $.getJSON("https://nominatim.openstreetmap.org/reverse?format=json&lat="+event.latLng.lat()+"&lon="+event.latLng.lng(), function(json){
-               //do some thing with json  or assign global variable to incoming json.
-                display_name=json;
-          });
-          if (!display_name) {
-            markerList.push(new Marker(map, event.latLng.lat(), event.latLng.lng()));
-          }
-          else {
-            markerList.push(new Marker(map, event.latLng.lat(), event.latLng.lng(), display_name["display_name"]));
-          }
-      markerList[markerList.length - 1].zoomToMarker(map, false);
-      map.setOptions({
-        draggableCursor:
-          "url(https://maps.gstatic.com/mapfiles/openhand_8_8.cur), default"
-      });
-      cursorRunning = false;
+    map.addListener("click", function(event) {
+      // check if user's logged in, just for safety measures
+      // execute the event if the user is logged in
+      // call window alert if the user is:
+      // 1) not logged in
+      // 2) trying to access the function when the cookie is expired
+      if (document.cookie != '') {
+      if (cursorRunning) {
+        $.getJSON("https://nominatim.openstreetmap.org/reverse?format=json&lat="+event.latLng.lat()+"&lon="+event.latLng.lng(), function(json){
+                 //do some thing with json  or assign global variable to incoming json.
+                  display_name=json;
+            });
+            if (!display_name) {
+              markerList.push(new Marker(map, event.latLng.lat(), event.latLng.lng()));
+            }
+            else {
+              markerList.push(new Marker(map, event.latLng.lat(), event.latLng.lng(), display_name["display_name"]));
+            }
+        markerList[markerList.length - 1].zoomToMarker(map, false);
+        map.setOptions({
+          draggableCursor:
+            "url(https://maps.gstatic.com/mapfiles/openhand_8_8.cur), default"
+        });
+        cursorRunning = false;
+      }
     }
-  });
+    else {
+      window.alert("Please sign in or register to add a marker!!!");
+    }
+    });
+
 
   //This may seem unnecessary but it prevents refreshing all entities every zoom 
   map.addListener("zoom_changed", function(event) {

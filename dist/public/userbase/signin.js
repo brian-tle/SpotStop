@@ -28,7 +28,7 @@ function signIn() {
     if (validate > 0) {
         deleteAllCookies();
         document.cookie = "username=" + dummy_user + "; expires=" + now.toUTCString()+';path=/';
-        window.alert(document.cookie);
+        window.alert("Hi " + dummy_user + ", welcome to the SpotStop!!!");
         event.preventDefault();
     }
 }
@@ -49,9 +49,9 @@ function getCookie(username) {
 }
 
 function deleteAllCookies() {
-    if (document.cookie) {
-        var c = document.cookie.split("; ");
-        for (i in c) 
-         document.cookie =/^[^=]+/.exec(c[i])[0]+"=;expires=Thu, 01 Jan 1970 00:00:00 GMT";   
-    } 
+    var date = new Date();
+    date.setTime(date.getTime() + (-1 * 24 * 60 * 60 * 1000));
+    expires = date.toGMTString()
+
+    document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/";
    }
