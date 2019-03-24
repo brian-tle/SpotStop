@@ -5,6 +5,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"> </script>
+    <script src="userbase/signin.js"></script>
     <link
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
@@ -19,41 +21,50 @@
 
   <body>
     <header>
-      <div class="menu-btn">
-        <div class="btn-line"></div>
-        <div class="btn-line"></div>
-        <div class="btn-line"></div>
-      </div>
-
-      <nav class="menu">
-        <div class="menu-branding">
-          <div class="portrait"></div>
+        <div class="menu-btn">
+          <div class="btn-line"></div>
+          <div class="btn-line"></div>
+          <div class="btn-line"></div>
         </div>
-        <ul class="menu-nav">
-          <li class="nav-item">
-            <a href="index.html" class="nav-link">
-              Home
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="google_api\map.html" class="nav-link">
-              The Map
-            </a>
-          </li>
-          <li class="nav-item current">
-            <a href="contact.html" class="nav-link">
-              Contact us
-            </a>
-          </li>
-          <li class="nav-item">
-              <a href="userbase/register.html" class="nav-link">
-              Sign Up
+  
+        <nav class="menu">
+          <div class="menu-branding">
+            <div class="portrait"></div>
+          </div>
+          <ul class="menu-nav">
+            <li class="nav-item">
+              <a href="index.html" class="nav-link">
+                Home
               </a>
             </li>
-        </ul>
-      </nav>
-    </header>
-
+            <li class="nav-item">
+              <a href="google_api\map.html" class="nav-link">
+                The Map
+              </a>
+            </li>
+            <li class="nav-item current">
+              <a href="contact.html" class="nav-link">
+                Contact us
+              </a>
+            </li>
+            <li class="nav-item">
+                <a href="userbase/register.html" class="nav-link">
+                Sign up
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="userbase/signin.html" class="nav-link">
+                  Sign in
+                </a>
+            </li>
+            <li class="nav-item">
+                <a id="logout" href="index.html" class="nav-link">
+                  Log out
+                </a>
+            </li>
+          </ul>
+        </nav>
+      </header>
     <main id="contact">
       <h1 class="lg-heading">Contact <span class="text-secondary">Us</span></h1>
       <h2 class="sm-heading">
@@ -101,5 +112,5 @@
     </footer>
     <script src="js/main.js"></script>
   </body>
-
+  <link rel="import" href="logout.html"/>
 </html>

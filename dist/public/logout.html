@@ -1,4 +1,10 @@
 <script>
+    if (document.cookie != '') {
+        $('#logout').css({"display" : "block"});
+    }
+    else {
+        $('#logout').css({"display" : "none"});
+    }
     $("#logout").click(function(e){
         event.preventDefault();
         var href = $(this).attr("href");//get the href so we can navigate later

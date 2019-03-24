@@ -30,6 +30,11 @@ function signIn() {
         document.cookie = "username=" + dummy_user + "; expires=" + now.toUTCString()+';path=/';
         window.alert("Hi " + dummy_user + ", welcome to the SpotStop!!!");
         event.preventDefault();
+        window.location.href = "http://onespotstop.com/";
+    }
+    else {
+        window.alert("username and/or password is incorrect!");
+        event.preventDefault();
     }
 }
 
