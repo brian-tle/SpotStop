@@ -119,14 +119,20 @@ class Marker {
         this.indicator.downvote.poly.setOptions(colorOption2);
           if (this.indicator.status == 0) { this.totalPoints += 2; }
           else { if (this.indicator.status == 1) { this.totalPoints += 1; } }
-          upvoteMarker(this._id, 1);
           if (userList.length > 0) {
             var check = 0;
             for (var key in userList) {
               if (userList.hasOwnProperty(key)) {
                 if (userList[key].marker_id == this._id) {
-                  userList[key] = {'marker_id': this._id, 'rating': 1};
-                  check = 1;
+                  if (userList[key].rating != 1) {
+                    userList[key] = {'marker_id': this._id, 'rating': 1};
+                    upvoteMarker(this._id, 1);
+                    check = 1;
+                  }
+                  else if (userList[key].rating == 1) {
+                    window.alert('You have upvoted this marker already!')
+                    break;
+                  }
                 }
               }
             }
@@ -158,14 +164,20 @@ class Marker {
           this.indicator.upvote.poly.setOptions(colorOption2);
           if (this.indicator.status == 2) { this.totalPoints -= 2; }
           else { if (this.indicator.status == 1) { this.totalPoints -= 1; } }
-          downvoteMarker(this._id, 1);
           if (userList.length > 0) {
             var check = 0;
             for (var key in userList) {
               if (userList.hasOwnProperty(key)) {
                 if (userList[key].marker_id == this._id) {
-                  userList[key] = {'marker_id': this._id, 'rating': -1};
-                  check = 1;
+                  if (userList[key].rating != -1) {
+                    userList[key] = {'marker_id': this._id, 'rating': -1};
+                    downvoteMarker(this._id, 1);
+                    check = 1;
+                  }
+                  else if (userList[key].rating == -1) {
+                    window.alert('You have downvoted this marker already!')
+                    break;
+                  }
                 }
               }
             }
