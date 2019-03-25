@@ -120,6 +120,16 @@ class Marker {
           if (this.indicator.status == 0) { this.totalPoints += 2; }
           else { if (this.indicator.status == 1) { this.totalPoints += 1; } }
           upvoteMarker(this._id, 1);
+          if (userList) {
+            for (key in userList) {
+              if (userList.hasOwnProperty(key)) {
+                if (userList[key].marker_id == this._id) {
+                  userList[key] = {'marker_id': this._id, 'rating': 1};
+                }
+              }
+            }
+          }
+          addUserVotes(userList);
           this.refreshIcon();
           this.indicator.status = 2;
           this.indicator.active = true;

@@ -103,3 +103,16 @@ function downvoteMarker(_id, val) {
     error: function (xhr, ajaxOptions, thrownError) { }
   });
 }
+
+function addUserVotes(userRating, name) {
+  data = {rating: userRating, username: name};
+  $.ajax({
+    type: 'POST',
+    url: url + '/addUserVotes',
+    async: true,
+    data: JSON.stringify(data),
+    contentType: 'application/json; charset=utf-8',
+    success: function (data) {console.log('changing user votes');},
+    error: function(xhr, ajaxOptions, thrownError) {}
+  });
+}

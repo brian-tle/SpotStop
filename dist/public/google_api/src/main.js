@@ -8,6 +8,7 @@ var s = [];
 var m_list = {};
 // stores query
 var m_l = {};
+var userList = [];
 var onkey;
 var marker_pred;
 var mapOptions = {
