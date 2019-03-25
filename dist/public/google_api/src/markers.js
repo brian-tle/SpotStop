@@ -131,6 +131,7 @@ class Marker {
                   }
                   else if (userList[key].rating == 1) {
                     window.alert('You have upvoted this marker already!')
+                    check = -1;
                     break;
                   }
                 }
@@ -142,7 +143,9 @@ class Marker {
           else {
             userList.push({'marker_id': this._id, 'rating': 1})
           }
-          addUserVotes(userList, getCookie());
+          if (check == 1 || check == 0) {
+            addUserVotes(userList, getCookie());
+          }
           this.refreshIcon();
           this.indicator.status = 2;
           this.indicator.active = true;
@@ -176,6 +179,7 @@ class Marker {
                   }
                   else if (userList[key].rating == -1) {
                     window.alert('You have downvoted this marker already!')
+                    check = -1;
                     break;
                   }
                 }
@@ -187,7 +191,9 @@ class Marker {
           else {
             userList.push({'marker_id': this._id, 'rating': -1})
           }
-          addUserVotes(userList, getCookie());
+          if (check == 1 || check == 0) {
+            addUserVotes(userList, getCookie());
+          }
           this.refreshIcon();
           this.indicator.status = 0;
           this.indicator.active = true;

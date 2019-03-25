@@ -8,7 +8,10 @@ var s = [];
 var m_list = {};
 // stores query
 var m_l = {};
+// stores user rating history
 var userList = [];
+// stores user marker history
+var userMarker = [];
 var onkey;
 var marker_pred;
 var mapOptions = {
