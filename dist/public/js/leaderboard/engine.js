@@ -13,7 +13,6 @@ var joiner;
 var scaleX = 1.0;
 var scaleY = 1.0;
 var scaleMin = 1.0;
-var previousHeight = 964;
 
 var focused = false;
 
