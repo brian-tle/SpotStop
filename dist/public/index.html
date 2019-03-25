@@ -41,7 +41,7 @@
         </div>
         <ul class="menu-nav">
           <li class="nav-item current">
-            <a href="home.html" class="nav-link">
+            <a href="index.html" class="nav-link">
               Home
             </a>
           </li>
@@ -57,9 +57,19 @@
           </li>
           <li class="nav-item">
               <a href="userbase/register.html" class="nav-link">
-              Sign Up
+              Sign up
               </a>
-            </li>
+          </li>
+          <li class="nav-item">
+              <a href="userbase/signin.html" class="nav-link">
+                Sign in
+              </a>
+          </li>
+          <li class="nav-item">
+              <a id="logout" href="index.html" class="nav-link">
+                Log out
+              </a>
+          </li>
         </ul>
       </nav>
     </header>
@@ -69,7 +79,7 @@
       <h2 class="sm-heading">
         Saving your favorite spots.
       </h2>
-      <div class="engine-container">
+      <div id="leaderboard-canvas" class="engine-container">
         <script src="js/leaderboard/engine.js"></script>
       </div>
     </main>
