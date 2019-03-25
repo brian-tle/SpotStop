@@ -120,16 +120,23 @@ class Marker {
           if (this.indicator.status == 0) { this.totalPoints += 2; }
           else { if (this.indicator.status == 1) { this.totalPoints += 1; } }
           upvoteMarker(this._id, 1);
-          if (userList) {
-            for (key in userList) {
+          if (userList.length > 0) {
+            var check = 0;
+            for (var key in userList) {
               if (userList.hasOwnProperty(key)) {
                 if (userList[key].marker_id == this._id) {
                   userList[key] = {'marker_id': this._id, 'rating': 1};
+                  check = 1;
                 }
               }
             }
+            if (check == 0)
+            userList.push({'marker_id': this._id, 'rating': 1});
           }
-          addUserVotes(userList);
+          else {
+            userList.push({'marker_id': this._id, 'rating': 1})
+          }
+          addUserVotes(userList, getCookie());
           this.refreshIcon();
           this.indicator.status = 2;
           this.indicator.active = true;
@@ -152,6 +159,23 @@ class Marker {
           if (this.indicator.status == 2) { this.totalPoints -= 2; }
           else { if (this.indicator.status == 1) { this.totalPoints -= 1; } }
           downvoteMarker(this._id, 1);
+          if (userList.length > 0) {
+            var check = 0;
+            for (var key in userList) {
+              if (userList.hasOwnProperty(key)) {
+                if (userList[key].marker_id == this._id) {
+                  userList[key] = {'marker_id': this._id, 'rating': -1};
+                  check = 1;
+                }
+              }
+            }
+            if (check == 0)
+            userList.push({'marker_id': this._id, 'rating': -1});
+          }
+          else {
+            userList.push({'marker_id': this._id, 'rating': -1})
+          }
+          addUserVotes(userList, getCookie());
           this.refreshIcon();
           this.indicator.status = 0;
           this.indicator.active = true;

@@ -259,6 +259,23 @@ function getAllUsers(res) {
 	}); 
 }
 
+function addUserVotes(id, name) {
+	MongoClient.connect(url, { useNewUrlParser: true}, function(err, db){
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		var query = {username: name};
+		dbo.collection("users").findOne({username: name}, function(err, result){
+			if (err) throw err;
+			var userRating = {$set: {rating: id}};
+			dbo.collection("users").updateOne(query, userRating, function(err){
+				if (err) throw err;
+			});
+			//var updates = {}
+			db.close();
+		});
+
+	});
+}
 
 function getControversialMarkers(res) {
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
@@ -324,6 +341,12 @@ server.post("/addUser", (req, res) => {
 	res.send('Adding User!');
 	handleUser(req.body.username, req.body.email, req.body.password);
 });
+
+server.post("/addUserVotes", (req,res) => {
+	res.send('Adding User Votes!');
+	addUserVotes(req.body.rating, req.body.username);
+});
+
 
 
 server.listen(port, () => console.log(`Server listening on port ${port}!`));
