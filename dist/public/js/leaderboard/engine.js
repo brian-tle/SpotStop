@@ -31,6 +31,7 @@ loader.add('chair', 'img/leaderboard/chair.png');
 loader.add('table', 'img/leaderboard/table.png');
 loader.add('shelf', 'img/leaderboard/shelf.png');
 loader.add('marker_1', 'img/leaderboard/marker_1.png');
+loader.add('marker_2', 'img/leaderboard/marker_2.png');
 
 loader.once('complete', function(loader, resources) {
 	console.log("Assets loaded.");

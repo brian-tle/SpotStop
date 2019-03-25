@@ -1,7 +1,10 @@
 bufferTM = [];
 bufferCM = [];
+currentRankTM = 16;
+currentRankCM = 16;
 
-const MARKER_INTERVAL = 1.25;
+const MARKER_INTERVAL_TM = 1.25;
+const MARKER_INTERVAL_CM = 0.97;
 
 class Joiner {
 	constructor() {
@@ -20,7 +23,8 @@ class Joiner {
 
 		this.listTM = [];
 		this.listCM = [];
-		this.markerTimer = 0.0;
+		this.markerTimerTM = 0.0;
+		this.markerTimerCM = 0.0;
 
 		this.createBodyBounds();
 
@@ -51,17 +55,33 @@ class Joiner {
 
 	updateMarkers(elapsedTimeS) {
 		if (bufferTM.length > 0) {
-			if (this.markerTimer >= MARKER_INTERVAL) {
-				this.listTM.push(new Marker(Math.floor(Math.random() * (((SCREENWIDTH / 3) / 2 + 75) - ((SCREENWIDTH / 3) / 2 - 75) + 1) + ((SCREENWIDTH / 3) / 2 - 75)), -50, 1));
+			if (this.markerTimerTM >= MARKER_INTERVAL_TM) {
+				this.listTM.push(new Marker(Math.floor(Math.random() * (((SCREENWIDTH / 3) / 2 + 75) - ((SCREENWIDTH / 3) / 2 - 75) + 1) + ((SCREENWIDTH / 3) / 2 - 75)), -150, currentRankTM));
 				bufferTM.shift();
-				this.markerTimer = 0;
+				this.markerTimerTM = 0;
+				currentRankTM -= 1;
 			}
 			else {
-				this.markerTimer += elapsedTimeS;
+				this.markerTimerTM += elapsedTimeS;
+			}
+		}
+
+		if (bufferCM.length > 0) {
+			if (this.markerTimerCM >= MARKER_INTERVAL_CM) {
+				this.listCM.push(new MarkerRound(SCREENWIDTH * (2 / 3) + (SCREENWIDTH / 6), -150, currentRankCM));
+				bufferCM.shift();
+				this.markerTimerCM = 0;
+				currentRankCM -= 1;
+			}
+			else {
+				this.markerTimerCM += elapsedTimeS;
 			}
 		}
 
 		this.listTM.forEach(marker => {
+			marker.update();
+		});
+		this.listCM.forEach(marker => {
 			marker.update();
 		});
 	}
@@ -70,21 +90,27 @@ class Joiner {
 
 	createBodyBounds() {
 		this.bottomShape = new p2.Plane();
-		this.bottomBody = new p2.Body({ position: [0, 0] });
-        //this.bottomBody = new p2.Body({ position: [0, 25 / 100] });
+		this.bottomBody = new p2.Body({ position: [0,0] });
         this.bottomBody.addShape(this.bottomShape);
         world.addBody(this.bottomBody);
 
-        this.leftShape = new p2.Plane();
-        this.leftBody = new p2.Body({ angle: (3 * Math.PI) / 2 });
+        this.leftShape = new p2.Box({ width: 10 / 100, height: (SCREENHEIGHT * 2) / 100 });
+        this.leftBody = new p2.Body({ position: [0,0] });
         this.leftBody.addShape(this.leftShape);
         world.addBody(this.leftBody);
 
-        this.rightShape = new p2.Plane();
-        this.rightBody = new p2.Body({ 
-        	angle: Math.PI / 2,
-        	position: [(SCREENWIDTH / 3) / 100, 0]
-        });
+        this.rightShape = new p2.Box({ width: 10 / 100, height: (SCREENHEIGHT * 2) / 100 });
+        this.rightBody = new p2.Body({ position: [(SCREENWIDTH / 3) / 100, 0] });
+        this.rightBody.addShape(this.rightShape);
+        world.addBody(this.rightBody);
+
+        this.leftShape = new p2.Box({ width: 10 / 100, height: (SCREENHEIGHT * 2) / 100 });
+        this.leftBody = new p2.Body({ position: [(SCREENWIDTH * (2 / 3)) / 100,0] });
+        this.leftBody.addShape(this.leftShape);
+        world.addBody(this.leftBody);
+
+        this.rightShape = new p2.Box({ width: 10 / 100, height: (SCREENHEIGHT * 2) / 100 });
+        this.rightBody = new p2.Body({ position: [SCREENWIDTH / 100, 0] });
         this.rightBody.addShape(this.rightShape);
         world.addBody(this.rightBody);
 	}
