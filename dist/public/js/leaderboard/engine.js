@@ -12,6 +12,10 @@ var elapsedTimeMS = 0;
 var joiner;
 var scaleX = 1.0;
 var scaleY = 1.0;
+var scaleMin = 1.0;
+var previousHeight = 964;
+
+var focused = false;
 
 const loader = PIXI.loader;
 
@@ -33,6 +37,9 @@ loader.add('shelf', 'img/leaderboard/shelf.png');
 loader.add('marker_1', 'img/leaderboard/marker_1.png');
 loader.add('marker_2', 'img/leaderboard/marker_2.png');
 
+window.addEventListener('focus', (event) => { focused = true; });
+window.addEventListener('blur', (event) => { focused = false; });
+
 loader.once('complete', function(loader, resources) {
 	console.log("Assets loaded.");
 	document.addEventListener('keydown', function(event) {
@@ -52,13 +59,15 @@ loader.once('complete', function(loader, resources) {
 loader.load();
 
 function resize() {
-	stage.setTransform(0, 0, scaleX, scaleY);
-	renderer.view.width = renderer.view.width * scaleX;
-	renderer.view.height = renderer.view.height * scaleY;
+	scaleX = window.innerWidth / 1920;
+	scaleY = window.innerHeight / 964;
+	scaleMin = Math.min(scaleX, scaleY);
 
+	renderer.resize(1500 * scaleMin, 700 * scaleMin);
 	renderer.view.style.position = 'absolute';
 	renderer.view.style.left = ((window.innerWidth - renderer.width) / 2) + 'px';
 	renderer.view.style.top = ((window.innerHeight + renderer.height) / 8) + 'px';
+	stage.scale.set(scaleMin);
 }
 
 function initialize() {
@@ -83,10 +92,13 @@ function update() {
     frameEnd = Date.now();
     elapsedTimeMS = frameEnd - frameStart;
     frameStart = frameEnd;
-    joiner.update(getElapsedTimeS());
+
+    if (focused) {
+		joiner.update(getElapsedTimeS());
+		draw();
+	}
 
     requestAnimationFrame(update);
-    draw();
 }
 
 function draw() {
