@@ -3,6 +3,8 @@ class Marker {
 		this.sprite = new PIXI.Sprite(PIXI.loader.resources.marker_1.texture);
 		this.sprite.anchor.set(0.5);
 		stage.addChild(this.sprite);
+		this.sprite.width /= 2.0;
+		this.sprite.height /= 2.0;
 		this.sprite.width += Math.pow(rank, 1.75);
 		this.sprite.height += Math.pow(rank, 1.75);
 
@@ -31,6 +33,8 @@ class MarkerRound {
 		this.sprite = new PIXI.Sprite(PIXI.loader.resources.marker_2.texture);
 		this.sprite.anchor.set(0.5);
 		stage.addChild(this.sprite);
+		this.sprite.width /= 2.0;
+		this.sprite.height /= 2.0;
 		this.sprite.width += Math.pow(rank, 1.75);
 		this.sprite.height += Math.pow(rank, 1.75);
 
