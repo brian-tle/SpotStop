@@ -20,7 +20,15 @@ var iconUrl3 = "%3C%2Ftext%3E%3C%2Fsvg%3E";
 //–––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 function addLabel() {
-  markerList[markerList.length - 1].des = document.getElementById('marker-label').value;
+  var des = String(document.getElementById('marker-label').value);
+  var des_token = des.split(" ");
+  for (var i = 0; i < des_token.length; i++) {
+    if (prof_list.includes(des_token[i])) {
+        des_token[i] = '*'.repeat(des_token[i].length);
+    }
+  }
+  var real_des = des_token.join(" ");
+  markerList[markerList.length - 1].des = real_des;
   markerList[markerList.length - 1].createLabel(Marker.map);
   markerList[markerList.length - 1].popupCreated = true;
   markerList[markerList.length - 1].popup.inRange = true;

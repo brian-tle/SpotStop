@@ -11,7 +11,8 @@ var m_l = {};
 // stores user rating history
 var userList = [];
 // stores user marker history
-var userMarker = [];
+var prof_list = [];
+prof_list = profanity_list(prof_list);
 var onkey;
 var marker_pred;
 var mapOptions = {
