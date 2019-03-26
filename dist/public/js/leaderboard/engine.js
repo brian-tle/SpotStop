@@ -34,7 +34,13 @@ loader.add('chair', 'img/leaderboard/chair.png');
 loader.add('table', 'img/leaderboard/table.png');
 loader.add('shelf', 'img/leaderboard/shelf.png');
 loader.add('marker_1', 'img/leaderboard/marker_1.png');
+loader.add('marker_1_g', 'img/leaderboard/marker_1_g.png');
+loader.add('marker_1_s', 'img/leaderboard/marker_1_s.png');
+loader.add('marker_1_b', 'img/leaderboard/marker_1_b.png');
 loader.add('marker_2', 'img/leaderboard/marker_2.png');
+loader.add('marker_2_g', 'img/leaderboard/marker_2_g.png');
+loader.add('marker_2_s', 'img/leaderboard/marker_2_s.png');
+loader.add('marker_2_b', 'img/leaderboard/marker_2_b.png');
 
 window.addEventListener('focus', (event) => { focused = true; });
 window.addEventListener('blur', (event) => { focused = false; });
