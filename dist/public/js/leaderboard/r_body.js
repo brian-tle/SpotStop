@@ -1,6 +1,10 @@
 class Marker {
 	constructor(x, y, rank) {
-		this.sprite = new PIXI.Sprite(PIXI.loader.resources.marker_1.texture);
+		if (rank == 16) { this.sprite = new PIXI.Sprite(PIXI.loader.resources.marker_1_g.texture); }
+		if (rank == 15 || rank == 14) { this.sprite = new PIXI.Sprite(PIXI.loader.resources.marker_1_s.texture); }
+		if (rank == 13 || rank == 12 || rank == 11) { this.sprite = new PIXI.Sprite(PIXI.loader.resources.marker_1_b.texture); }
+		if (rank <= 10) { this.sprite = new PIXI.Sprite(PIXI.loader.resources.marker_1.texture); }
+
 		this.sprite.anchor.set(0.5);
 		stage.addChild(this.sprite);
 		this.sprite.width /= 2.0;
@@ -30,7 +34,11 @@ class Marker {
 
 class MarkerRound {
 	constructor(x, y, rank) {
-		this.sprite = new PIXI.Sprite(PIXI.loader.resources.marker_2.texture);
+		if (rank == 16) { this.sprite = new PIXI.Sprite(PIXI.loader.resources.marker_2_g.texture); }
+		if (rank == 15 || rank == 14) { this.sprite = new PIXI.Sprite(PIXI.loader.resources.marker_2_s.texture); }
+		if (rank == 13 || rank == 12 || rank == 11) { this.sprite = new PIXI.Sprite(PIXI.loader.resources.marker_2_b.texture); }
+		if (rank <= 10) { this.sprite = new PIXI.Sprite(PIXI.loader.resources.marker_2.texture); }
+		
 		this.sprite.anchor.set(0.5);
 		stage.addChild(this.sprite);
 		this.sprite.width /= 2.0;
