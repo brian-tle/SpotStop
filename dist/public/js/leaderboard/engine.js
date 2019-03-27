@@ -14,7 +14,7 @@ var scaleX = 1.0;
 var scaleY = 1.0;
 var scaleMin = 1.0;
 
-var focused = false;
+var focused = true;
 
 const loader = PIXI.loader;
 
@@ -71,7 +71,7 @@ function resize() {
 	renderer.resize(1500 * scaleMin, 700 * scaleMin);
 	renderer.view.style.position = 'absolute';
 	renderer.view.style.left = ((window.innerWidth - renderer.width) / 2) + 'px';
-	renderer.view.style.top = ((window.innerHeight + renderer.height) / 8) + 'px';
+	renderer.view.style.bottom = '15px';
 	stage.scale.set(scaleMin);
 }
 
