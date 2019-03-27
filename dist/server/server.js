@@ -2,6 +2,7 @@ const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectID
 const express = require('express');
 const bodyParser = require('body-parser');
+const bcrypt = require('bcryptjs');
 const url = "mongodb://test:testpassword@spot-stop-shard-00-00-ruq20.mongodb.net:27017,spot-stop-shard-00-01-ruq20.mongodb.net:27017,spot-stop-shard-00-02-ruq20.mongodb.net:27017/test?ssl=true&replicaSet=spot-stop-shard-0&authSource=admin&retryWrites=true";
 const server = express();
 const port = 8080;
@@ -144,10 +145,13 @@ function handleUser(user, em, pass) {
 	MongoClient.connect(url, {useNewUrlParser: true}, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
-		var yuza = {username: user, email: em, password: pass, marker: [], rating: []};
+		var salt = bcrypt.genSaltSync(10);
+		var new_pass = bcrypt.hashSync(pass, salt);
+		var yuza = {username: user, email: em, password: new_pass, marker: [], rating: []};
 		dbo.collection("users").insertOne(yuza, function(err, result) {
 			if (err) throw err;
 			console.log("User {" + user +"} added");
+			console.log(new_pass);
 			db.close();
 		});
 	});
