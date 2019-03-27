@@ -1,5 +1,4 @@
 var Popup;
-
 function createPopupClass() {
   function Popup(position, content) {
     this.position = position;

@@ -30,30 +30,61 @@ $.getJSON('https://sfhacks2019-1551558382883.appspot.com/getAllUsers', function 
     }
 });
 
+
+
 function initialize() {
   initMap();
-  initAutocomplete();
 }
 
 function initMap() {
-  map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 12,
-    center: {lat: 37.7219, lng: -122.4782},
-    controls: google.maps,
-    mapTypeControlOptions: {      
-      mapTypeIds: [
-
-      ]
-    }
+  // jQuery(document).ready(function () {}) must be
+  // used when using $.getJSON() inside the function because
+  // $.getJSON() is asynchronous.
+  // Since it only works inside jQuery(document).ready(function () {}),
+  // all the other code must be added in the given function as well
+  jQuery(document).ready(function () {
+    // lt = for storing latitude of the IP address
+    // lg = for storing longitude of the IP address
+    // ip_url = store the url that is used to make API calls
+    var lt;
+    var lg;
+    var ip_url;
+    $.getJSON("https://api.ipify.org?format=jsonp&callback=?",
+      function (json) {
+        ip_url = 'http://api.ipstack.com/' + json.ip + '?access_key=38789675028f4a0492a31fce46e79e55';
+        $.getJSON(ip_url, function (data) {
+          lt = parseFloat(data.latitude);
+          lg = parseFloat(data.longitude);
+          // assign default latitude and longitude
+          // to the map
+          map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 12,
+            // center == where it stores the default latitude
+            // and longitude
+            center: { lat: parseFloat(lt), lng: parseFloat(lg) },
+            controls: google.maps,
+            mapTypeControlOptions: {
+              // nothing is inside mapTypeId
+              // because we don't want extra features
+              // in our map, ex: Sattelite feature
+              mapTypeIds: [
+              ]
+            }
+          });
+          map.setOptions(mapOptions);
+          Marker.map = map;
+          addControls(map);
+          addListeners(map);
+          // retrieve all of the markers in the database
+          // and display them on the map
+          getAllMarkers(map);
+          // call initAutocomplete() to have the search bar
+          // working
+          initAutocomplete();
+        });
+      }
+    );
   });
-  map.setOptions(mapOptions);
-
-  Marker.map = map;
-
-  addControls(map);
-  addListeners(map);
-
-  getAllMarkers(map);
 }
 
 function initAutocomplete() {
