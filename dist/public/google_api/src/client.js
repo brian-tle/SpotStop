@@ -57,7 +57,6 @@ function createMarker(lat, lng, name, des, upvote, downvote) {
     contentType: 'application/json; charset=utf-8',
     success: function (data) {
       markerList[markerList.length - 1]._id = data; 
-      userMarker.push({'marker_id': markerList[markerList.length - 1]._id });
     },
     error: function (xhr, ajaxOptions, thrownError) { }
   });
