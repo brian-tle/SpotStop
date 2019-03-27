@@ -148,6 +148,7 @@ function handleUser(user, em, pass) {
 		var salt = bcrypt.genSaltSync(10);
 		var new_pass = bcrypt.hashSync(pass, salt);
 		var yuza = {username: user, email: em, password: new_pass, marker: [], rating: []};
+		var yuza = {username: user, email: em, password: pass, type: 0, marker: [], rating: []};
 		dbo.collection("users").insertOne(yuza, function(err, result) {
 			if (err) throw err;
 			console.log("User {" + user +"} added");
@@ -350,7 +351,5 @@ server.post("/addUserVotes", (req,res) => {
 	res.send('Adding User Votes!');
 	addUserVotes(req.body.rating, req.body.username);
 });
-
-
 
 server.listen(port, () => console.log(`Server listening on port ${port}!`));
