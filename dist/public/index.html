@@ -85,6 +85,11 @@
     </main>
     <script src="js/main.js"></script>
     <script src="userbase/signin.js"></script>
-    <link rel = "import" href="logout.html"/>
+    <script id="user_auth"></script>
   </body>
+  <script>
+      $(function(){
+    $("#user_auth").load("logout.html"); 
+  });
+</script>
 </html>

@@ -101,11 +101,15 @@
         </form>
       </div>
     </main>
-
     <footer id="main-footer">
       Copyright &copy; 2019
     </footer>
     <script src="../js/main.js"></script>
+    <div id = "user_auth"></div>
   </body>
-  <link rel="import" href="../logout.html"/>
+  <script>
+        $(function(){
+      $("#user_auth").load("../logout.html"); 
+    });
+  </script>
 </html>
