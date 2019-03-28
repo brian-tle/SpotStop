@@ -1,10 +1,12 @@
 const MongoClient = require('mongodb').MongoClient;
-const ObjectId = require('mongodb').ObjectID
+const ObjectId = require('mongodb').ObjectID;
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const url = "mongodb://test:testpassword@spot-stop-shard-00-00-ruq20.mongodb.net:27017,spot-stop-shard-00-01-ruq20.mongodb.net:27017,spot-stop-shard-00-02-ruq20.mongodb.net:27017/test?ssl=true&replicaSet=spot-stop-shard-0&authSource=admin&retryWrites=true";
 const server = express();
+server.use(cookieParser());
 const port = 8080;
 const path  = require('path');
 
@@ -148,11 +150,62 @@ function handleUser(user, em, pass) {
 		var salt = bcrypt.genSaltSync(10);
 		var new_pass = bcrypt.hashSync(pass, salt);
 		var yuza = {username: user, email: em, password: new_pass, marker: [], rating: []};
-		var yuza = {username: user, email: em, password: pass, type: 0, marker: [], rating: []};
 		dbo.collection("users").insertOne(yuza, function(err, result) {
 			if (err) throw err;
 			console.log("User {" + user +"} added");
 			console.log(new_pass);
+			db.close();
+		});
+	});
+}
+
+
+/**
+ * checkUser is a function where it checks whether user's input password
+ * matches the encrypted password in the database.
+ * 1) It checks to see if parameter user matches the users collections's document's username
+ * 2) If it matches, variable new_pass will store the given document's encrypted password
+ * 3) bcrypt will be used to check whether parameter password (which is user's input password)
+ *    matches new_pass (the encrypted password)
+ * 4) If it matches, it will return true to logIn() function in client.js
+ *    otherwise, it will return false to logIn() function in client.js
+ * 
+ */
+function checkUser(res, user, pass) {
+	// stores encrypted password
+	var new_pass;
+	// connect to the database
+	MongoClient.connect(url, { useNewUrlParser: true }, function (err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		const user_collection = dbo.collection("users");
+		//Find the users collection's document's username that
+		// matches with user parameter
+		user_collection.findOne({ username: user }, function (err, docs) {
+			if (err) throw err;
+			// assign the document's encrypted
+			// password to new_pass by calling
+			// docs.password. This works because
+			// docs is dictionary that stores the
+			// the given document's information.
+			new_pass = docs.password;
+			// use bcrypt to compare pass (inputed password)
+			// and new_pass (encrypted password)
+			bcrypt.compare(pass, new_pass, function (err, resp) {
+				if (err) throw err;
+				// returns true to client.js if it matches
+				if (resp == true) {
+					console.log("You have signed in to your account!");
+					res.send('cookie sent');
+					check = true;
+				}
+				// return false to cleint.js if it doesn't match
+				else {
+					return res.status(400).send({
+						message: 'Password does not match'
+					 });
+				}
+			});
 			db.close();
 		});
 	});
@@ -320,6 +373,12 @@ server.get('/getAllUsers', function(req, res, next) {
 	getAllUsers(res);
 });
 
+server.get('/getC', function(req, res){
+	res.cookie('name',res.username, {'maxAge': 1000 * 60 * 30}).send('cookie set'); //Sets name = express
+	res.send('Passed Cookie');
+ });
+ 
+
 server.get('/createTestMarker', function(req, res, next) { 
 	res.send('Creating Test Marker!') 
 	addMarker(res, 34.5315, -123.5235, "Test Marker", 54, 21);
@@ -350,6 +409,10 @@ server.post("/addUser", (req, res) => {
 server.post("/addUserVotes", (req,res) => {
 	res.send('Adding User Votes!');
 	addUserVotes(req.body.rating, req.body.username);
+});
+
+server.post("/login", (req, res) => {
+	checkUser(res, req.body.username, req.body.password);
 });
 
 server.listen(port, () => console.log(`Server listening on port ${port}!`));

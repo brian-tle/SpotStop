@@ -1,4 +1,5 @@
 <script>
+    $(document).ready(function() {
     if (document.cookie != '') {
         $('#logout').css({"display" : "block"});
         $('#signin').css({"display": "none"});
@@ -9,14 +10,14 @@
         $('#signin').css({"display": "block"});
         $('#signup').css({"display": "block"});
     }
-    $("#logout").click(function(e){
-        event.preventDefault();
+    $("#logout").click(function(event){
         var href = $(this).attr("href");//get the href so we can navigate later
-        deleteAllCookies()
+        deleteAllCookies();
         //do the update
         window.alert("You have successfully logged out from your account!");
         //when update has finished, navigate to the other page
         window.location = href;
         return false;
     });
+});
 </script>
