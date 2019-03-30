@@ -304,7 +304,7 @@ function getTopMarkers(res) {
 	}); 
 }
 
-function getAllUsers(res) {
+/* function getAllUsers(res) {
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
@@ -315,7 +315,7 @@ function getAllUsers(res) {
 			db.close();
 		});
 	}); 
-}
+} */
 
 function upvoteUser(res, id, name, rating) {
 	// open the database

@@ -20,18 +20,6 @@ var mapOptions = {
   fullscreenControl: false
 };
 
-$.getJSON('https://sfhacks2019-1551558382883.appspot.com/getAllUsers', function (data) {
-    for (var key in data) {
-      if (data.hasOwnProperty(key)) {
-        if (data[key].username == getCookie()) {
-          userList = data[key].rating;
-        }
-      }
-    }
-});
-
-
-
 function initialize() {
   initMap();
 }
