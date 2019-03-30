@@ -317,21 +317,160 @@ function getAllUsers(res) {
 	}); 
 }
 
-function addUserVotes(id, name) {
-	MongoClient.connect(url, { useNewUrlParser: true}, function(err, db){
+function upvoteUser(res, id, name, rating) {
+	// open the database
+	MongoClient.connect(url, { useNewUrlParser: true }, function (err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
-		var query = {username: name};
-		dbo.collection("users").findOne({username: name}, function(err, result){
+		var query = { username: name };
+		var userRating = [];
+		// to check if certain condition is passed
+		var check = 0;
+		/**
+		 * Find the user, from users collection, with same username stored in the cookie.
+		 * userRating will store the rating list in the given users document .
+		 * */ 
+		dbo.collection("users").findOne({ username: name }, function (err, result) {
 			if (err) throw err;
-			var userRating = {$set: {rating: id}};
-			dbo.collection("users").updateOne(query, userRating, function(err){
-				if (err) throw err;
-			});
-			//var updates = {}
+			userRating = result.rating;
+			/**
+			 * If userRating is NOT empty,
+			 * iterate through userRating and IF userRating.marker_id matches the id,
+			 * check if the value of that marker_id equals to 1. If it equals to 1, 
+			 * assign check to 2 and
+			 * return res.send of 400 connection error.
+			 * BUT if it doesn't equal to 1, change the value to 1, assign check to 1
+			 * and break the loop.
+			 */
+			if (userRating.length > 0) {
+				for (var key in userRating) {
+					if (userRating.hasOwnProperty(key)) {
+						if (userRating[key].marker_id == id) {
+							if (userRating[key].value == 1) {
+								check = 2;
+								return res.status(400).send({
+									message: 'User has already upvoted this marker!'
+								});
+							}
+							else if (userRating[key].value < 1) {
+								userRating[key] = { marker_id: id, value: 1 };
+								check = 1;
+								break;
+							}
+						}
+					}
+				}
+				/**
+				 * IF none of the marker_id matches the given id,
+				 * push the dictionary object containing marker_id and value to the
+				 * userRating
+				 */
+				if (check == 0) {
+					userRating.push({ marker_id: id, value: 1 });
+				}
+			}
+			/**
+			 * IF userRating is empty, push the dictionary object
+			 * containing marker_id and value to the 
+			 * userRating
+			 */
+			else {
+				userRating.push({ marker_id: id, value: 1 });
+			}
+			/**
+			 * If check is LESS than 2 (IF the given value of the marker_id DOES NOT EQUAL to 1),
+			 * update the user document's rating list by reassigning userRating to it and 
+			 * call upvoteMarker() function after that
+			 */
+			if (check < 2) {
+				dbo.collection("users").updateOne(query, { $set: { rating: userRating } }, function (err) {
+					if (err) throw err;
+				});
+			}
+			if (check < 2) {
+				upvoteMarker(id, 1);
+			}
 			db.close();
+			return res.send("Success");
 		});
+	});
+}
 
+function downvoteUser(res, id, name, rating) {
+	// open the database
+	MongoClient.connect(url, { useNewUrlParser: true }, function (err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		var query = { username: name };
+		var userRating = [];
+		// check if the certain condition is passed
+		var check = 0;
+		// find the user, in the users collection, that matches the username stored in the cookie
+		dbo.collection("users").findOne({ username: name }, function (err, result) {
+			if (err) throw err;
+			// store result list into userRating
+			userRating = result.rating;
+			/**
+			 * IF userRating is NOT empty,
+			 * iterate through userRating and
+			 * IF the marker_id matches the given id, 
+			 * check if the value of the certain marker equals -1.
+			 * IF it equals -1, return response of 400 error.
+			 * ELSE, change the value of the marker to -1 (TO VALIDATE THAT IT'S DOWNVOTED)
+			 * and break the loop afterwards
+			 */
+			if (userRating.length > 0) {
+				for (var key in userRating) {
+					if (userRating.hasOwnProperty(key)) {
+						if (userRating[key].marker_id == id) {
+							if (userRating[key].value == -1) {
+								check = 2;
+								return res.status(400).send({
+									message: "User has already downvoted this marker!"
+								});
+							} else if (userRating[key].value > -1) {
+								userRating[key] = { marker_id: id, value: -1 };
+								check = 1;
+								break;
+							}
+						}
+					}
+				}
+				/**
+				 * IF none of the marker_id matches the given id,
+				 * push the dictionary object of marker_id and value 
+				 * to userRating
+				 */
+				if (check == 0) {
+					userRating.push({ marker_id: id, value: -1 });
+				}
+			/**
+			 * IF userRating is EMPTY,
+			 * push the dictionary object of marker_id and value
+			 * to userRating
+			 */
+			} else {
+				userRating.push({ marker_id: id, value: -1 });
+			}
+			/**
+			 * IF the value of the given marker is NOT -1 (OR check != 2),
+			 * update the rating list of users document by reassigning
+			 * it to userRating and call downvoteMarker() function to downvote the
+			 * marker.
+			 */
+			if (check < 2) {
+				dbo
+					.collection("users")
+					.updateOne(query, { $set: { rating: userRating } }, function (err) {
+						if (err) throw err;
+					});
+			}
+			if (check < 2) {
+				downvoteMarker(id, 1);
+			}
+			db.close();
+			return res.send("Success");
+		});
 	});
 }
 
@@ -406,9 +545,12 @@ server.post("/addUser", (req, res) => {
 	handleUser(req.body.username, req.body.email, req.body.password);
 });
 
-server.post("/addUserVotes", (req,res) => {
-	res.send('Adding User Votes!');
-	addUserVotes(req.body.rating, req.body.username);
+server.post("/upvoteUser", (req,res) => {
+	upvoteUser(res, req.body.marker_id, req.body.username, req.body.rating);
+});
+
+server.post("/downvoteUser", (req, res) => {
+	downvoteUser(res, req.body.marker_id, req.body.username, req.body.rating);
 });
 
 server.post("/login", (req, res) => {

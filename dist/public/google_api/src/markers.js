@@ -19,6 +19,7 @@ var iconUrl2 = "%22%20stroke%3D%22%23ccc%22%20stroke-width%3D%22.5%22%20d%3D%22M
 var iconUrl3 = "%3C%2Ftext%3E%3C%2Fsvg%3E";
 //–––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
+
 function addLabel() {
   var des = String(document.getElementById('marker-label').value);
   var des_token = des.split(/[,?\s+/.]/);
@@ -41,6 +42,15 @@ function addLabel() {
 function removeLastMarker() {
   markerList[markerList.length - 1].marker.setMap(null);
   markerList.pop();
+}
+
+
+// Havent implemented refreshAllMarkers() in the code yet, 
+// but I think it will be useful in the future
+function refreshAllMarkers() {
+/*   markerList.forEach(marker => {
+    marker.refreshIcon();
+  }); */
 }
 
 class Marker {
@@ -119,44 +129,10 @@ class Marker {
     this.indicator.upvote.poly.addListener(
       "click",
       function(event) {
-        // upvote the given marker if the cookie isn't empty
+        // if document.cookie is assigned, 
+        // upvote the marker and store that record in the given user's information
         if (document.cookie != '') {
-        var colorOption = { fillColor: "#46db46" };
-        var colorOption2 = { fillColor: "#474747" };
-        this.indicator.upvote.poly.setOptions(colorOption);
-        this.indicator.downvote.poly.setOptions(colorOption2);
-          if (this.indicator.status == 0) { this.totalPoints += 2; }
-          else { if (this.indicator.status == 1) { this.totalPoints += 1; } }
-          if (userList.length > 0) {
-            var check = 0;
-            for (var key in userList) {
-              if (userList.hasOwnProperty(key)) {
-                if (userList[key].marker_id == this._id) {
-                  if (userList[key].rating != 1) {
-                    userList[key] = {'marker_id': this._id, 'rating': 1};
-                    upvoteMarker(this._id, 1);
-                    check = 1;
-                  }
-                  else if (userList[key].rating == 1) {
-                    window.alert('You have upvoted this marker already!')
-                    check = -1;
-                    break;
-                  }
-                }
-              }
-            }
-            if (check == 0)
-            userList.push({'marker_id': this._id, 'rating': 1});
-          }
-          else {
-            userList.push({'marker_id': this._id, 'rating': 1})
-          }
-          if (check == 1 || check == 0) {
-            addUserVotes(userList, getCookie());
-          }
-          this.refreshIcon();
-          this.indicator.status = 2;
-          this.indicator.active = true;
+          upvoteUser(this._id, getCookie(), 1, this.indicator, this.totalPoints);
         }
         // display window alert if the cookie is empty
         else {
@@ -168,44 +144,12 @@ class Marker {
     this.indicator.downvote.poly.addListener(
       "click",
       function(event) {
+        // if document.cookie is assigned, 
+        // downvote the marker and stoer that record in the given user's information
         if (document.cookie != '') {
-          var colorOption = { fillColor: "#FF0000" };
-          var colorOption2 = { fillColor: "#474747" };
-          this.indicator.downvote.poly.setOptions(colorOption);
-          this.indicator.upvote.poly.setOptions(colorOption2);
-          if (this.indicator.status == 2) { this.totalPoints -= 2; }
-          else { if (this.indicator.status == 1) { this.totalPoints -= 1; } }
-          if (userList.length > 0) {
-            var check = 0;
-            for (var key in userList) {
-              if (userList.hasOwnProperty(key)) {
-                if (userList[key].marker_id == this._id) {
-                  if (userList[key].rating != -1) {
-                    userList[key] = {'marker_id': this._id, 'rating': -1};
-                    downvoteMarker(this._id, 1);
-                    check = 1;
-                  }
-                  else if (userList[key].rating == -1) {
-                    window.alert('You have downvoted this marker already!')
-                    check = -1;
-                    break;
-                  }
-                }
-              }
-            }
-            if (check == 0)
-            userList.push({'marker_id': this._id, 'rating': -1});
-          }
-          else {
-            userList.push({'marker_id': this._id, 'rating': -1})
-          }
-          if (check == 1 || check == 0) {
-            addUserVotes(userList, getCookie());
-          }
-          this.refreshIcon();
-          this.indicator.status = 0;
-          this.indicator.active = true;
+          downvoteUser(this._id, getCookie(), -1, this.indicator, this.totalPoints);
         }
+        // display window alert if the cookie is empty
         else {
           window.alert("please register and/or sign in to vote!");
         }

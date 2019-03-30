@@ -33,6 +33,7 @@ function getAllMarkers(map){
   });
 }
 
+
 function getAllUsers(){
   $.ajax({
     url : url + '/getAllUsers',
@@ -104,16 +105,88 @@ function downvoteMarker(_id, val) {
   });
 }
 
-function addUserVotes(userRating, name) {
-  data = {rating: userRating, username: name};
+function upvoteUser(markerId, name, value, indicator, totalPoints) {
+  data = {marker_id: markerId, username: name, rating: value};
   $.ajax({
     type: 'POST',
-    url: url + '/addUserVotes',
+    url: url + '/upvoteUser',
     async: true,
     data: JSON.stringify(data),
     contentType: 'application/json; charset=utf-8',
-    success: function (data) {console.log('changing user votes');},
-    error: function(xhr, ajaxOptions, thrownError) {}
+    success: function (data) {
+      /**  tot stores the totalPoint of the given marker
+           line 123-124 sets the upvote.poly and downvote.poly to
+           the given color
+       **/
+      var tot = totalPoints;
+      var colorOption = { fillColor: "#46db46" };
+      var colorOption2 = { fillColor: "#474747" };
+      indicator.upvote.poly.setOptions(colorOption);
+      indicator.downvote.poly.setOptions(colorOption2);
+      if (indicator.status == 0) { tot += 2; }
+      else { if (indicator.status == 1) { tot += 1; } }
+      /**
+       * Iterate through markerList and if the marker matches the given id,
+       * update the marker's total point by assigning value of tot to it.
+       * After that, refresh that marker
+       */
+      markerList.forEach(marker => {
+        if (marker._id == markerId) {
+          marker.totalPoints = tot;
+          marker.refreshIcon();
+        }
+      });
+      indicator.status = 2;
+      indicator.active = true;
+    },
+    error: function(xhr, ajaxOptions, thrownError) {
+      window.alert("You have already upvoted this marker!");
+    }
+  });
+}
+
+function downvoteUser(markerId, name, value, indicator, totalPoints) {
+  data = {marker_id: markerId, username: name, rating: value};
+  $.ajax({
+    type: 'POST',
+    url: url + '/downvoteUser',
+    async: true,
+    data: JSON.stringify(data),
+    contentType: 'application/json; charset=utf-8',
+    success: function (data) {
+      /**
+       * tot represents the marker's current total points
+       * line 163-164 sets downvote.poly and upvote.poly
+       * to the given color.
+       * 
+       */
+      var tot = totalPoints;
+      var colorOption = { fillColor: "#FF0000" };
+      var colorOption2 = { fillColor: "#474747" };
+      indicator.downvote.poly.setOptions(colorOption);
+      indicator.upvote.poly.setOptions(colorOption2);
+      if (indicator.status == 2) { tot -= 2; }
+      else { if (indicator.status == 1) { tot -= 1; } }
+      /**
+       * Iterate through the markerList and
+       * if the given marker matches the id,
+       * then total point of the marker will be updated
+       * by reassigning it to tot.
+       * After that, refresh that marker
+       *  
+       */
+      markerList.forEach(marker => {
+        if (marker._id == markerId) {
+          marker.totalPoints = tot;
+          marker.refreshIcon();
+        }
+      });
+      indicator.status = 0;
+      indicator.active = true;
+    },
+    error: function(xhr, ajaxOptions, thrownError) {
+      window.alert("You have already downvoted this marker!");
+    }
   });
 }
 
@@ -145,4 +218,4 @@ function logIn(name, pass) {
       window.alert("Username and/or password is incorrect!");
     }
   });
-} 
+}
