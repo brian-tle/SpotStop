@@ -13,14 +13,22 @@ function getAccountType() {
     dataType: 'json',
     contentType: 'application/json; charset=utf-8',
     success: function (data) {
-      console.log(data);
+      generateAccountControls(data);
     },
     error: function (xhr, ajaxOptions, thrownError) { }
   });
 }
 
 function generateAccountControls(type) {
+  if (type == 1) {
+    var deleteButton = document.createElement("BUTTON");
+    deleteButton.setAttribute("id", "delete-button");
+    deleteButton.innerHTML = "Delete Marker";
+    deleteButton.addEventListener("click", () => {
 
+    });
+    document.body.appendChild(deleteButton);
+  }
 }
 
 function createTestMarker(){
