@@ -13,143 +13,15 @@ const path  = require('path');
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: false}));
 
-function handleClient(ip) {
-	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
-		if (err) throw err;
-		var dbo = db.db("spot_stop");
-		dbo.collection("clients").findOne({ ip: ip }, function(err, result) {
-			if (err) throw err;
-			if (!result) { addClient(ip); }
-			db.close();
-		});
-	});
-}
-
-function handleMarkerC(ip, _id) {
-	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
-		if (err) throw err;
-		var dbo = db.db("spot_stop");
-		dbo.collection("clients").findOne({ip: ip}, function(err, result) {
-			if (err) throw err;
-			if (result) {
-				dbo.collection("clients").updateOne({ip: ip}, { $push: { markerListC: _id } });
-			}
-			db.close();
-		});
-	});
-}
-
-function handleUpvoteMarkerM(ip, _id) {
-	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
-		if (err) throw err;
-		var dbo = db.db("spot_stop");
-		dbo.collection("clients").findOne({ ip: ip }, function(err, result) {
-			if (err) throw err;
-			if (result) {
-				handleUpvoteDecision(ip, _id);
-			}
-			db.close();
-		});
-	});
-
-	return false;
-}
-
-function handleUpvoteDecision(ip, _id) {
-	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
-		if (err) throw err;
-		var dbo = db.db("spot_stop");
-		dbo.collection("clients").findOne({ ip: ip, markerListM: {$elemMatch: {_id: _id}} }, function(err, result) {
-			if (err) throw err;
-			if (result) { 
-				handleUpvoteSwitch(ip, _id);
-			}
-			else {
-				dbo.collection("clients").updateOne({ip: ip}, { $push: { markerListM: {_id: _id, value: 1} } });
-				upvoteMarker(_id, 1);
-			}
-			db.close();
-		});
-	});
-}
-
-function handleUpvoteSwitch(ip, _id) {
-	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
-		if (err) throw err;
-		var dbo = db.db("spot_stop");
-		dbo.collection("clients").findOne({ ip: ip, markerListM: {$elemMatch: {_id: _id, value: -1}} }, function(err, result) {
-			if (err) throw err;
-			if (result) { 
-				dbo.collection("clients").updateOne({ip: ip}, { $pull: { markerListM: {_id: _id, value: -1} } });
-				dbo.collection("clients").updateOne({ip: ip}, { $push: { markerListM: {_id: _id, value: 1} } });
-				upvoteMarker(_id, 1);
-				downvoteMarker(_id, -1);
-			}
-			db.close();
-		});
-	});
-}
-
-function handleDownvoteMarkerM(ip, _id) {
-	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
-		if (err) throw err;
-		var dbo = db.db("spot_stop");
-		dbo.collection("clients").findOne({ ip: ip }, function(err, result) {
-			if (err) throw err;
-			if (result) {
-				handleDownvoteDecision(ip, _id);
-			}
-			db.close();
-		});
-	});
-
-	return false;
-}
-
-function handleDownvoteDecision(ip, _id) {
-	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
-		if (err) throw err;
-		var dbo = db.db("spot_stop");
-		var client = { ip: ip, markerListM: [], markerListC: [] };
-		dbo.collection("clients").findOne({ ip: ip, markerListM: {$elemMatch: {_id: _id}} }, function(err, result) {
-			if (err) throw err;
-			if (result) { 
-				handleDownvoteSwitch(ip, _id);
-			}
-			else {
-				dbo.collection("clients").updateOne({ip: ip}, { $push: { markerListM: {_id: _id, value: -1} } });
-				downvoteMarker(_id, 1);
-			}
-			db.close();
-		});
-	});
-}
-
-function handleDownvoteSwitch(ip, _id) {
-	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
-		if (err) throw err;
-		var dbo = db.db("spot_stop");
-		dbo.collection("clients").findOne({ ip: ip, markerListM: {$elemMatch: {_id: _id, value: 1}} }, function(err, result) {
-			if (err) throw err;
-			if (result) { 
-				dbo.collection("clients").updateOne({ip: ip}, { $pull: { markerListM: {_id: _id, value: 1} } });
-				dbo.collection("clients").updateOne({ip: ip}, { $push: { markerListM: {_id: _id, value: -1} } });
-				downvoteMarker(_id, 1);
-				upvoteMarker(_id, -1);
-			}
-			db.close();
-		});
-	});
-}
-
-
 function handleUser(user, em, pass) {
 	MongoClient.connect(url, {useNewUrlParser: true}, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
 		var salt = bcrypt.genSaltSync(10);
 		var new_pass = bcrypt.hashSync(pass, salt);
-		var yuza = {username: user, email: em, password: new_pass, marker: [], rating: []};
+		//type: 0 = regular account
+		//type: 1 = admin account
+		var yuza = {username: user, email: em, password: new_pass, type: 0, marker: [], rating: []};
 		dbo.collection("users").insertOne(yuza, function(err, result) {
 			if (err) throw err;
 			console.log("User {" + user +"} added");
@@ -233,23 +105,9 @@ function addMarker(res, ip, name, lat, lng, des, upvote, downvote){
 			if (err) throw err;
 			res.send(marker._id);
 			console.log("Inserted Marker at { " + lat + ", " + lng + " } with ID { " + marker._id + " }");
-			handleMarkerC(ip, marker._id);
 			db.close();
 		});
 	});
-}
-
-function getAllMarkers(res) {
-	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
-		if (err) throw err;
-		var dbo = db.db("spot_stop");
-		dbo.collection("markers").find({}).toArray(function(err, result) {
-			if (err) throw err;
-			res.send(result);
-			console.log("Sending Markers to Client");
-			db.close();
-		});
-	}); 
 }
 
 function upvoteMarker(_id, val) {
@@ -285,6 +143,19 @@ function downvoteMarker(_id, val) {
 					console.log("Downvoted Marker with { _id: " + _id + " }");
 				}
 			});
+			db.close();
+		});
+	}); 
+}
+
+function getAllMarkers(res) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		dbo.collection("markers").find({}).toArray(function(err, result) {
+			if (err) throw err;
+			res.send(result);
+			console.log("Sending Markers to Client");
 			db.close();
 		});
 	}); 
@@ -505,7 +376,6 @@ server.get('/getControversialMarkers', function(req, res, next) {
 server.get('/getAllMarkers', function(req, res, next) {
 	getAllMarkers(res);
 	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
-	handleClient(ip);
 });
 
 server.get('/getAllUsers', function(req, res, next) {
@@ -528,18 +398,6 @@ server.post("/createMarker", (req, res) => {
 	addMarker(res, ip, req.body.name, req.body.lat, req.body.lng, req.body.des, req.body.upvote, req.body.downvote);
 });
 
-server.post("/upvoteMarker", (req, res) => {
-	res.send('Upvoting Marker!');
-	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
-	handleUpvoteMarkerM(ip, req.body._id);
-});
-
-server.post("/downvoteMarker", (req, res) => {
-	res.send('Downvoting Marker!');
-	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
-	handleDownvoteMarkerM(ip, req.body._id);
-});
-
 server.post("/addUser", (req, res) => {
 	res.send('Adding User!');
 	handleUser(req.body.username, req.body.email, req.body.password);
@@ -558,3 +416,147 @@ server.post("/login", (req, res) => {
 });
 
 server.listen(port, () => console.log(`Server listening on port ${port}!`));
+
+
+// deprecated
+
+server.post("/upvoteMarker", (req, res) => {
+	res.send('Upvoting Marker!');
+	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
+	handleUpvoteMarkerM(ip, req.body._id);
+});
+
+server.post("/downvoteMarker", (req, res) => {
+	res.send('Downvoting Marker!');
+	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
+	handleDownvoteMarkerM(ip, req.body._id);
+});
+
+function handleClient(ip) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		dbo.collection("clients").findOne({ ip: ip }, function(err, result) {
+			if (err) throw err;
+			if (!result) { addClient(ip); }
+			db.close();
+		});
+	});
+}
+
+function handleMarkerC(ip, _id) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		dbo.collection("clients").findOne({ip: ip}, function(err, result) {
+			if (err) throw err;
+			if (result) {
+				dbo.collection("clients").updateOne({ip: ip}, { $push: { markerListC: _id } });
+			}
+			db.close();
+		});
+	});
+}
+
+function handleUpvoteMarkerM(ip, _id) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		dbo.collection("clients").findOne({ ip: ip }, function(err, result) {
+			if (err) throw err;
+			if (result) {
+				handleUpvoteDecision(ip, _id);
+			}
+			db.close();
+		});
+	});
+
+	return false;
+}
+
+function handleUpvoteDecision(ip, _id) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		dbo.collection("clients").findOne({ ip: ip, markerListM: {$elemMatch: {_id: _id}} }, function(err, result) {
+			if (err) throw err;
+			if (result) { 
+				handleUpvoteSwitch(ip, _id);
+			}
+			else {
+				dbo.collection("clients").updateOne({ip: ip}, { $push: { markerListM: {_id: _id, value: 1} } });
+				upvoteMarker(_id, 1);
+			}
+			db.close();
+		});
+	});
+}
+
+function handleUpvoteSwitch(ip, _id) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		dbo.collection("clients").findOne({ ip: ip, markerListM: {$elemMatch: {_id: _id, value: -1}} }, function(err, result) {
+			if (err) throw err;
+			if (result) { 
+				dbo.collection("clients").updateOne({ip: ip}, { $pull: { markerListM: {_id: _id, value: -1} } });
+				dbo.collection("clients").updateOne({ip: ip}, { $push: { markerListM: {_id: _id, value: 1} } });
+				upvoteMarker(_id, 1);
+				downvoteMarker(_id, -1);
+			}
+			db.close();
+		});
+	});
+}
+
+function handleDownvoteMarkerM(ip, _id) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		dbo.collection("clients").findOne({ ip: ip }, function(err, result) {
+			if (err) throw err;
+			if (result) {
+				handleDownvoteDecision(ip, _id);
+			}
+			db.close();
+		});
+	});
+
+	return false;
+}
+
+function handleDownvoteDecision(ip, _id) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		var client = { ip: ip, markerListM: [], markerListC: [] };
+		dbo.collection("clients").findOne({ ip: ip, markerListM: {$elemMatch: {_id: _id}} }, function(err, result) {
+			if (err) throw err;
+			if (result) { 
+				handleDownvoteSwitch(ip, _id);
+			}
+			else {
+				dbo.collection("clients").updateOne({ip: ip}, { $push: { markerListM: {_id: _id, value: -1} } });
+				downvoteMarker(_id, 1);
+			}
+			db.close();
+		});
+	});
+}
+
+function handleDownvoteSwitch(ip, _id) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		dbo.collection("clients").findOne({ ip: ip, markerListM: {$elemMatch: {_id: _id, value: 1}} }, function(err, result) {
+			if (err) throw err;
+			if (result) { 
+				dbo.collection("clients").updateOne({ip: ip}, { $pull: { markerListM: {_id: _id, value: 1} } });
+				dbo.collection("clients").updateOne({ip: ip}, { $push: { markerListM: {_id: _id, value: -1} } });
+				downvoteMarker(_id, 1);
+				upvoteMarker(_id, -1);
+			}
+			db.close();
+		});
+	});
+}
