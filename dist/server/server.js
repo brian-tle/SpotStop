@@ -13,6 +13,19 @@ const path  = require('path');
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: false}));
 
+function getAccountType(res, username) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		dbo.collection("users").findOne({username: username}, function(err, result) {
+			if (err) throw err;
+			res.send({type: result.type});
+			console.log("User {" + username + "} is type: " + result.type);
+			db.close();
+		});
+	});
+}
+
 function handleUser(user, em, pass) {
 	MongoClient.connect(url, {useNewUrlParser: true}, function(err, db) {
 		if (err) throw err;
@@ -398,6 +411,10 @@ server.get('/getC', function(req, res){
 	res.cookie('name',res.username, {'maxAge': 1000 * 60 * 30}).send('cookie set'); //Sets name = express
 	res.send('Passed Cookie');
  });
+
+server.post("/getAccountType", (req, res) => {
+	getAccountType(res, req.body.username);
+});
 
 server.post("/createMarker", (req, res) => {
 	addMarkerUser(res, req.body.username, req.body.name, req.body.lat, req.body.lng, req.body.des, req.body.upvote, req.body.downvote);
