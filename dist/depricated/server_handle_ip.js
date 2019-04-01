@@ -151,3 +151,32 @@ function handleDownvoteSwitch(ip, _id) {
 		});
 	});
 }
+
+// client.js
+function upvoteMarker(_id, val) {
+  data = { _id: _id, val: val };
+  $.ajax({
+    type: 'POST',
+    url: url + '/upvoteMarker',
+    async: true,
+    data: JSON.stringify(data),
+    dataType: 'json',
+    contentType: 'application/json; charset=utf-8',
+    success: function (data) {  process_cache_changes(data);  },
+    error: function (xhr, ajaxOptions, thrownError) { }
+  });
+}
+
+function downvoteMarker(_id, val) {
+  data = { _id: _id, val: val };
+  $.ajax({
+    type: 'POST',
+    url: url + '/downvoteMarker',
+    async: true,
+    data: JSON.stringify(data),
+    dataType: 'json',
+    contentType: 'application/json; charset=utf-8',
+    success: function (data) {  process_cache_changes(data);  },
+    error: function (xhr, ajaxOptions, thrownError) { }
+  });
+}

@@ -47,8 +47,8 @@ function getAllUsers(){
   });
 }
 
-function createMarker(lat, lng, name, des, upvote, downvote) {
-  data = { lat: lat, lng: lng, name: name, des: des, upvote: upvote, downvote: downvote };
+function createMarker(username, lat, lng, name, des, upvote, downvote) {
+  data = { username: username, lat: lat, lng: lng, name: name, des: des, upvote: upvote, downvote: downvote };
   $.ajax({
     type: 'POST',
     url: url + '/createMarker',
@@ -63,16 +63,20 @@ function createMarker(lat, lng, name, des, upvote, downvote) {
   });
 }
 
-function upvoteMarker(_id, val) {
-  data = { _id: _id, val: val };
+function deleteMarker(username, _id) {
+  data = { username: username, _id: _id };
   $.ajax({
     type: 'POST',
-    url: url + '/upvoteMarker',
+    url: url + '/deleteMarker',
     async: true,
     data: JSON.stringify(data),
     dataType: 'json',
     contentType: 'application/json; charset=utf-8',
-    success: function (data) {  process_cache_changes(data);  },
+    success: function (data) {
+      for (var x = 0; x < markerList.length; x++) {
+        // if _id matches, delete from markerList
+      }
+    },
     error: function (xhr, ajaxOptions, thrownError) { }
   });
 }
@@ -87,20 +91,6 @@ function addUser(user, em, pass) {
     dataType: 'json',
     contentType: 'application/json; charset=utf-8',
     success: function (data) { console.log('added user'); },
-    error: function (xhr, ajaxOptions, thrownError) { }
-  });
-}
-
-function downvoteMarker(_id, val) {
-  data = { _id: _id, val: val };
-  $.ajax({
-    type: 'POST',
-    url: url + '/downvoteMarker',
-    async: true,
-    data: JSON.stringify(data),
-    dataType: 'json',
-    contentType: 'application/json; charset=utf-8',
-    success: function (data) {  process_cache_changes(data);  },
     error: function (xhr, ajaxOptions, thrownError) { }
   });
 }

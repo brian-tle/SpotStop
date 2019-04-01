@@ -97,13 +97,14 @@ function addMarker(res, name, lat, lng, des, upvote, downvote){
 	});
 }
 
-function deleteMarker(_id) {
+function deleteMarker(res, _id) {
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
 		var myquery = { _id: ObjectId(_id) };
 		dbo.collection("markers").deleteOne(myquery, function(err, obj) {
 			if (err) throw err;
+			res.send(marker._id);
 			console.log("Deleted Marker with { _id: " + _id + " }");
 			db.close();
 		});
@@ -175,7 +176,7 @@ function getTopMarkers(res) {
 	}); 
 }
 
-function addMarkerUser(username, res, name, lat, lng, des, upvote, downvote) {
+function addMarkerUser(res, username, name, lat, lng, des, upvote, downvote) {
 	MongoClient.connect(url, { useNewUrlParser: true }, function (err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
@@ -183,6 +184,20 @@ function addMarkerUser(username, res, name, lat, lng, des, upvote, downvote) {
 			if (err) throw err;
 			if (result) {
 				addMarker(res, name, lat, lng, des, upvote, downvote);
+			}
+			db.close();
+		});
+	});
+}
+
+function deleteMarkerUser(res, username, _id) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function (err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		dbo.collection("users").findOne({ username: name, type: 1 }, function (err, result) {
+			if (err) throw err;
+			if (result) {
+				deleteMarker(res, _id);
 			}
 			db.close();
 		});
@@ -386,11 +401,15 @@ server.get('/getC', function(req, res){
 
 server.get('/createTestMarker', function(req, res, next) { 
 	res.send('Creating Test Marker!') 
-	addMarkerUser(req.body.username, res, 34.5315, -123.5235, "Test Marker", 54, 21);
+	addMarkerUser(res, req.body.username, 34.5315, -123.5235, "Test Marker", 54, 21);
 });
 
 server.post("/createMarker", (req, res) => {
-	addMarkerUser(req.body.username, res, req.body.name, req.body.lat, req.body.lng, req.body.des, req.body.upvote, req.body.downvote);
+	addMarkerUser(res, req.body.username, req.body.name, req.body.lat, req.body.lng, req.body.des, req.body.upvote, req.body.downvote);
+});
+
+server.post("/deleteMarker", (req, res) => {
+	deleteMarkerUser(req.body.username, res, req.body._id);
 });
 
 server.post("/addUser", (req, res) => {
