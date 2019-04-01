@@ -10,6 +10,19 @@ server.post("/downvoteMarker", (req, res) => {
 	handleDownvoteMarkerM(ip, req.body._id);
 });
 
+function addClient(ip) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		var client = { ip: ip, markerListM: [], markerListC: [] };
+		dbo.collection("clients").insertOne(client, function(err, result) {
+			if (err) throw err;
+			console.log("Inserted Client with IP { " + client.ip + " }");
+			db.close();
+		});
+	});
+}
+
 function handleClient(ip) {
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;

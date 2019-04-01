@@ -83,24 +83,11 @@ function checkUser(res, user, pass) {
 	});
 }
 
-function addClient(ip) {
+function addMarker(res, name, lat, lng, des, upvote, downvote){ 
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
-		var client = { ip: ip, markerListM: [], markerListC: [] };
-		dbo.collection("clients").insertOne(client, function(err, result) {
-			if (err) throw err;
-			console.log("Inserted Client with IP { " + client.ip + " }");
-			db.close();
-		});
-	});
-}
-
-function addMarker(res, ip, name, lat, lng, des, upvote, downvote){ 
-	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
-		if (err) throw err;
-		var dbo = db.db("spot_stop");
-		var marker = { lat: lat, lng: lng, name:name,des: des, upvote: upvote, downvote: downvote};
+		var marker = { lat: lat, lng: lng, name:name, des: des, upvote: upvote, downvote: downvote};
 		dbo.collection("markers").insertOne(marker, function(err, result) {
 			if (err) throw err;
 			res.send(marker._id);
@@ -108,6 +95,19 @@ function addMarker(res, ip, name, lat, lng, des, upvote, downvote){
 			db.close();
 		});
 	});
+}
+
+function deleteMarker(_id) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		var myquery = { _id: ObjectId(_id) };
+		dbo.collection("markers").deleteOne(myquery, function(err, obj) {
+			if (err) throw err;
+			console.log("Deleted Marker with { _id: " + _id + " }");
+			db.close();
+		});
+	}); 
 }
 
 function upvoteMarker(_id, val) {
@@ -175,18 +175,19 @@ function getTopMarkers(res) {
 	}); 
 }
 
-/* function getAllUsers(res) {
-	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+function addMarkerUser(username, res, name, lat, lng, des, upvote, downvote) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function (err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
-		dbo.collection("users").find({}).toArray(function(err, result) {
+		dbo.collection("users").findOne({ username: name }, function (err, result) {
 			if (err) throw err;
-			res.send(result);
-			console.log("Sending Users Data");
+			if (result) {
+				addMarker(res, name, lat, lng, des, upvote, downvote);
+			}
 			db.close();
 		});
-	}); 
-} */
+	});
+}
 
 function upvoteUser(res, id, name, rating) {
 	// open the database
@@ -378,24 +379,18 @@ server.get('/getAllMarkers', function(req, res, next) {
 	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
 });
 
-server.get('/getAllUsers', function(req, res, next) {
-	getAllUsers(res);
-});
-
 server.get('/getC', function(req, res){
 	res.cookie('name',res.username, {'maxAge': 1000 * 60 * 30}).send('cookie set'); //Sets name = express
 	res.send('Passed Cookie');
  });
- 
 
 server.get('/createTestMarker', function(req, res, next) { 
 	res.send('Creating Test Marker!') 
-	addMarker(res, 34.5315, -123.5235, "Test Marker", 54, 21);
+	addMarkerUser(req.body.username, res, 34.5315, -123.5235, "Test Marker", 54, 21);
 });
 
 server.post("/createMarker", (req, res) => {
-	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
-	addMarker(res, ip, req.body.name, req.body.lat, req.body.lng, req.body.des, req.body.upvote, req.body.downvote);
+	addMarkerUser(req.body.username, res, req.body.name, req.body.lat, req.body.lng, req.body.des, req.body.upvote, req.body.downvote);
 });
 
 server.post("/addUser", (req, res) => {
