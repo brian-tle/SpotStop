@@ -4,6 +4,7 @@
 const url = 'https://sfhacks2019-1551558382883.appspot.com';
 
 function handleAccountType() {
+  //run if user is logged in
   if (document.cookie) {
     data = { username: getCookie() };
     $.ajax({
@@ -21,6 +22,7 @@ function handleAccountType() {
   }
 }
 
+//generates the user controls specific to the account (user, admin, ect...)
 function generateAccountControls(type) {
   if (type == 1) {
     var deleteButton = document.createElement("BUTTON");
