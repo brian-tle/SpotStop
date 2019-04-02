@@ -3,14 +3,12 @@
     if (document.cookie != '') {
         $('#logout').css({"display" : "block"});
         $('#account-info').css({"display" : "block"});
-        $('#signin').css({"display": "none"});
-        $('#signup').css({'display': "none"});
+        $('#account-activate').css({"display": "none"});
     }
     else {
         $('#logout').css({"display" : "none"});
         $('#account-info').css({"display" : "none"});
-        $('#signin').css({"display": "block"});
-        $('#signup').css({"display": "block"});
+        $('#account-activate').css({"display": "block"});
     }
     $("#logout").click(function(event){
         var href = $(this).attr("href");//get the href so we can navigate later
