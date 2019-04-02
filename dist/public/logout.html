@@ -2,11 +2,13 @@
     $(document).ready(function() {
     if (document.cookie != '') {
         $('#logout').css({"display" : "block"});
+        $('#account-info').css({"display" : "block"});
         $('#signin').css({"display": "none"});
         $('#signup').css({'display': "none"});
     }
     else {
         $('#logout').css({"display" : "none"});
+        $('#account-info').css({"display" : "none"});
         $('#signin').css({"display": "block"});
         $('#signup').css({"display": "block"});
     }
