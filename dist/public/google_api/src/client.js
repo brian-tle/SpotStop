@@ -3,20 +3,22 @@
 
 const url = 'https://sfhacks2019-1551558382883.appspot.com';
 
-function getAccountType() {
-  data = { username: getCookie() };
-  $.ajax({
-    type: 'POST',
-    url: url + '/getAccountType',
-    async: true,
-    data: JSON.stringify(data),
-    dataType: 'json',
-    contentType: 'application/json; charset=utf-8',
-    success: function (data) {
-      generateAccountControls(data);
-    },
-    error: function (xhr, ajaxOptions, thrownError) { }
-  });
+function handleAccountType() {
+  if (document.cookie) {
+    data = { username: getCookie() };
+    $.ajax({
+      type: 'POST',
+      url: url + '/getAccountType',
+      async: true,
+      data: JSON.stringify(data),
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      success: function (data) {
+        generateAccountControls(data.type);
+      },
+      error: function (xhr, ajaxOptions, thrownError) { }
+    });
+  }
 }
 
 function generateAccountControls(type) {

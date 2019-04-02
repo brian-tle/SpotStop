@@ -75,7 +75,7 @@ function addListenerControl(map) {
       }
     }
     else {
-      window.alert("Please sign in or register to add a marker!!!");
+      //window.alert("Please sign in or register to add a marker!!!");
     }
     });
 

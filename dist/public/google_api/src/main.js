@@ -69,6 +69,8 @@ function initMap() {
           // call initAutocomplete() to have the search bar
           // working
           initAutocomplete();
+          //create account specific controls
+          handleAccountType();
         });
       }
     );
