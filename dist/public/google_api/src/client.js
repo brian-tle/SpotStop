@@ -1,7 +1,7 @@
 //  https://sfhacks2019-1551558382883.appspot.com
 //  http://localhost:8080
 
-const url = 'https://sfhacks2019-1551558382883.appspot.com';
+const url = 'http://localhost:8080';
 
 function handleAccountType() {
   //run if user is logged in
@@ -128,7 +128,9 @@ function addUser(user, em, pass) {
     success: function (data) { 
       window.alert ("You have create your account!");
       window.location = "http://onespotstop.com"; },
-    error: function (xhr, ajaxOptions, thrownError) { }
+    error: function (xhr, ajaxOptions, thrownError) { 
+      window.alert("username and/or email is already taken!");
+    }
   });
 }
 

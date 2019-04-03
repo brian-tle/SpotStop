@@ -42,9 +42,28 @@ function handleUser(res, user, em, pass) {
 			db.close();
 		});
 	});
-	res.send('Users sent');
 }
 
+function validateNewUser(res, user, em, pass) {
+	MongoClient.connect(url, {useNewUrlParser: true}, function(err, db){
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		dbo.collection("users").find({}).toArray( function(err, result){
+			for (var key in result) {
+				if (result.hasOwnProperty(key)) {
+					if (user == result[key].username || em == result[key].email) {
+						return res.status(400).send({
+							message: "Username or email already taken"
+						});
+					}
+				}
+			}
+			handleUser(res,user,em,pass)
+			db.close();
+			return res.send("Added new user");
+		});
+	});
+}
 
 /**
  * checkUser is a function where it checks whether user's input password
@@ -426,7 +445,7 @@ server.post("/deleteMarker", (req, res) => {
 });
 
 server.post("/addUser", (req, res) => {
-	handleUser(res, req.body.username, req.body.email, req.body.password);
+	validateNewUser(res, req.body.username, req.body.email, req.body.password);
 });
 
 server.post("/upvoteUser", (req,res) => {
