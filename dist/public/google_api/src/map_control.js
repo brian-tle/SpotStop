@@ -1,16 +1,20 @@
-var cursorRunning = false;
 var inRangeIndicator = false;
 var inRangeLabel = false;
 var display_name;
+var deleteToggled = false;
+var proposeToggled = false;
+
 function CenterControl(controlDiv, map) {
   // Set CSS for the control border.
   var controlUI = document.createElement("div");
+  controlUI.setAttribute("id", "propose-button");
   controlUI.style.backgroundColor = "#fff";
   controlUI.style.border = "2px solid #fff";
   controlUI.style.borderRadius = "3px";
-  controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
+  controlUI.style.boxShadow = "0 2px 6px rgba(255,0,0,1)";
   controlUI.style.cursor = "pointer";
   controlUI.style.marginBottom = "0px";
+  controlUI.style.marginRight = "5px";
   controlUI.style.textAlign = "center";
   controlUI.title = "Propose Marker?";
   controlDiv.appendChild(controlUI);
@@ -22,8 +26,6 @@ function CenterControl(controlDiv, map) {
   controlText.style.fontSize = "16px";
   controlText.style.lineHeight = "38px";
 
-  controlText.style.marginLeft = "5px";
-
   controlText.innerHTML = "Propose Marker";
   controlUI.appendChild(controlText);
 
@@ -34,16 +36,43 @@ function CenterControl(controlDiv, map) {
       // 1) not logged in
       // 2) trying to access the function when the cookie is expired
     if (document.cookie != '') {
-      cursorRunning = true;
-      map.setOptions({
-        //draggableCursor: "url(res/icons/6YToyEF.png), auto"
-                     draggableCursor: "crosshair"
-      });
+      switchProposeToggled();
+      
     }
     else {
       window.alert("Please sign in or register to add a marker!!!")
     }
 
+  });
+}
+
+function DeleteButton(controlDiv, map) {
+  // Set CSS for the control border.
+  var controlUI = document.createElement("div");
+  controlUI.setAttribute("id", "delete-button");
+  controlUI.style.backgroundColor = "#fff";
+  controlUI.style.border = "2px solid #fff";
+  controlUI.style.borderRadius = "3px";
+  controlUI.style.boxShadow = "0 2px 6px rgba(255,0,0,1)";
+  controlUI.style.cursor = "pointer";
+  controlUI.style.marginBottom = "5px";
+  controlUI.style.marginRight = "5px";
+  controlUI.style.textAlign = "center";
+  controlUI.title = "Propose Marker?";
+  controlDiv.appendChild(controlUI);
+
+  // Set CSS for the control interior.
+  var controlText = document.createElement("div");
+  controlText.style.color = "rgb(25,25,25)";
+  controlText.style.fontFamily = "Roboto,Arial,sans-serif";
+  controlText.style.fontSize = "16px";
+  controlText.style.lineHeight = "38px";
+
+  controlText.innerHTML = "Delete Marker";
+  controlUI.appendChild(controlText);
+
+  controlUI.addEventListener("click", function() {
+    switchDeleteToggled();
   });
 }
 
@@ -55,7 +84,7 @@ function addListenerControl(map) {
       // 1) not logged in
       // 2) trying to access the function when the cookie is expired
       if (document.cookie != '') {
-      if (cursorRunning) {
+      if (proposeToggled) {
         $.getJSON("https://nominatim.openstreetmap.org/reverse?format=json&lat="+event.latLng.lat()+"&lon="+event.latLng.lng(), function(json){
                  //do some thing with json  or assign global variable to incoming json.
                   display_name=json;
@@ -67,11 +96,7 @@ function addListenerControl(map) {
               markerList.push(new Marker(map, event.latLng.lat(), event.latLng.lng(), display_name["display_name"]));
             }
         markerList[markerList.length - 1].zoomToMarker(map, false);
-        map.setOptions({
-          draggableCursor:
-            "url(https://maps.gstatic.com/mapfiles/openhand_8_8.cur), default"
-        });
-        cursorRunning = false;
+        setProposeToggled(false);
       }
     }
     else {
@@ -127,38 +152,6 @@ function addControls(map) {
   map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
 }
 
-function DeleteButton(controlDiv, map) {
-  // Set CSS for the control border.
-  var controlUI = document.createElement("div");
-  controlUI.setAttribute("id", "delete-button");
-  controlUI.style.backgroundColor = "#fff";
-  controlUI.style.border = "2px solid #fff";
-  controlUI.style.borderRadius = "3px";
-  controlUI.style.boxShadow = "0 2px 6px rgba(255,0,0,1)";
-  controlUI.style.cursor = "pointer";
-  controlUI.style.marginBottom = "5px";
-  controlUI.style.marginRight = "7px";
-  controlUI.style.textAlign = "center";
-  controlUI.title = "Propose Marker?";
-  controlDiv.appendChild(controlUI);
-
-  // Set CSS for the control interior.
-  var controlText = document.createElement("div");
-  controlText.style.color = "rgb(25,25,25)";
-  controlText.style.fontFamily = "Roboto,Arial,sans-serif";
-  controlText.style.fontSize = "16px";
-  controlText.style.lineHeight = "38px";
-
-  controlText.style.marginLeft = "3px";
-
-  controlText.innerHTML = "Delete Marker";
-  controlUI.appendChild(controlText);
-
-  controlUI.addEventListener("click", function() {
-    switchDeleteToggled();
-  });
-}
-
 //generates the user controls specific to the account (user, admin, ect...)
 function generateAccountControls(type) {
   if (type == 1) {
@@ -170,7 +163,6 @@ function generateAccountControls(type) {
   }
 }
 
-var deleteToggled = false;
 function setDeleteToggled(value) {
   if (value == false) {
     document.getElementById('delete-button').style.boxShadow = "0 2px 6px rgba(255,0,0,1)";
@@ -190,5 +182,43 @@ function switchDeleteToggled() {
   else {
     document.getElementById('delete-button').style.boxShadow = "0 2px 6px rgba(255,0,0,1)";
     deleteToggled = false;
+  }
+}
+
+function setProposeToggled(value) {
+  if (value == false) {
+    document.getElementById('propose-button').style.boxShadow = "0 2px 6px rgba(255,0,0,1)";
+    map.setOptions({
+      draggableCursor:
+        "url(https://maps.gstatic.com/mapfiles/openhand_8_8.cur), default"
+    });
+    proposeToggled = false;
+  }
+  else {
+    document.getElementById('propose-button').style.boxShadow = "0 2px 6px rgba(0,255,0,1)";
+    map.setOptions({
+      //draggableCursor: "url(res/icons/6YToyEF.png), auto"
+                   draggableCursor: "crosshair"
+    });
+    proposeToggled = true;
+  }
+}
+
+function switchProposeToggled() {
+  if (proposeToggled == false) {
+    document.getElementById('propose-button').style.boxShadow = "0 2px 6px rgba(0,255,0,1)";
+    map.setOptions({
+      //draggableCursor: "url(res/icons/6YToyEF.png), auto"
+                   draggableCursor: "crosshair"
+    });
+    proposeToggled = true;
+  }
+  else {
+    document.getElementById('propose-button').style.boxShadow = "0 2px 6px rgba(255,0,0,1)";
+    map.setOptions({
+      draggableCursor:
+        "url(https://maps.gstatic.com/mapfiles/openhand_8_8.cur), default"
+    });
+    proposeToggled = false;
   }
 }
