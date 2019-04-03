@@ -129,7 +129,9 @@ function addUser(user, em, pass) {
     success: function (data) { 
       window.alert ("You have create your account!");
       window.location = "http://onespotstop.com"; },
-    error: function (xhr, ajaxOptions, thrownError) { }
+    error: function (xhr, ajaxOptions, thrownError) { 
+      window.alert("username and/or email is already taken!");
+    }
   });
 }
 
