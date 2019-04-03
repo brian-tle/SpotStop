@@ -2,6 +2,10 @@
   margin: auto;
 }
 
+::selection {
+    background-color: transparent;
+}
+
 /* Set the size of the div element that contains the map */
 #map {
   height: 80vh; /* The height is 400 pixels */
