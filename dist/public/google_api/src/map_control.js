@@ -130,19 +130,20 @@ function addControls(map) {
 function DeleteButton(controlDiv, map) {
   // Set CSS for the control border.
   var controlUI = document.createElement("div");
+  controlUI.setAttribute("id", "delete-button");
   controlUI.style.backgroundColor = "#fff";
   controlUI.style.border = "2px solid #fff";
   controlUI.style.borderRadius = "3px";
-  controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
+  controlUI.style.boxShadow = "0 2px 6px rgba(255,0,0,1)";
   controlUI.style.cursor = "pointer";
-  controlUI.style.marginBottom = "0px";
+  controlUI.style.marginBottom = "5px";
+  controlUI.style.marginRight = "7px";
   controlUI.style.textAlign = "center";
   controlUI.title = "Propose Marker?";
   controlDiv.appendChild(controlUI);
 
   // Set CSS for the control interior.
   var controlText = document.createElement("div");
-  controlText.setAttribute("id", "delete-button");
   controlText.style.color = "rgb(25,25,25)";
   controlText.style.fontFamily = "Roboto,Arial,sans-serif";
   controlText.style.fontSize = "16px";
@@ -172,22 +173,22 @@ function generateAccountControls(type) {
 var deleteToggled = false;
 function setDeleteToggled(value) {
   if (value == false) {
-    document.getElementById('delete-button').style.color ='rgb(25,25,25)';
+    document.getElementById('delete-button').style.boxShadow = "0 2px 6px rgba(255,0,0,1)";
     deleteToggled = false;
   }
   else {
-    document.getElementById('delete-button').style.color ='rgb(0,255,0)';
+    document.getElementById('delete-button').style.boxShadow = "0 2px 6px rgba(0,255,0,1)";
     deleteToggled = true;
   }
 }
 
 function switchDeleteToggled() {
   if (deleteToggled == false) {
-    document.getElementById('delete-button').style.color ='rgb(0,255,0)';
+    document.getElementById('delete-button').style.boxShadow = "0 2px 6px rgba(0,255,0,1)";
     deleteToggled = true;
   }
   else {
-    document.getElementById('delete-button').style.color ='rgb(25,25,25)';
+    document.getElementById('delete-button').style.boxShadow = "0 2px 6px rgba(255,0,0,1)";
     deleteToggled = false;
   }
 }
