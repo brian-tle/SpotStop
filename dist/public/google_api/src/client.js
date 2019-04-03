@@ -22,43 +22,6 @@ function handleAccountType() {
   }
 }
 
-var deleteToggled = false;
-function setDeleteToggled(value) {
-  if (value == false) {
-    document.getElementById('delete-button').style.background='#FF0000';
-    deleteToggled = false;
-  }
-  else {
-    document.getElementById('delete-button').style.background='#00FF00';
-    deleteToggled = true;
-  }
-}
-
-function switchDeleteToggled() {
-  if (deleteToggled == false) {
-    document.getElementById('delete-button').style.background='#00FF00';
-    deleteToggled = true;
-  }
-  else {
-    document.getElementById('delete-button').style.background='#FF0000';
-    deleteToggled = false;
-  }
-}
-
-//generates the user controls specific to the account (user, admin, ect...)
-function generateAccountControls(type) {
-  if (type == 1) {
-    var deleteButton = document.createElement("BUTTON");
-    deleteButton.setAttribute("id", "delete-button");
-    deleteButton.innerHTML = "Delete Marker";
-    deleteButton.style.background='#FF0000';
-    deleteButton.addEventListener("click", () => {
-      switchDeleteToggled();
-    });
-    document.body.appendChild(deleteButton);
-  }
-}
-
 function createTestMarker(){
   $.ajax({
     url : url + '/createTestMarker',

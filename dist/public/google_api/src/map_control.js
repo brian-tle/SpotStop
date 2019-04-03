@@ -126,3 +126,68 @@ function addControls(map) {
   centerControlDiv.index = 1;
   map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
 }
+
+function DeleteButton(controlDiv, map) {
+  // Set CSS for the control border.
+  var controlUI = document.createElement("div");
+  controlUI.style.backgroundColor = "#fff";
+  controlUI.style.border = "2px solid #fff";
+  controlUI.style.borderRadius = "3px";
+  controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
+  controlUI.style.cursor = "pointer";
+  controlUI.style.marginBottom = "0px";
+  controlUI.style.textAlign = "center";
+  controlUI.title = "Propose Marker?";
+  controlDiv.appendChild(controlUI);
+
+  // Set CSS for the control interior.
+  var controlText = document.createElement("div");
+  controlText.setAttribute("id", "delete-button");
+  controlText.style.color = "rgb(25,25,25)";
+  controlText.style.fontFamily = "Roboto,Arial,sans-serif";
+  controlText.style.fontSize = "16px";
+  controlText.style.lineHeight = "38px";
+
+  controlText.style.marginLeft = "3px";
+
+  controlText.innerHTML = "Delete Marker";
+  controlUI.appendChild(controlText);
+
+  controlUI.addEventListener("click", function() {
+    switchDeleteToggled();
+  });
+}
+
+//generates the user controls specific to the account (user, admin, ect...)
+function generateAccountControls(type) {
+  if (type == 1) {
+    var deleteButtonDiv = document.createElement("div");
+    var deleteButton = new DeleteButton(deleteButtonDiv, map);
+
+    deleteButtonDiv.index = 1;
+    map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(deleteButtonDiv);
+  }
+}
+
+var deleteToggled = false;
+function setDeleteToggled(value) {
+  if (value == false) {
+    document.getElementById('delete-button').style.color ='rgb(25,25,25)';
+    deleteToggled = false;
+  }
+  else {
+    document.getElementById('delete-button').style.color ='rgb(0,255,0)';
+    deleteToggled = true;
+  }
+}
+
+function switchDeleteToggled() {
+  if (deleteToggled == false) {
+    document.getElementById('delete-button').style.color ='rgb(0,255,0)';
+    deleteToggled = true;
+  }
+  else {
+    document.getElementById('delete-button').style.color ='rgb(25,25,25)';
+    deleteToggled = false;
+  }
+}
