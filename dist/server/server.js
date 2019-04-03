@@ -227,7 +227,7 @@ function deleteMarkerUser(res, username, _id) {
 	MongoClient.connect(url, { useNewUrlParser: true }, function (err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
-		dbo.collection("users").findOne({ username: name, type: 1 }, function (err, result) {
+		dbo.collection("users").findOne({ username: username, type: 1 }, function (err, result) {
 			if (err) throw err;
 			if (result) {
 				deleteMarker(res, _id);

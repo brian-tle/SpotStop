@@ -29,7 +29,7 @@ function generateAccountControls(type) {
     deleteButton.setAttribute("id", "delete-button");
     deleteButton.innerHTML = "Delete Marker";
     deleteButton.addEventListener("click", () => {
-
+      deleteToggled = !deleteToggled;
     });
     document.body.appendChild(deleteButton);
   }
