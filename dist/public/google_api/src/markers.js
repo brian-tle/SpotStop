@@ -118,7 +118,13 @@ class Marker {
 
   addListeners(map) {
     this.marker.addListener('click', function(event) {
-      this.zoomToMarker(map);
+      if (!deleteToggled) {
+        this.zoomToMarker(map);
+      }
+      else {
+        deleteMarker(getCookie(), this._id);
+        deleteToggled = false;
+      }
     }.bind(this));
 
     this.indicator.addListeners();

@@ -15,6 +15,7 @@ var prof_list = [];
 prof_list = profanity_list(prof_list);
 var onkey;
 var marker_pred;
+var deleteToggled = false;
 var mapOptions = {
   streetViewControl: false,
   fullscreenControl: false
