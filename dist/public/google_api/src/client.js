@@ -123,9 +123,11 @@ function addUser(user, em, pass) {
     url: url + '/addUser',
     async: true,
     data: JSON.stringify(data),
-    dataType: 'json',
+    crossDomain: true,
     contentType: 'application/json; charset=utf-8',
-    success: function (data) { console.log('added user'); },
+    success: function (data) { 
+      window.alert ("You have create your account!");
+      window.location = "http://onespotstop.com"; },
     error: function (xhr, ajaxOptions, thrownError) { }
   });
 }

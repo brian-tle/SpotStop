@@ -65,7 +65,7 @@
         Registration Form
       </h2>
       <div class="contact-form">
-        <form id="contact-form">
+        <form onsubmit="return SignUpHandler(event)" id="contact-form">
           <input
             name="username"
             id="username"
@@ -107,7 +107,6 @@
             type="submit"
             class="form-control submit"
             value="Submit"
-            onclick="createUser()"
           />
         </form>
       </div>
