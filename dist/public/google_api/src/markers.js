@@ -1,8 +1,8 @@
-const ICON_COLOR_RED =        'ff0000';  //BAD
-const ICON_COLOR_ORANGE =     'ffab44';  //EH
-const ICON_COLOR_NEUTRAL_BLUE =       '2568db';  //NOOTRAL
-const ICON_COLOR_TEAL =      '49a2af';  //mellou
-const ICON_COLOR_DARK_GREEN = '0d9e00';  //WOO
+const ICON_COLOR_RED =            'ff0000';  //BAD
+const ICON_COLOR_ORANGE =         'ffab44';  //EH
+const ICON_COLOR_NEUTRAL_BLUE =   '2568db';  //NOOTRAL
+const ICON_COLOR_TEAL =           '49a2af';  //mellou
+const ICON_COLOR_DARK_GREEN =     '0d9e00';  //WOO
 
 const ICON_SCALE_MAX = 1.00;
 const ICON_SCALE_MIN = 0.43;
@@ -129,7 +129,7 @@ class Marker {
       }
       else {
         deleteMarker(getCookie(), this._id);
-        deleteToggled = false;
+        setDeleteToggled(false);
       }
     }.bind(this));
 
