@@ -1,7 +1,4 @@
-var user_data = ' ';
-$.getJSON('https://sfhacks2019-1551558382883.appspot.com/getAllUsers', function (data) {
-    user_data = data;
-});
+
 /* class User {
     constructor(username, password){
         this.user = username;
