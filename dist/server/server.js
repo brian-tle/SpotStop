@@ -115,8 +115,8 @@ function deleteMarker(res, _id) {
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
-		var myquery = { _id: ObjectId(_id) };
-		dbo.collection("markers").deleteOne(myquery, function(err, obj) {
+		var marker = { _id: ObjectId(_id) };
+		dbo.collection("markers").deleteOne(marker, function(err, obj) {
 			if (err) throw err;
 			res.send(marker._id);
 			console.log("Deleted Marker with { _id: " + _id + " }");
@@ -422,7 +422,7 @@ server.post("/createMarker", (req, res) => {
 });
 
 server.post("/deleteMarker", (req, res) => {
-	deleteMarkerUser(req.body.username, res, req.body._id);
+	deleteMarkerUser(res, req.body.username, req.body._id);
 });
 
 server.post("/addUser", (req, res) => {

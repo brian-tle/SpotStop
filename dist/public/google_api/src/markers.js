@@ -107,6 +107,12 @@ class Marker {
     this.addListeners(map);
   }
 
+  prepRemove() {
+    this.marker.setMap(null);
+    this.indicator.setVisible(false);
+    this.popup.setMap(null)
+  }
+
   createLabel(map) {
     this.label = document.createElement('div');
     this.label.innerHTML = this.des;

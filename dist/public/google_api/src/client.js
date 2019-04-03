@@ -106,9 +106,10 @@ function deleteMarker(username, _id) {
     contentType: 'application/json; charset=utf-8',
     success: function (data) {
       for (var x = 0; x < markerList.length; x++) {
-        if (markerList[x]._id = data) {
+        if (markerList[x]._id == data) {
+          markerList[x].prepRemove();
           markerList.splice(x, 1);
-          x = markerList.length + 1;
+          x = markerList.length;
         }
       }
     },
