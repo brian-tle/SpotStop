@@ -26,7 +26,7 @@ function getAccountType(res, username) {
 	});
 }
 
-function handleUser(user, em, pass) {
+function handleUser(res, user, em, pass) {
 	MongoClient.connect(url, {useNewUrlParser: true}, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
@@ -42,6 +42,7 @@ function handleUser(user, em, pass) {
 			db.close();
 		});
 	});
+	res.send('Users sent');
 }
 
 
@@ -425,8 +426,7 @@ server.post("/deleteMarker", (req, res) => {
 });
 
 server.post("/addUser", (req, res) => {
-	res.send('Adding User!');
-	handleUser(req.body.username, req.body.email, req.body.password);
+	handleUser(res, req.body.username, req.body.email, req.body.password);
 });
 
 server.post("/upvoteUser", (req,res) => {
