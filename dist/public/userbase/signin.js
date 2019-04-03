@@ -12,17 +12,17 @@
 
 var validate = false;
 
-$(document).ready(function() {
-$('#sbmt').click(function(event) {
+
+function SignInHandler() {
     // get username input
     // get password input
     var user = document.getElementById('username').value;
     var pass = document.getElementById('password').value;
+
     logIn(user, pass);
     return false;
-    });
 
-});
+}
 
 
 // It is used to retrieve the stored username
