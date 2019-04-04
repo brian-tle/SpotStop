@@ -17,11 +17,19 @@ function getAccountType(res, username) {
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
-		dbo.collection("users").findOne({username: username}, function(err, result) {
-			if (err) throw err;
-			res.send({type: result.type});
-			console.log("User {" + username + "} is type: " + result.type);
-			db.close();
+		dbo.collection("users").find({}).toArray( function(err, result) {
+			for (var key in result) {
+				if (result.hasOwnProperty(key)) {
+					if (bcrypt.compareSync(username, result[key].username) == true) {
+						if (err) throw err;
+						console.log(result.type);
+						res.send({type: result.type});
+						console.log("User {" + username + "} is type: " + result.type);
+						db.close();
+					}
+				}
+			}
+
 		});
 	});
 }
@@ -34,7 +42,7 @@ function handleUser(res, user, em, pass) {
 		var new_pass = bcrypt.hashSync(pass, salt);
 		//type: 0 = regular account
 		//type: 1 = admin account
-		var yuza = {username: user, email: em, password: new_pass, type: 0, marker: [], rating: []};
+		var yuza = {username: user, email: em, password: new_pass, type: 0, marker: [], rating: [], cookie:''};
 		dbo.collection("users").insertOne(yuza, function(err, result) {
 			if (err) throw err;
 			console.log("User {" + user +"} added");
@@ -76,7 +84,7 @@ function validateNewUser(res, user, em, pass) {
  *    otherwise, it will return false to logIn() function in client.js
  * 
  */
-function checkUser(res, user, pass) {
+function checkUser(req, res, user, pass) {
 	// stores encrypted password
 	var new_pass;
 	// connect to the database
@@ -101,7 +109,7 @@ function checkUser(res, user, pass) {
 				// returns true to client.js if it matches
 				if (resp == true) {
 					console.log("You have signed in to your account!");
-					res.send('cookie sent');
+					assignCookie(req, res, user)
 					check = true;
 				}
 				// return false to cleint.js if it doesn't match
@@ -113,6 +121,20 @@ function checkUser(res, user, pass) {
 			});
 			db.close();
 		});
+	});
+}
+
+function assignCookie(req, res, user) {
+	bcrypt.hash(user, 10, function(err, result){
+		MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+			if (err) throw err;
+			var dbo = db.db("spot_stop");
+		dbo.collection("users").updateOne({username:user}, { $set: { cookie: result } }, function (err) {
+			if (err) throw err;
+		});
+		db.close();
+		});
+		res.send(result);
 	});
 }
 
@@ -237,12 +259,13 @@ function deleteMarkerUser(res, username, _id) {
 	});
 }
 
+
 function upvoteUser(res, id, name, rating) {
 	// open the database
 	MongoClient.connect(url, { useNewUrlParser: true }, function (err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
-		var query = { username: name };
+		//var query = { username: name };
 		var userRating = [];
 		// to check if certain condition is passed
 		var check = 0;
@@ -250,7 +273,7 @@ function upvoteUser(res, id, name, rating) {
 		 * Find the user, from users collection, with same username stored in the cookie.
 		 * userRating will store the rating list in the given users document .
 		 * */ 
-		dbo.collection("users").findOne({ username: name }, function (err, result) {
+		dbo.collection("users").findOne({ cookie: name }, function (err, result) {
 			if (err) throw err;
 			userRating = result.rating;
 			/**
@@ -303,7 +326,7 @@ function upvoteUser(res, id, name, rating) {
 			 * call upvoteMarker() function after that
 			 */
 			if (check < 2) {
-				dbo.collection("users").updateOne(query, { $set: { rating: userRating } }, function (err) {
+				dbo.collection("users").updateOne({cookie: name}, { $set: { rating: userRating } }, function (err) {
 					if (err) throw err;
 				});
 			}
@@ -326,7 +349,7 @@ function downvoteUser(res, id, name, rating) {
 		// check if the certain condition is passed
 		var check = 0;
 		// find the user, in the users collection, that matches the username stored in the cookie
-		dbo.collection("users").findOne({ username: name }, function (err, result) {
+		dbo.collection("users").findOne({ cookie: name }, function (err, result) {
 			if (err) throw err;
 			// store result list into userRating
 			userRating = result.rating;
@@ -381,7 +404,7 @@ function downvoteUser(res, id, name, rating) {
 			if (check < 2) {
 				dbo
 					.collection("users")
-					.updateOne(query, { $set: { rating: userRating } }, function (err) {
+					.updateOne({cookie: name}, { $set: { rating: userRating } }, function (err) {
 						if (err) throw err;
 					});
 			}
@@ -427,11 +450,6 @@ server.get('/getAllMarkers', function(req, res, next) {
 	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
 });
 
-server.get('/getC', function(req, res){
-	res.cookie('name',res.username, {'maxAge': 1000 * 60 * 30}).send('cookie set'); //Sets name = express
-	res.send('Passed Cookie');
- });
-
 server.post("/getAccountType", (req, res) => {
 	getAccountType(res, req.body.username);
 });
@@ -457,7 +475,7 @@ server.post("/downvoteUser", (req, res) => {
 });
 
 server.post("/login", (req, res) => {
-	checkUser(res, req.body.username, req.body.password);
+	checkUser(req, res, req.body.username, req.body.password);
 });
 
 server.listen(port, () => console.log(`Server listening on port ${port}!`));
