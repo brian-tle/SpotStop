@@ -26,13 +26,8 @@ function createTestMarker(){
   $.ajax({
     url : url + '/createTestMarker',
     method : 'GET',
-    success : function(data){
-      console.log(data);
-    },
-
-    error: function(err){
-      console.log('Failed');
-    }
+    success : function(data){ console.log(data); },
+    error: function(err){ console.log('Failed'); }
   });
 }
 
@@ -46,9 +41,7 @@ function getAllMarkers(map){
       });
     },
 
-    error: function(err){
-      console.log('Failed');
-    }
+    error: function(err){ console.log('Failed'); }
   });
 }
 
@@ -57,12 +50,8 @@ function getAllUsers(){
   $.ajax({
     url : url + '/getAllUsers',
     method : 'GET',
-    success : function(data){
-    },
-
-    error: function(err){
-      console.log('Failed');
-    }
+    success : function(data){ },
+    error: function(err){ console.log('Failed'); }
   });
 }
 
