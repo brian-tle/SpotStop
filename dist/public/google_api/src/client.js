@@ -223,12 +223,7 @@ function logIn(name, pass) {
     contentType: 'application/json; charset=utf-8',
     success: function (data) {
       window.alert('You have successfully signed in, ' + name + '!');
-      validate = true;
-      var now = new Date();
-      var time = now.getTime();
-      var expireTime = time + (1800 * 1000);
-      now.setTime(expireTime);
-      document.cookie = "username=" + name + "; expires=" + now.toUTCString()+';path=/';
+      document.cookie= "username=" + data + ";expires=18000000;path=/";
       window.location = 'http://onespotstop.com';
     },
     error: function(xhr, ajaxOptions, thrownError) {
