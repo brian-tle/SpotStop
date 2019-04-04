@@ -16,7 +16,15 @@
     <title>Spot Stop</title>
   </head>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"> </script>
+  <script src="http://schteppe.github.io/p2.js/build/p2.js"></script>
+  <script src="js/leaderboard/d_objects.js"></script>
+  <script src="js/leaderboard/p_entities.js"></script>
+  <script src="js/leaderboard/r_body.js"></script>
+  <script src="js/leaderboard/input.js"></script>
+  <script src="js/leaderboard/joiner.js"></script>
+  <script src="js/leaderboard/client.js"></script>
 
   <body id="bg-img">
     <header>
@@ -72,6 +80,9 @@
       <h2 class="sm-heading">
         Saving your favorite spots.
       </h2>
+      <div id="leaderboard-canvas" class="engine-container">
+        <script src="js/leaderboard/engine.js"></script>
+      </div>
     </main>
     <script src="js/main.js"></script>
     <script src="userbase/signin.js"></script>
