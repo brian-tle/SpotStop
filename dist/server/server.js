@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs');
 const url = "mongodb://test:testpassword@spot-stop-shard-00-00-ruq20.mongodb.net:27017,spot-stop-shard-00-01-ruq20.mongodb.net:27017,spot-stop-shard-00-02-ruq20.mongodb.net:27017/test?ssl=true&replicaSet=spot-stop-shard-0&authSource=admin&retryWrites=true";
 const server = express();
 server.use(cookieParser());
-const port = 8080;
+const PORT = 8080;
 const path  = require('path');
 
 server.use(bodyParser.json());
@@ -485,4 +485,4 @@ server.post("/login", (req, res) => {
 	checkUser(req, res, req.body.username, req.body.password);
 });
 
-server.listen(port, () => console.log(`Server listening on port ${port}!`));
+server.listen(PORT, () => console.log(`Server listening on port ${PORT}!`));
