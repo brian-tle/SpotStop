@@ -130,7 +130,7 @@ function assignCookie(req, res, user) {
 	});
 }
 
-function addMarker(res, name, lat, lng, des, upvote, downvote){ 
+function addMarker(res, username, name, lat, lng, des, upvote, downvote){ 
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
@@ -139,6 +139,21 @@ function addMarker(res, name, lat, lng, des, upvote, downvote){
 			if (err) throw err;
 			res.send(marker._id);
 			console.log("Inserted Marker at { " + lat + ", " + lng + " } with ID { " + marker._id + " }");
+			handleMarkerC(username, marker._id);
+			db.close();
+		});
+	});
+}
+
+function handleMarkerC(username, _id) {
+	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		dbo.collection("users").findOne({cookie: username}, function(err, result) {
+			if (err) throw err;
+			if (result) {
+				dbo.collection("users").updateOne({cookie: username}, { $push: { marker: _id } });
+			}
 			db.close();
 		});
 	});
@@ -227,10 +242,10 @@ function addMarkerUser(res, username, name, lat, lng, des, upvote, downvote) {
 	MongoClient.connect(url, { useNewUrlParser: true }, function (err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
-		dbo.collection("users").findOne({ username: username }, function (err, result) {
+		dbo.collection("users").findOne({ cookie: username }, function (err, result) {
 			if (err) throw err;
 			if (result) {
-				addMarker(res, name, lat, lng, des, upvote, downvote);
+				addMarker(res, username, name, lat, lng, des, upvote, downvote);
 			}
 			db.close();
 		});
