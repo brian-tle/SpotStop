@@ -17,19 +17,11 @@ function getAccountType(res, username) {
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
-		dbo.collection("users").find({}).toArray( function(err, result) {
-			for (var key in result) {
-				if (result.hasOwnProperty(key)) {
-					if (bcrypt.compareSync(username, result[key].username) == true) {
-						if (err) throw err;
-						console.log(result.type);
-						res.send({type: result.type});
-						console.log("User {" + username + "} is type: " + result.type);
-						db.close();
-					}
-				}
-			}
-
+		dbo.collection("users").findOne({ cookie: username }, function (err, result) {
+			if (err) throw err;
+			res.send({type: result.type});
+			console.log("User {" + username + "} is type: " + result.type);
+			db.close();
 		});
 	});
 }
