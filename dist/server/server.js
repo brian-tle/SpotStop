@@ -34,7 +34,7 @@ function handleUser(res, user, em, pass) {
 		var new_pass = bcrypt.hashSync(pass, salt);
 		//type: 0 = regular account
 		//type: 1 = admin account
-		var yuza = {username: user, email: em, password: new_pass, type: 0, marker: [], rating: [], cookie:''};
+		var yuza = {username: user, email: em, password: new_pass, type: 0, markerListC: [], markerListM: [], cookie:''};
 		dbo.collection("users").insertOne(yuza, function(err, result) {
 			if (err) throw err;
 			console.log("User {" + user +"} added");
@@ -100,7 +100,7 @@ function checkUser(req, res, user, pass) {
 				if (err) throw err;
 				// returns true to client.js if it matches
 				if (resp == true) {
-					console.log("You have signed in to your account!");
+					console.log(user + " has signed in to their account!");
 					assignCookie(req, res, user)
 					check = true;
 				}
@@ -152,7 +152,7 @@ function handleMarkerC(username, _id) {
 		dbo.collection("users").findOne({cookie: username}, function(err, result) {
 			if (err) throw err;
 			if (result) {
-				dbo.collection("users").updateOne({cookie: username}, { $push: { marker: _id } });
+				dbo.collection("users").updateOne({cookie: username}, { $push: { markerListC: _id } });
 			}
 			db.close();
 		});
@@ -273,37 +273,37 @@ function upvoteUser(res, id, name, rating) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
 		//var query = { username: name };
-		var userRating = [];
+		var userMarkerListM = [];
 		// to check if certain condition is passed
 		var check = 0;
 		/**
 		 * Find the user, from users collection, with same username stored in the cookie.
-		 * userRating will store the rating list in the given users document .
+		 * userMarkerListM will store the rating list in the given users document .
 		 * */ 
 		dbo.collection("users").findOne({ cookie: name }, function (err, result) {
 			if (err) throw err;
-			userRating = result.rating;
+			userMarkerListM = result.markerListM;
 			/**
-			 * If userRating is NOT empty,
-			 * iterate through userRating and IF userRating.marker_id matches the id,
+			 * If userMarkerListM is NOT empty,
+			 * iterate through userMarkerListM and IF userMarkerListM.marker_id matches the id,
 			 * check if the value of that marker_id equals to 1. If it equals to 1, 
 			 * assign check to 2 and
 			 * return res.send of 400 connection error.
 			 * BUT if it doesn't equal to 1, change the value to 1, assign check to 1
 			 * and break the loop.
 			 */
-			if (userRating.length > 0) {
-				for (var key in userRating) {
-					if (userRating.hasOwnProperty(key)) {
-						if (userRating[key].marker_id == id) {
-							if (userRating[key].value == 1) {
+			if (userMarkerListM.length > 0) {
+				for (var key in userMarkerListM) {
+					if (userMarkerListM.hasOwnProperty(key)) {
+						if (userMarkerListM[key].marker_id == id) {
+							if (userMarkerListM[key].value == 1) {
 								check = 2;
 								return res.status(400).send({
 									message: 'User has already upvoted this marker!'
 								});
 							}
-							else if (userRating[key].value < 1) {
-								userRating[key] = { marker_id: id, value: 1 };
+							else if (userMarkerListM[key].value < 1) {
+								userMarkerListM[key] = { marker_id: id, value: 1 };
 								check = 1;
 								break;
 							}
@@ -313,27 +313,27 @@ function upvoteUser(res, id, name, rating) {
 				/**
 				 * IF none of the marker_id matches the given id,
 				 * push the dictionary object containing marker_id and value to the
-				 * userRating
+				 * userMarkerListM
 				 */
 				if (check == 0) {
-					userRating.push({ marker_id: id, value: 1 });
+					userMarkerListM.push({ marker_id: id, value: 1 });
 				}
 			}
 			/**
-			 * IF userRating is empty, push the dictionary object
+			 * IF userMarkerListM is empty, push the dictionary object
 			 * containing marker_id and value to the 
-			 * userRating
+			 * userMarkerListM
 			 */
 			else {
-				userRating.push({ marker_id: id, value: 1 });
+				userMarkerListM.push({ marker_id: id, value: 1 });
 			}
 			/**
 			 * If check is LESS than 2 (IF the given value of the marker_id DOES NOT EQUAL to 1),
-			 * update the user document's rating list by reassigning userRating to it and 
+			 * update the user document's rating list by reassigning userMarkerListM to it and 
 			 * call upvoteMarker() function after that
 			 */
 			if (check < 2) {
-				dbo.collection("users").updateOne({cookie: name}, { $set: { rating: userRating } }, function (err) {
+				dbo.collection("users").updateOne({cookie: name}, { $set: { markerListM: userMarkerListM } }, function (err) {
 					if (err) throw err;
 				});
 			}
@@ -352,34 +352,34 @@ function downvoteUser(res, id, name, rating) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
 		var query = { username: name };
-		var userRating = [];
+		var userMarkerListM = [];
 		// check if the certain condition is passed
 		var check = 0;
 		// find the user, in the users collection, that matches the username stored in the cookie
 		dbo.collection("users").findOne({ cookie: name }, function (err, result) {
 			if (err) throw err;
-			// store result list into userRating
-			userRating = result.rating;
+			// store result list into userMarkerListM
+			userMarkerListM = result.markerListM;
 			/**
-			 * IF userRating is NOT empty,
-			 * iterate through userRating and
+			 * IF userMarkerListM is NOT empty,
+			 * iterate through userMarkerListM and
 			 * IF the marker_id matches the given id, 
 			 * check if the value of the certain marker equals -1.
 			 * IF it equals -1, return response of 400 error.
 			 * ELSE, change the value of the marker to -1 (TO VALIDATE THAT IT'S DOWNVOTED)
 			 * and break the loop afterwards
 			 */
-			if (userRating.length > 0) {
-				for (var key in userRating) {
-					if (userRating.hasOwnProperty(key)) {
-						if (userRating[key].marker_id == id) {
-							if (userRating[key].value == -1) {
+			if (userMarkerListM.length > 0) {
+				for (var key in userMarkerListM) {
+					if (userMarkerListM.hasOwnProperty(key)) {
+						if (userMarkerListM[key].marker_id == id) {
+							if (userMarkerListM[key].value == -1) {
 								check = 2;
 								return res.status(400).send({
 									message: "User has already downvoted this marker!"
 								});
-							} else if (userRating[key].value > -1) {
-								userRating[key] = { marker_id: id, value: -1 };
+							} else if (userMarkerListM[key].value > -1) {
+								userMarkerListM[key] = { marker_id: id, value: -1 };
 								check = 1;
 								break;
 							}
@@ -389,29 +389,29 @@ function downvoteUser(res, id, name, rating) {
 				/**
 				 * IF none of the marker_id matches the given id,
 				 * push the dictionary object of marker_id and value 
-				 * to userRating
+				 * to userMarkerListM
 				 */
 				if (check == 0) {
-					userRating.push({ marker_id: id, value: -1 });
+					userMarkerListM.push({ marker_id: id, value: -1 });
 				}
 			/**
-			 * IF userRating is EMPTY,
+			 * IF userMarkerListM is EMPTY,
 			 * push the dictionary object of marker_id and value
-			 * to userRating
+			 * to userMarkerListM
 			 */
 			} else {
-				userRating.push({ marker_id: id, value: -1 });
+				userMarkerListM.push({ marker_id: id, value: -1 });
 			}
 			/**
 			 * IF the value of the given marker is NOT -1 (OR check != 2),
 			 * update the rating list of users document by reassigning
-			 * it to userRating and call downvoteMarker() function to downvote the
+			 * it to userMarkerListM and call downvoteMarker() function to downvote the
 			 * marker.
 			 */
 			if (check < 2) {
 				dbo
 					.collection("users")
-					.updateOne({cookie: name}, { $set: { rating: userRating } }, function (err) {
+					.updateOne({cookie: name}, { $set: { markerListM: userMarkerListM } }, function (err) {
 						if (err) throw err;
 					});
 			}
