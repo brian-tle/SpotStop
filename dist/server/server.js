@@ -130,31 +130,81 @@ function assignCookie(req, res, user) {
 	});
 }
 
+function MarkerValidation(res, username, name, lat, lng, des, upvote, downvote) {
+	MongoClient.connect(url, { useNewUrlParser: true}, function(err, db){
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		dbo.collection("users").findOne({cookie:username}, function(err, result){
+			addMarker(res, result.username, name, lat, lng, des, upvote, downvote);
+		});
+	});
+}
+
 function addMarker(res, username, name, lat, lng, des, upvote, downvote){ 
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
-		var marker = { lat: lat, lng: lng, name:name, des: des, upvote: upvote, downvote: downvote};
+		var marker = { lat: lat, lng: lng, name:name, des: des, upvote: upvote, downvote: downvote, user: username};
 		dbo.collection("markers").insertOne(marker, function(err, result) {
 			if (err) throw err;
-			res.send(marker._id);
 			console.log("Inserted Marker at { " + lat + ", " + lng + " } with ID { " + marker._id + " }");
-			handleMarkerC(username, marker._id);
+			handleMarkerC(res, username, marker._id);
 			db.close();
 		});
 	});
 }
 
-function handleMarkerC(username, _id) {
+function handleMarkerC(res, username, _id) {
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
-		dbo.collection("users").findOne({cookie: username}, function(err, result) {
+		var dummyUser = [];
+		dbo.collection("users").findOne({username: username}, function(err, result) {
 			if (err) throw err;
 			if (result) {
-				dbo.collection("users").updateOne({cookie: username}, { $push: { markerListC: _id } });
+				dummyUser = result.markerListC;
+				console.log(dummyUser);
+				dummyUser.push(_id);
+				console.log(dummyUser);
+				dbo.collection("users").updateOne({username: username}, { $set: { markerListC: dummyUser } });
 			}
+			res.send(_id);
 			db.close();
+		});
+	});
+}
+
+function deleteMarkerHistory(res, _id) {
+	MongoClient.connect(url, {useNewUrlParser: true }, function(err, db){
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		var marker = {_id: ObjectId(_id) };
+		var dummy_User = [];
+		var dummy_Rating = [];
+		var username = '';
+		dbo.collection("markers").findOne(marker, function(err, result) {
+			if (err) throw err;
+			if (result) {
+				username = result.user;
+				console.log(username);
+			}
+			dbo.collection("users").findOne({username: username}, function(err, result) {
+				if (err) throw err;
+				dummy_User = result.markerListC;
+				dummy_Rating = result.markerListM;
+				for (var i = 0; i < dummy_User.length; i++) {
+					if (dummy_User[i] == ObjectId(_id)) dummy_User.splice(i,1);
+				}
+				for (var i = 0; i < dummy_Rating.length; i++) {
+					if (dummy_Rating[i]['marker_id'] == ObjectId(_id)) dummy_Rating.splice(i, 1);
+				}
+				console.log(dummy_User);
+				dbo.collection("users").updateOne({username: username}, {$set: { markerListC: dummy_User}});
+				dbo.collection("users").updateOne({username: username}, {$set: {markerListM: dummy_Rating }});
+				deleteMarker(res, _id);
+				db.close();
+			});
+			
 		});
 	});
 }
@@ -168,6 +218,7 @@ function deleteMarker(res, _id) {
 			if (err) throw err;
 			res.send(marker._id);
 			console.log("Deleted Marker with { _id: " + _id + " }");
+
 			db.close();
 		});
 	}); 
@@ -177,7 +228,7 @@ function upvoteMarker(_id, val) {
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
-		var myquery = {  _id: ObjectId(_id) };
+		var myquery = {  _id: (ObjectId(_id)) };
 		dbo.collection("markers").findOne({ _id: ObjectId(_id) }, function(err, result) {
 			if (err) throw err;
 			var newvalues = { $set: {upvote: result.upvote + val } };
@@ -196,8 +247,8 @@ function downvoteMarker(_id, val) {
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
-		var myquery = {  _id: ObjectId(_id) };
-		dbo.collection("markers").findOne({  _id: ObjectId(_id) }, function(err, result) {
+		var myquery = {  _id: (ObjectId(_id)) };
+		dbo.collection("markers").findOne({  _id: (ObjectId(_id)) }, function(err, result) {
 			if (err) throw err;
 			var newvalues = { $set: {downvote: result.downvote + val } };
 			dbo.collection("markers").updateOne(myquery, newvalues, function(err, res) {
@@ -256,10 +307,10 @@ function deleteMarkerUser(res, username, _id) {
 	MongoClient.connect(url, { useNewUrlParser: true }, function (err, db) {
 		if (err) throw err;
 		var dbo = db.db("spot_stop");
-		dbo.collection("users").findOne({ username: username, type: 1 }, function (err, result) {
+		dbo.collection("users").findOne({ cookie: username}, function (err, result) {
 			if (err) throw err;
-			if (result) {
-				deleteMarker(res, _id);
+			if (result && result.type == 1) {
+				deleteMarkerHistory(res, _id);
 			}
 			db.close();
 		});
@@ -462,11 +513,11 @@ server.post("/getAccountType", (req, res) => {
 });
 
 server.post("/createMarker", (req, res) => {
-	addMarkerUser(res, req.body.username, req.body.name, req.body.lat, req.body.lng, req.body.des, req.body.upvote, req.body.downvote);
+	MarkerValidation(res, req.body.username, req.body.name, req.body.lat, req.body.lng, req.body.des, req.body.upvote, req.body.downvote);
 });
 
 server.post("/deleteMarker", (req, res) => {
-	deleteMarkerUser(res, req.body.username, req.body._id);
+	deleteMarkerUser(res, req.body.cookie, req.body.marker_id);
 });
 
 server.post("/addUser", (req, res) => {

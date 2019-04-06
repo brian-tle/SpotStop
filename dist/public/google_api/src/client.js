@@ -1,7 +1,7 @@
 //  https://sfhacks2019-1551558382883.appspot.com
 //  http://localhost:8080
 
-const url = 'https://sfhacks2019-1551558382883.appspot.com';
+const url = 'http://localhost:8080';
 
 function handleAccountType() {
   //run if user is logged in
@@ -71,14 +71,14 @@ function createMarker(username, lat, lng, name, des, upvote, downvote) {
   });
 }
 
-function deleteMarker(username, _id) {
-  data = { username: username, _id: _id };
+function deleteMarker(cookie, id) {
+  data = {cookie: cookie, marker_id: id};
   $.ajax({
     type: 'POST',
     url: url + '/deleteMarker',
     async: true,
     data: JSON.stringify(data),
-    dataType: 'json',
+    crossDomain: true,
     contentType: 'application/json; charset=utf-8',
     success: function (data) {
       for (var x = 0; x < markerList.length; x++) {
@@ -89,7 +89,13 @@ function deleteMarker(username, _id) {
         }
       }
     },
-    error: function (xhr, ajaxOptions, thrownError) { }
+    error: function (xhr, ajaxOptions, thrownError) { 
+      console.log(xhr);
+      console.log(ajaxOptions);
+      console.log(thrownError);
+      console.log(id);
+      console.log("Not happening!");
+    }
   });
 }
 

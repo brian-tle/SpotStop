@@ -124,7 +124,7 @@ class Marker {
 
   addListeners(map) {
     this.marker.addListener('click', function(event) {
-      if (!deleteToggled) {
+      if (deleteToggled == false) {
         this.zoomToMarker(map);
       }
       else {
