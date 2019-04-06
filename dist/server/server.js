@@ -8,6 +8,7 @@ const url = "mongodb://test:testpassword@spot-stop-shard-00-00-ruq20.mongodb.net
 const server = express();
 server.use(cookieParser());
 const PORT = process.env.PORT;
+// const PORT = 8080;
 const path  = require('path');
 
 server.use(bodyParser.json());
@@ -192,8 +193,9 @@ function deleteMarkerHistory(res, _id) {
 				if (err) throw err;
 				dummy_User = result.markerListC;
 				dummy_Rating = result.markerListM;
+				console.log(dummy_User);
 				for (var i = 0; i < dummy_User.length; i++) {
-					if (dummy_User[i] == ObjectId(_id)) dummy_User.splice(i,1);
+					if (dummy_User[i] == _id) dummy_User.splice(i,1);
 				}
 				for (var i = 0; i < dummy_Rating.length; i++) {
 					if (dummy_Rating[i]['marker_id'] == ObjectId(_id)) dummy_Rating.splice(i, 1);
