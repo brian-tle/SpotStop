@@ -226,3 +226,73 @@ function logIn(name, pass) {
     }
   });
 }
+
+function validateEditing(id, user_cookie) {
+  data = {marker_id: id, cookie: user_cookie};
+  $.ajax({
+    type: 'POST',
+    url: url + '/validateEditing',
+    async: true,
+    data: JSON.stringify(data),
+    crossDomain: true,
+    contentType: 'application/json; charset=utf-8',
+    success: function (data) {
+      markerList.forEach(marker=> {
+        if (marker._id == id) {
+          marker.label.isContentEditable = true;
+          marker.zoomToMarker(map,true);
+          var input = document.createElement("input");
+          input.style.color = 'white';
+          input.className= 'popup-bubble';
+          input.setAttribute('type', 'text');
+          var p = marker.label.parentElement;
+          p.appendChild(input);
+          var inp = marker.label.parentElement.childNodes[0];
+          var inner_inp = inp.innerHTML;
+          inp.style.display = 'none';
+          var inp2 = marker.label.parentElement.childNodes[1];
+          inp2.value = inner_inp;
+          
+          inp2.addEventListener('keypress', function(event){
+            var key = event.which || event.keyCode;
+            if (key == 13) {
+              var new_inp_value = inp2.value;
+              updateDes(id, new_inp_value, user_cookie);
+              marker.label.innerHTML = new_inp_value;
+            }
+          });
+        }
+      });
+    },
+    error: function(xhr, ajaxOptions, thrownError) {
+    }
+  });
+}
+
+function updateDes(id, des, user_cookie) {
+  data = {marker_id: id, des: des, cookie: user_cookie};
+  $.ajax({
+    type: 'POST',
+    url: url + '/modifyDescription',
+    async: true,
+    data: JSON.stringify(data),
+    crossDomain: true,
+    contentType: 'application/json; charset=utf-8',
+    success: function(data){
+      markerList.forEach(marker=> {
+        if (marker._id == id) {
+          marker.label.isContentEditable = true;
+          marker.zoomToMarker(map,true);
+          var p = marker.label.parentElement;
+          p.removeChild(p.childNodes[1]);
+          var inp = marker.label.parentElement.childNodes[0];
+          inp.style.display = 'block';
+        }
+      });
+    },
+    error: function(xhr, ajaxOptions, thrownError) {
+      window.alert("failed to modify description!");
+    }
+
+  });
+}

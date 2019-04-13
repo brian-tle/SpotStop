@@ -165,9 +165,22 @@ class Marker {
         else {
           window.alert("please register and/or sign in to vote!");
         }
-      }.bind(this)
-    );
+      }.bind(this));
+      
+    if (this.label) {
+      this.label.addEventListener('click', function(event){
+        validateEditing(this._id, getCookie());
+      }.bind(this));
+    }
   }
+
+/*   this.indicator.infoWindow.addListener(
+    "click",
+    function(even) {
+      console.log("You clicked it");
+    }
+  ) */
+
 
   zoomToMarker(map, showIndicator = true) {
     map.setZoom(18);

@@ -491,6 +491,52 @@ function getControversialMarkers(res) {
 	});
 }
 
+function validateEditing(res, marker_id, cookie_name) {
+	MongoClient.connect(url, { useNewUrlParser: true}, function(err, db){
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		console.log("so far so good");
+		console.log(ObjectId(marker_id));
+		dbo.collection("users").findOne({cookie: cookie_name}, function(err, result){
+			if (err) throw err;
+			if (result) {
+				var markerC = result.markerListC;
+				for (var i = 0; i < markerC.length; i++) {
+					if (markerC[i] == marker_id) {
+						console.log(markerC[i]);
+						return res.send("Success");
+					}
+				}
+				return res.status(400).send({
+					message: "User has already downvoted this marker!"
+				});
+			}
+			else {
+				return res.status(400).send({
+					message: "User has already downvoted this marker!"
+				});
+			}
+		});
+	});
+}
+
+function modifyDesc(res, marker_id, description, cookie) {
+	MongoClient.connect(url, { useNewUrlParser: true}, function(err, db){
+		if (err) throw err;
+		var dbo = db.db("spot_stop");
+		var myquery = {  _id: (ObjectId(marker_id)) };
+		dbo.collection("markers").findOne(myquery, function(err, result){
+			if (err) throw err;
+			if (result) {
+				dbo.collection("markers").updateOne(myquery, { $set: { des: description } }, function (err) {
+						if (err) throw err;
+					});
+			}
+			res.send('Success');
+		});
+	});
+}
+
 server.all('/*', function(req, res, next) { 
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Headers", "Content-Type");
@@ -509,6 +555,10 @@ server.get('/getAllMarkers', function(req, res, next) {
 	getAllMarkers(res);
 	var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).toString();
 });
+
+server.post('/validateEditing', function(req,res, next) {
+	validateEditing(res, req.body.marker_id, req.body.cookie);
+})
 
 server.post("/getAccountType", (req, res) => {
 	getAccountType(res, req.body.username);
@@ -536,6 +586,10 @@ server.post("/downvoteUser", (req, res) => {
 
 server.post("/login", (req, res) => {
 	checkUser(req, res, req.body.username, req.body.password);
+});
+
+server.post("/modifyDescription", (req, res)=> {
+	modifyDesc(res, req.body.marker_id, req.body.des, req.body.cookie);
 });
 
 server.listen(PORT, () => console.log(`Server listening on port ${PORT}!`));
