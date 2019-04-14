@@ -1,8 +1,7 @@
 //  https://sfhacks2019-1551558382883.appspot.com
 //  http://localhost:8080
-
 const url = 'https://sfhacks2019-1551558382883.appspot.com';
-
+// const url = 'http://localhost:8080';
 function handleAccountType() {
   //run if user is logged in
   if (document.cookie) {
@@ -290,6 +289,9 @@ function updateDes(id, des, user_cookie) {
           p.removeChild(p.childNodes[1]);
           var inp = marker.label.parentElement.childNodes[0];
           inp.style.display = 'block';
+          $(marker.label).one('click', function(e) {
+            validateEditing(this._id, getCookie());
+          }.bind(marker));
         }
       });
     },
