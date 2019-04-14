@@ -250,8 +250,11 @@ function validateEditing(id, user_cookie) {
           var inp = marker.label.parentElement.childNodes[0];
           var inner_inp = inp.innerHTML;
           inp.style.display = 'none';
+          var anchor = document.getElementsByClassName('popup-bubble-anchor');
           var inp2 = marker.label.parentElement.childNodes[1];
           inp2.value = inner_inp;
+          inp2.style.maxHeight = '27px';
+          inp2.style.top = '-4px';
           
           inp2.addEventListener('keypress', function(event){
             var key = event.which || event.keyCode;

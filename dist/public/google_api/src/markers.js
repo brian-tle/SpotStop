@@ -168,10 +168,10 @@ class Marker {
       }.bind(this));
       
     if (this.label) {
-      this.label.addEventListener('click', function(event){
-        validateEditing(this._id, getCookie());
-      }.bind(this));
-    }
+    $(this.label).one('click', function(e) {
+      validateEditing(this._id, getCookie());
+  }.bind(this));
+  }
   }
 
 /*   this.indicator.infoWindow.addListener(
