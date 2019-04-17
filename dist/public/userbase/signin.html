@@ -117,5 +117,28 @@
         $(function(){
       $("#user_auth").load("../logout.html"); 
     });
+
+    $(window).resize(function(){
+      if ($(this).width() < 668 ) {
+        // document.getElementById('contact-form').style.width = parseInt($(window).width()) - 100 + 'px';
+        document.getElementById('username').style.width = parseInt($(window).width()) - 100 + 'px';
+        document.getElementById('password').style.width = parseInt($(window).width()) - 100 + 'px';
+        document.getElementById('sbmt').style.width = parseInt($(window).width()) - 100 + 'px';
+      }
+      else {
+        // document.getElementById('contact-form').style.width = '650px';
+        document.getElementById('username').style.width = '650px';
+        document.getElementById('password').style.width = '650px';
+       document.getElementById('sbmt').style.width = '650px';
+      }
+    });
+    if ($(window).width() < 668) {
+      var width = $(window).width()
+      // document.getElementById('contact-form').style.width = parseInt($(window).width()) - 100 + 'px';
+       document.getElementById('sbmt').style.width = parseInt(width) - 100 + 'px';
+        document.getElementById('username').style.width = parseInt(width) - 100 + 'px';
+        document.getElementById('password').style.width = parseInt(width) - 100 + 'px';
+    }
+
   </script>
 </html>

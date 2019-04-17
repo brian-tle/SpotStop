@@ -259,8 +259,16 @@ function validateEditing(id, user_cookie) {
             var key = event.which || event.keyCode;
             if (key == 13) {
               var new_inp_value = inp2.value;
-              updateDes(id, new_inp_value, user_cookie);
-              marker.label.innerHTML = new_inp_value;
+              var des = String(new_inp_value);
+              var des_token = des.split(/[,?\s+/.]/);
+              for (var i = 0; i < des_token.length; i++) {
+                if (prof_list.includes(des_token[i].toLowerCase())) {
+                    des_token[i] = '*'.repeat(des_token[i].length);
+                }
+              }
+              var real_des = des_token.join(" ");
+              updateDes(id, real_des, user_cookie);
+              marker.label.innerHTML = real_des;
             }
           });
         }

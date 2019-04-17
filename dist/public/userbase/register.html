@@ -115,6 +115,7 @@
           <input
             type="submit"
             class="form-control submit"
+            id='sbmt'
             value="Submit"
           />
         </form>
@@ -135,5 +136,31 @@
       $(function(){
     $("#user_auth").load("../logout.html"); 
   });
+
+  $(window).resize(function(){
+      if ($(this).width() < 668 ) {
+        document.getElementById('username').style.width = parseInt($(window).width()) - 100 + 'px';
+        document.getElementById('password').style.width = parseInt($(window).width()) - 100 + 'px';
+        document.getElementById('repeat_password').style.width = parseInt($(window).width()) - 100 + 'px';
+        document.getElementById('email').style.width = parseInt($(window).width()) - 100 + 'px';
+        document.getElementById('sbmt').style.width = parseInt($(window).width()) - 100 + 'px';
+      }
+      else {
+        document.getElementById('username').style.width = '650px';
+        document.getElementById('password').style.width = '650px';
+        document.getElementById('repeat_password').style.width = '650px';
+        document.getElementById('email').style.width = '650px';
+        document.getElementById('sbmt').style.width = '650px';
+      }
+    });
+    if ($(window).width() < 668) {
+        document.getElementById('sbmt').style.width = parseInt($(window).width()) - 100 + 'px';
+        document.getElementById('username').style.width = parseInt($(window).width()) - 100 + 'px';
+        document.getElementById('password').style.width = parseInt($(window).width()) - 100 + 'px';
+        document.getElementById('repeat_password').style.width = parseInt($(window).width()) - 100 + 'px';
+        document.getElementById('email').style.width = parseInt($(window).width()) - 100 + 'px';
+        
+        
+    }
 </script>
 </html>
