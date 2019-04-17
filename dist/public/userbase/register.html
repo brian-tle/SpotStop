@@ -43,14 +43,24 @@
               The Map
             </a>
           </li>
-          <li id="account-activate" class="nav-item">
-              <a href="signin.html" class="nav-link">
+          <li id="aa" class="nav-item">
+              <a id='auth_nav' href="signin.html" class="nav-link">
                 Sign in
               </a>
-              <a style="font-size:36px">|</a>
-              <a href="register.html" class="nav-link" style="color:#0caea8">
+              <a id='auth_divider' style="font-size:36px">|</a>
+              <a id = 'auth_nav' href="register.html" class="nav-link">
                 Sign up
               </a>
+          </li>
+          <li id='auth_shrink' class="nav-item">
+            <a href="signin.html" class="nav-link">
+              Sign in
+            </a>
+          </li>
+          <li id='auth_shrink2' class="nav-item">
+            <a href="register.html" class="nav-link">
+              Sign up
+            </a>
           </li>
           <li class="nav-item">
             <a href="../contact.html" class="nav-link"><img src="../res/letter.png" style="width:50px; height:28px" title="Contact Us" alt="Contact"></a>
@@ -115,9 +125,13 @@
       Copyright &copy; 2019
     </footer>
     <script src="../src/main.js"></script>
+    <div id='nav_mod'></div>
     <div id="user_auth"></div>
   </body>
   <script>
+    $(function(){
+      $('#nav_mod').load('../navbar_mod.html');
+    });
       $(function(){
     $("#user_auth").load("../logout.html"); 
   });

@@ -90,38 +90,14 @@
     <footer id="main-footer">
       Copyright &copy; 2019
     </footer>
-    <script>
-     var signin = document.getElementById('aa');
-          var shrunk = document.getElementById('auth_shrink');
-          var shrunk2 = document.getElementById('auth_shrink2');
-          if ($(window).width() < 500) {
-            signin.style.display = 'none';
-            shrunk.style.display = 'block';
-            shrunk2.style.display = 'block';
-          }
-          else {
-            signin.style.display = 'block';
-            shrunk.style.display = 'none';
-            shrunk2.style.display = 'none';
-          }
-          $(window).resize(function () {
-            if ($(this).width() < 600) {
-              signin.style.display = 'none';
-              signin.style.visibility = 'hidden';
-              shrunk.style.display = 'block';
-              shrunk2.style.display = 'block';
-            }
-            else {
-              signin.style.display = 'block';
-              signin.style.visibility = 'visible';
-              shrunk.style.display = 'none';
-              shrunk2.style.display = 'none';
-            }
-          });
-    </script>
+    <script id='nav_mod'></script>
     <script id="user_auth"></script>
   </body>
   <script>
+
+          $(function () {
+            $('#nav_mod').load('navbar_mod.html');
+          });
 
           $(function () {
             $("#user_auth").load("logout.html");
