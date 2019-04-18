@@ -73,7 +73,7 @@
       <h2 class="sm-heading">
         Registration Form
       </h2>
-      <div class="contact-form">
+      <div class="contact-form" id ='signup-form' style="width:auto; height: auto">
         <form onsubmit="return SignUpHandler(event)" id="contact-form">
           <input
             name="username"
@@ -114,7 +114,8 @@
 
           <input
             type="submit"
-            class="form-control submit"
+            class="form-control"
+            style='background-color: #0caea8'
             id='sbmt'
             value="Submit"
           />
@@ -139,11 +140,11 @@
 
   $(window).resize(function(){
       if ($(this).width() < 668 ) {
-        document.getElementById('username').style.width = parseInt($(window).width()) - 100 + 'px';
-        document.getElementById('password').style.width = parseInt($(window).width()) - 100 + 'px';
-        document.getElementById('repeat_password').style.width = parseInt($(window).width()) - 100 + 'px';
-        document.getElementById('email').style.width = parseInt($(window).width()) - 100 + 'px';
-        document.getElementById('sbmt').style.width = parseInt($(window).width()) - 100 + 'px';
+        document.getElementById('username').style.width = parseInt($(window).width()) - 130 + 'px';
+        document.getElementById('password').style.width = parseInt($(window).width()) - 130 + 'px';
+        document.getElementById('repeat_password').style.width = parseInt($(window).width()) - 130 + 'px';
+        document.getElementById('email').style.width = parseInt($(window).width()) - 130 + 'px';
+        document.getElementById('sbmt').style.width = parseInt($(window).width()) - 130 + 'px';
       }
       else {
         document.getElementById('username').style.width = '650px';
@@ -154,11 +155,11 @@
       }
     });
     if ($(window).width() < 668) {
-        document.getElementById('sbmt').style.width = parseInt($(window).width()) - 100 + 'px';
-        document.getElementById('username').style.width = parseInt($(window).width()) - 100 + 'px';
-        document.getElementById('password').style.width = parseInt($(window).width()) - 100 + 'px';
-        document.getElementById('repeat_password').style.width = parseInt($(window).width()) - 100 + 'px';
-        document.getElementById('email').style.width = parseInt($(window).width()) - 100 + 'px';
+        document.getElementById('sbmt').style.width = parseInt($(window).width()) - 130 + 'px';
+        document.getElementById('username').style.width = parseInt($(window).width()) - 130 + 'px';
+        document.getElementById('password').style.width = parseInt($(window).width()) - 130 + 'px';
+        document.getElementById('repeat_password').style.width = parseInt($(window).width()) - 130 + 'px';
+        document.getElementById('email').style.width = parseInt($(window).width()) - 130 + 'px';
         
         
     }
