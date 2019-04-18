@@ -87,7 +87,6 @@
     <div id = 'options' style='height: 32px; white-space: nowrap;'>
         <label for='all-searches'>All</label>
         <input type='radio' name='type' id='all-searches'>
-
         <input type='radio' name='type' id='database'>
         <label for='database'>Markers</label>
     </div>
@@ -100,7 +99,7 @@
   <script src="src/marker_popup.js"></script>
   <!--The div element for the map -->
   <div id="map">
-    <div id="infowindow-content">
+    <div id="infowindow-content" style='display:none'>
       <img src="" width="16" height="16" id="place-icon">
       <span id="place-name"  class="title"></span><br>
       <span id="place-address"></span>
