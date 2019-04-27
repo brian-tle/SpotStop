@@ -308,4 +308,20 @@ function updateDes(id, des, user_cookie) {
     }
 
   });
+
+/*   function getTop3Markers() {
+    $.ajax({
+      type: 'POST',
+      url: url + '/getTop3Markers',
+      async: true,
+      crossDomain: true,
+      contentType: 'applicatoin/json; charset=utf-8',
+      success: function(data) {
+
+      },
+      error: function(xhr, ajaxOptions, thrownError) {
+        window.alert('failed to retrieve markers');
+      }
+    })
+  } */
 }
