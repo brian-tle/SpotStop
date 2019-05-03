@@ -72,6 +72,7 @@ function initMap() {
           initAutocomplete();
           //create account specific controls
           handleAccountType();
+          getTop3Markers();
         });
       }
     );
