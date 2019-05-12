@@ -10,6 +10,7 @@
       integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
       crossorigin="anonymous"
     />
+    <link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css" />
     <!-- ICON -->
     <link rel="icon" type = "image/png" href="res/cropped_spot_sign.png"></link>
@@ -81,11 +82,19 @@
     </header>
 
     <main id="home">
-      <h1 class="lg-heading">Spot <span class="text-secondary">Stop</span></h1>
-      <h2 class="sm-heading">
-        Saving your favorite spots.
-      </h2>
-      <div id='top3Markers' class='row outer-div' style='position:relative; display:table;text-align: center; width:1200px; height:300px;left:6%;padding-top:5%'>
+      <div class="lg-heading" style='width:10000px; position:relative;right:4.7%'> 
+        <h1 style='position:relative; left:1.5%; font-size:620%'>Spot <span class="text-secondary">Stop</span></h1></div>
+        <div style='position:relative; background:grey;opacity:0.5; width:10000px;right: 20%'>
+          <br/>
+          <br/>
+        </div>
+        <h2 style='position:relative; opacity:1; left:6.2%;bottom:40px;'>
+          Saving your favorite spots.
+        </h2>
+      <h3 style='font-size:30px; position:relative; text-align:center; top:31px; font-family: Kanit'>
+        Most Upvoted Marker
+      </h3>
+      <div id='top3Markers' class='row outer-div' style='position:relative; display:table;text-align: center; width:1200px; height:300px;left:6%;padding-top:3%'>
         <div onclick='moveToMap1()' id='number1' class='column' style='float:left; width:400px; height:300px;'></div>
         <div onclick='moveToMap2()' id='number2' class='column' style='float:left; width:400px; height:300px;'></div>
         <div onclick='moveToMap3()' id='number3' class='column' style='float:left; width:400px; height:300px;'></div>
