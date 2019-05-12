@@ -38,44 +38,18 @@ function initMap() {
     var lt;
     var lg;
     var ip_url;
-    $.getJSON("https://api.ipify.org?format=jsonp&callback=?",
-      function (json) {
-        ip_url = 'http://api.ipstack.com/' + json.ip + '?access_key=38789675028f4a0492a31fce46e79e55';
-        $.getJSON(ip_url, function (data) {
-          lt = parseFloat(data.latitude);
-          lg = parseFloat(data.longitude);
-          // assign default latitude and longitude
-          // to the map
-          map = new google.maps.Map(document.getElementById("map"), {
-            zoom: 12,
-            // center == where it stores the default latitude
-            // and longitude
-            center: { lat: parseFloat(lt), lng: parseFloat(lg) },
-            controls: google.maps,
-            mapTypeControlOptions: {
-              // nothing is inside mapTypeId
-              // because we don't want extra features
-              // in our map, ex: Sattelite feature
-              mapTypeIds: [
-              ]
-            }
-          });
-          map.setOptions(mapOptions);
-          Marker.map = map;
-          addControls(map);
-          addListeners(map);
-          // retrieve all of the markers in the database
-          // and display them on the map
-          getAllMarkers(map);
-          // call initAutocomplete() to have the search bar
-          // working
-          initAutocomplete();
-          //create account specific controls
-          handleAccountType();
-          getTop3Markers();
-        });
-      }
-    );
+    if (sessionStorage.topMarkerValidator == 'number1 sent') {
+      getStartingMarker(sessionStorage.img_src);
+    }
+    else if (sessionStorage.topMarkerValidator == 'number2 sent') {
+      getStartingMarker(sessionStorage.img_src);
+    }
+    else if (sessionStorage.topMarkerValidator == 'number3 sent') {
+      getStartingMarker(sessionStorage.img_src);
+    }
+    else {
+      IpStack()    
+    }
   });
 }
 

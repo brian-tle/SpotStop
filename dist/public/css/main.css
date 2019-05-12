@@ -14,7 +14,53 @@
   padding: 22px;
   border: 3px solid #0caea8;
 }
+#number1 .text {
+  font-size: 150%;
+  visibility: hidden;
+  position: relative;
+  bottom: 20%;
+}
 
+#number2 .text {
+  font-size: 150%;
+  visibility: hidden;
+  position: relative;
+  bottom: 20%;
+}
+
+#number3 .text {
+  font-size: 150%;
+  visibility: hidden;
+  position: relative;
+  bottom: 20%;
+}
+
+#number1:hover img{
+  opacity: 0.2;
+}
+
+#number2:hover img{
+  opacity: 0.2;
+}
+
+#number3:hover img{
+  opacity: 0.2;
+}
+
+#number1:hover .text{
+  visibility: visible;
+  color: white;
+}
+
+#number2:hover .text{
+  visibility: visible;
+  color: white;
+}
+
+#number3:hover .text{
+  visibility: visible;
+  color: white;
+}
 .menu-btn {
   position: absolute;
   z-index: 3;

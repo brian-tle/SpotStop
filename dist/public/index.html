@@ -17,9 +17,10 @@
   </head>
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"> </script>
+  <script src="google_api/src/client/client.js"></script>
   <script src="src/leaderboard/main.js"></script>
   <script src="src/leaderboard/client.js"></script>
-
+  <script src="google_api/src/index.js"></script>
   <body id="bg-img">
     <header>
       <div class="menu-btn">
@@ -84,6 +85,11 @@
       <h2 class="sm-heading">
         Saving your favorite spots.
       </h2>
+      <div id='top3Markers' class='row outer-div' style='position:relative; display:table;text-align: center; width:1200px; height:300px;left:6%;padding-top:5%'>
+        <div onclick='moveToMap1()' id='number1' class='column' style='float:left; width:400px; height:300px;'></div>
+        <div onclick='moveToMap2()' id='number2' class='column' style='float:left; width:400px; height:300px;'></div>
+        <div onclick='moveToMap3()' id='number3' class='column' style='float:left; width:400px; height:300px;'></div>
+      </div>
     </main>
     <script src="src/main.js"></script>
     <script src="userbase/signin.js"></script>
@@ -94,16 +100,12 @@
     <script id="user_auth"></script>
   </body>
   <script>
-
           $(function () {
             $('#nav_mod').load('navbar_mod.html');
           });
-
           $(function () {
             $("#user_auth").load("logout.html");
           });
         
-
-
 </script>
 </html>

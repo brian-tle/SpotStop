@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"> </script>
+  <script src="http://js.api.here.com/v3/3.0/mapsjs-core.js"
+  type="text/javascript" charset="utf-8"></script>
+<script src="http://js.api.here.com/v3/3.0/mapsjs-service.js"
+  type="text/javascript" charset="utf-8"></script>
   <link
   rel="stylesheet"
   href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
@@ -64,7 +68,7 @@
             Sign up
           </a>
         </li>
-        <li id="account-info" class"nav-item">
+        <li id="account-info" class="nav-item">
           <a href="../userbase/account.html" class="nav-link">
             Account
           </a>
@@ -106,10 +110,12 @@
     </div>
 
   </div>
+  <script src="src/client/client.js"></script>
+  <script src="src/client/user_auth.js"></script>
+  <script src="src/client/marker_function.js"></script>
   <script src="src/marker_indicator.js"></script>
   <script src="src/map_control.js"></script>
   <script src="src/markers.js"></script>
-  <script src="src/client.js"></script>
   <script src="src/profanity.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"> </script>
   <script src="src/main.js"></script>
@@ -127,6 +133,11 @@
   });
     $(function(){
   $("#user_auth").load("../logout.html"); 
+});
+
+var platform = new H.service.Platform({
+  'app_id': '{KqWwznbiVPeJDUzix4u3}',
+  'app_code': '{9QGm7mnSDQlRhECc2JVFIQ}'
 });
 </script>
 </html>
