@@ -82,7 +82,7 @@
     </header>
 
     <main id="home">
-      <div class="lg-heading" style='width:10000px; position:relative;right:4.7%'> 
+      <div class="lg-heading" style='position:relative;left:4.3%'> 
         <h1 style='position:relative; left:1.5%; font-size:620%'>Spot <span class="text-secondary">Stop</span></h1></div>
         <div style='position:relative; background:grey;opacity:0.5; width:10000px;right: 20%'>
           <br/>
@@ -91,10 +91,10 @@
         <h2 style='position:relative; opacity:1; left:6.2%;bottom:40px;'>
           Saving your favorite spots.
         </h2>
-      <h3 style='font-size:30px; position:relative; text-align:center; top:31px; font-family: Kanit'>
-        Most Upvoted Marker
+      <h3 id='markerTitle' style='font-size:30px; position:relative; text-align:center; top:31px; font-family: Kanit'>
+        Most Upvoted Markers
       </h3>
-      <div id='top3Markers' class='row outer-div' style='position:relative; display:table;text-align: center; width:1200px; height:300px;left:6%;padding-top:3%'>
+      <div id='top3Markers' class='row outer-div' style='position:relative; display:table;text-align: center;left:6%;top:50px'>
         <div onclick='moveToMap1()' id='number1' class='column' style='float:left; width:400px; height:300px;'></div>
         <div onclick='moveToMap2()' id='number2' class='column' style='float:left; width:400px; height:300px;'></div>
         <div onclick='moveToMap3()' id='number3' class='column' style='float:left; width:400px; height:300px;'></div>
@@ -107,6 +107,7 @@
     </footer>
     <script id='nav_mod'></script>
     <script id="user_auth"></script>
+    <script id="marker_mod"></script>
   </body>
   <script>
           $(function () {
@@ -115,6 +116,8 @@
           $(function () {
             $("#user_auth").load("logout.html");
           });
-        
+          $(function () {
+            $('#marker_mod').load("marker_mod.html");
+          })
 </script>
 </html>

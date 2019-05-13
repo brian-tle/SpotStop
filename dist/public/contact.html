@@ -85,6 +85,7 @@
       <div class="contact-form">
         <form id="contact-form" method="post" action="https://formspree.io/sfhack@onespotstop.com">
           <input
+            id="name"
             name="name"
             type="text"
             class="form-control"
@@ -93,6 +94,7 @@
           />
           <br />
           <input
+            id="email"
             name="email"
             type="email"
             class="form-control"
@@ -102,6 +104,7 @@
           <br />
 
           <textarea
+            id="message"
             name="message"
             class="form-control"
             placeholder="Message"
@@ -111,8 +114,10 @@
           ><br />
 
           <input
+            id="submit"
             type="submit"
-            class="form-control submit"
+            class="form-control"
+            style="background-color: #0caea8"
             value="SEND MESSAGE"
           />
         </form>
@@ -133,5 +138,30 @@
       $(function(){
     $("#user_auth").load("logout.html"); 
   });
+
+      $(window).resize(function(){
+      if ($(this).width() < 668 ) {
+        // document.getElementById('contact-form').style.width = parseInt($(window).width()) - 100 + 'px';
+        document.getElementById('name').style.width = parseInt($(window).width()) - 130 + 'px';
+        document.getElementById('email').style.width = parseInt($(window).width()) - 130 + 'px';
+        document.getElementById('message').style.width = parseInt($(window).width()) - 130 + 'px';
+        document.getElementById('submit').style.width = parseInt($(window).width()) - 130 + 'px';
+      }
+      else {
+        // document.getElementById('contact-form').style.width = '650px';
+        document.getElementById('name').style.width = '650px';
+        document.getElementById('email').style.width = '650px';
+        document.getElementById('message').style.width = '650px';
+        document.getElementById('submit').style.width = '650px';
+      }
+    });
+    if ($(window).width() < 668) {
+      var width = $(window).width()
+      // document.getElementById('contact-form').style.width = parseInt($(window).width()) - 100 + 'px';
+        document.getElementById('submit').style.width = parseInt(width) - 130 + 'px';
+        document.getElementById('message').style.width = parseInt(width) - 130 + 'px';
+        document.getElementById('email').style.width = parseInt(width) - 130 + 'px';
+        document.getElementById('name').style.width = parseInt(width) - 130 + 'px';
+    }
 </script>
 </html>
