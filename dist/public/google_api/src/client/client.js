@@ -3,6 +3,8 @@
 const url = 'https://sfhacks2019-1551558382883.appspot.com';
 // const url = 'http://localhost:8080';
 
+
+
 function getAllMarkers(map) {
   $.ajax({
       url: url + '/getAllMarkers',
@@ -16,6 +18,26 @@ function getAllMarkers(map) {
       error: function (err) { console.log('Failed'); }
   });
 }
+
+
+
+function createMarker(username, lat, lng, name, des, upvote, downvote) {
+    data = { username: username, lat: lat, lng: lng, name: name, des: des, upvote: upvote, downvote: downvote };
+    $.ajax({
+        type: 'POST',
+        url: url + '/createMarker',
+        async: true,
+        data: JSON.stringify(data),
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+        markerList[markerList.length - 1]._id = data;
+        },
+        error: function (xhr, ajaxOptions, thrownError) { }
+    });
+}
+
+
 
 function upvoteUser(markerId, name, value, indicator, totalPoints) {
   data = { marker_id: markerId, username: name, rating: value };
@@ -186,21 +208,6 @@ function downvoteUser(markerId, name, value, indicator, totalPoints) {
     }
   });
 }
-function createMarker(username, lat, lng, name, des, upvote, downvote) {
-  data = { username: username, lat: lat, lng: lng, name: name, des: des, upvote: upvote, downvote: downvote };
-  $.ajax({
-      type: 'POST',
-      url: url + '/createMarker',
-      async: true,
-      data: JSON.stringify(data),
-      dataType: 'json',
-      contentType: 'application/json; charset=utf-8',
-      success: function (data) {
-      markerList[markerList.length - 1]._id = data;
-      },
-      error: function (xhr, ajaxOptions, thrownError) { }
-  });
-}
 
 function deleteMarker(cookie, id) {
   data = { cookie: cookie, marker_id: id };
@@ -238,13 +245,12 @@ function getTop3Markers() {
     async: true,
     success: function (data) {
       for (var i = 1; i <= data.length; i++) {
-        console.log(data[i - 1].name)
-        document.getElementById('number' + i).innerHTML = '<img " src="' + data[i - 1].photo + '" id = "img' + i +'" style="width:400px; height:300px; border: 1px solid"/>' 
-        + '<div class="text">' + data[i-1].name + '</div>';
+        document.getElementById('number' + i).innerHTML = '<img " src="' + data[i - 1].photo + '" id = "img' + i +'"class="img--content_top3"/>' 
+        + '<div class="img--text_top3">' + data[i-1].name + '</div>';
       }
     },
     error: function (xhr, ajaxOptions, thrownError) {
-      window.alert(thrownError);
+      //window.alert(thrownError);
     }
   });
 }

@@ -1,123 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
-      integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
-      crossorigin="anonymous"
-    />
-    <link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet">
-    <link rel="stylesheet" href="css/main.css" />
-    <!-- ICON -->
-    <link rel="icon" type = "image/png" href="res/cropped_spot_sign.png"></link>
-    <title>Spot Stop</title>
-  </head>
 
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"> </script>
-  <script src="google_api/src/client/client.js"></script>
-  <script src="src/leaderboard/main.js"></script>
-  <script src="src/leaderboard/client.js"></script>
-  <script src="google_api/src/index.js"></script>
-  <body id="bg-img">
-    <header>
-      <div class="menu-btn">
-        <div class="btn-line"></div>
-        <div class="btn-line"></div>
-        <div class="btn-line"></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+    crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css" />
+  <!-- ICON -->
+  <link rel="icon" type="image/png" href="res/cropped_spot_sign.png" />
+  <title>Spot Stop</title>
+</head>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"> </script>
+<script src="google_api/src/client/client.js"></script>
+<script src="src/leaderboard/main.js"></script>
+<script src="src/leaderboard/client.js"></script>
+<script src="google_api/src/index.js"></script>
+
+<body id="bg-img">
+  <header>
+    <div class="menu-btn">
+      <div class="btn-line"></div>
+      <div class="btn-line"></div>
+      <div class="btn-line"></div>
+    </div>
+
+    <!-- NAVIGATION BAR -->
+    <nav class="menu">
+      <div class="menu-branding">
+        <div class="portrait"></div>
       </div>
+      <ul class="menu-nav">
+        <li class="nav-item current">
+          <a href="index.html" class="nav-link">
+            Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="google_api\map.html" class="nav-link">
+            The Map
+          </a>
+        </li>
+        <li id="aa" class="nav-item">
+          <a id="auth_nav" href="userbase/signin.html" class="nav-link">
+            Sign in
+          </a>
+          <a id="auth_divider" style="font-size:36px">|</a>
+          <a id="auth_nav" href="userbase/register.html" class="nav-link">
+            Sign up
+          </a>
+        </li>
+        <li id="auth_shrink" class="nav-item">
+          <a href="userbase/signin.html" class="nav-link">
+            Sign in
+          </a>
+        </li>
+        <li id="auth_shrink2" class="nav-item">
+          <a href="userbase/register.html" class="nav-link">
+            Sign up
+          </a>
+        </li>
+        <li id="account-info" class"nav-item">
+          <a href="userbase/account.html" class="nav-link">
+            Account
+          </a>
+        </li>
+        <li class="nav-item">
+          <a id="logout" href="index.html" class="nav-link">
+            Log out
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="contact.html" class="nav-link"><img src="res/letter.png" style="width:50px; height:28px" title="Contact Us"
+              alt="Contact"></a>
+        </li>
+      </ul>
+    </nav>
+  </header>
 
-      <nav class="menu">
-        <div class="menu-branding">
-          <div class="portrait"></div>
-        </div>
-        <ul class="menu-nav">
-          <li class="nav-item current">
-            <a href="index.html" class="nav-link">
-              Home
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="google_api\map.html" class="nav-link">
-              The Map
-            </a>
-          </li>
-          <li id="aa" class="nav-item">
-              <a id='auth_nav' href="userbase/signin.html" class="nav-link">
-                Sign in
-              </a>
-              <a id='auth_divider' style="font-size:36px">|</a>
-              <a id = 'auth_nav' href="userbase/register.html" class="nav-link">
-                Sign up
-              </a>
-          </li>
-          <li id='auth_shrink' class="nav-item">
-            <a href="userbase/signin.html" class="nav-link">
-              Sign in
-            </a>
-          </li>
-          <li id='auth_shrink2' class="nav-item">
-            <a href="userbase/register.html" class="nav-link">
-              Sign up
-            </a>
-          </li>
-          <li id="account-info" class"nav-item">
-            <a href="userbase/account.html" class="nav-link">
-              Account
-            </a>
-          </li>
-          <li class="nav-item">
-              <a id="logout" href="index.html" class="nav-link">
-                Log out
-              </a>
-          </li>
-          <li class="nav-item">
-            <a href="contact.html" class="nav-link"><img src="res/letter.png" style="width:50px; height:28px" title="Contact Us" alt="Contact"></a>
-          </li>
-        </ul>
-      </nav>
-    </header>
 
-    <main id="home">
-      <div class="lg-heading" style='position:relative;left:4.3%'> 
-        <h1 style='position:relative; left:1.5%; font-size:620%'>Spot <span class="text-secondary">Stop</span></h1></div>
-        <div style='position:relative; background:grey;opacity:0.5; width:10000px;right: 20%'>
-          <br/>
-          <br/>
-        </div>
-        <h2 style='position:relative; opacity:1; left:6.2%;bottom:40px;'>
-          Saving your favorite spots.
-        </h2>
-      <h3 id='markerTitle' style='font-size:30px; position:relative; text-align:center; top:31px; font-family: Kanit'>
-        Most Upvoted Markers
-      </h3>
-      <div id='top3Markers' class='row outer-div' style='position:relative; display:table;text-align: center;left:6%;top:50px'>
-        <div onclick='moveToMap1()' id='number1' class='column' style='float:left; width:400px; height:300px;'></div>
-        <div onclick='moveToMap2()' id='number2' class='column' style='float:left; width:400px; height:300px;'></div>
-        <div onclick='moveToMap3()' id='number3' class='column' style='float:left; width:400px; height:300px;'></div>
+  <main id="home">
+    <div class="lg-heading" style='position:relative;left:4.3%'>
+      <h1 style='position:relative; left:1.5%; font-size:620%'>Spot <span class="text-secondary">Stop</span></h1>
+    </div>
+    <div class='div--banner_grey'>
+      <br />
+      <br />
+    </div>
+    <h2 class='h2--content_catchPhrase'>
+      Saving your favorite spots.
+    </h2>
+    <h3 id='markerTitle' class='h3--content_top3'>
+      Most Upvoted Markers
+    </h3>
+    <div id='top3Markers' class='div--content_top3'>
+      <div>
+        <div onclick='moveToMap1()' id='number1' class='span--content_top3'></div>
+        <div onclick='moveToMap2()' id='number2' class='span--content_top3'></div>
+        <div onclick='moveToMap3()' id='number3' class='span--content_top3'></div>
       </div>
-    </main>
-    <script src="src/main.js"></script>
-    <script src="userbase/signin.js"></script>
-    <footer id="main-footer">
-      Copyright &copy; 2019
-    </footer>
-    <script id='nav_mod'></script>
-    <script id="user_auth"></script>
-    <script id="marker_mod"></script>
-  </body>
-  <script>
-          $(function () {
-            $('#nav_mod').load('navbar_mod.html');
-          });
-          $(function () {
-            $("#user_auth").load("logout.html");
-          });
-          $(function () {
-            $('#marker_mod').load("marker_mod.html");
-          })
+    </div>
+  </main>
+  <script src="src/main.js"></script>
+  <script src="userbase/signin.js"></script>
+  <footer id="main-footer">
+    Copyright &copy; 2019
+  </footer>
+  <script id='nav_mod'></script>
+  <script id="user_auth"></script>
+  <script id="marker_mod"></script>
+</body>
+<script>
+  $(function () {
+    $('#nav_mod').load('navbar_mod.html');
+  });
+  $(function () {
+    $("#user_auth").load("logout.html");
+  });
+  $(function () {
+    $('#marker_mod').load("marker_mod.html");
+  })
 </script>
+
 </html>
