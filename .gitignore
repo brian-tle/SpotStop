@@ -3,3 +3,4 @@
 .DS_Store
 node_modules
 dist/public/access_log_20190309.gz
+dist/server/server.js
