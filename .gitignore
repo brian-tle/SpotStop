@@ -4,3 +4,4 @@
 node_modules
 dist/public/access_log_20190309.gz
 dist/server/server.js
+dist/public/google_api/src/profanity.js

@@ -12,8 +12,6 @@ var m_l = {};
 // stores user rating history
 var userList = [];
 // stores user marker history
-var prof_list = [];
-prof_list = profanity_list(prof_list);
 var onkey;
 var marker_pred;
 var mapOptions = {
@@ -56,6 +54,7 @@ function initMap() {
 function initAutocomplete() {
   // query is essentially an input tag w/ the search box
   var search_engine;
+  // document.getElementById('search-div').style.display = 'block';
   var search_div = document.getElementById('search-div');
   var query = document.getElementById('input');
   var search_options = document.getElementById('options');

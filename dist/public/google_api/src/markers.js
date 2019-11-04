@@ -24,8 +24,9 @@ function addLabel() {
   var des = String(document.getElementById('marker-label').value);
   var des_token = des.split(/[,?\s+/.]/);
   for (var i = 0; i < des_token.length; i++) {
-    if (prof_list.includes(des_token[i].toLowerCase())) {
-        des_token[i] = '*'.repeat(des_token[i].length);
+    let curr_word = des_token[i].toLowerCase();
+    if (binSearch(curr_word) == true) {
+        des_token[i] = '*'.repeat(curr_word.length);
     }
   }
   var real_des = des_token.join(" ");
