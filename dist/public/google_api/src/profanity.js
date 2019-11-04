@@ -506,7 +506,6 @@
 
 function binSearch(word) {
   if (word[0] in prof_dict) {
-    console.log('is it working')
     let low = 0;
     let curr_list = prof_dict[word[0]];
     let high = curr_list.length - 1;
